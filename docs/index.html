@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nifty 100 Daily Multi-Screener</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 18px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef2f7;
+            color: #2d3e50;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            margin: auto;
+        }
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .main-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px 38px;
+            margin-bottom: 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.10);
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon {
+            font-size: 32px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #27384a;
+            letter-spacing: 0.5px;
+        }
+
+        .sync-time {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #59697a;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 13px 22px;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .total-badge {
+            background: #dcecf7;
+            color: #235477;
+        }
+
+        .match-badge {
+            background: #dff1e5;
+            color: #2d6a45;
+        }
+
+
+        /* =========================================
+           SCREENER GRID
+        ========================================= */
+
+        .screener-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 28px;
+        }
+
+
+        /* =========================================
+           CARD
+        ========================================= */
+
+        .screener-card {
+
+            background: white;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.10);
+
+            min-height: 420px;
+        }
+
+
+        /* =========================================
+           CARD HEADERS
+        ========================================= */
+
+        .card-header {
+
+            color: white;
+
+            padding: 25px 22px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            font-size: 21px;
+
+            font-weight: 700;
+        }
+
+
+        .mwd-header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3e68c5,
+                    #254fa8
+                );
+        }
+
+
+        .sst-header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7a3fc8,
+                    #5524a4
+                );
+        }
+
+
+        .blsh-header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #258c73,
+                    #126550
+                );
+        }
+
+
+        .card-title {
+            font-size: 23px;
+        }
+
+        .card-subtitle {
+            font-size: 18px;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            font-size: 16px;
+        }
+
+
+        thead {
+
+            background: #f4f6f9;
+        }
+
+
+        th {
+
+            padding: 15px 12px;
+
+            text-align: left;
+
+            color: #64707c;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            border-bottom: 1px solid #e2e6ea;
+
+            white-space: nowrap;
+        }
+
+
+        td {
+
+            padding: 17px 12px;
+
+            border-bottom: 1px solid #e5e8ec;
+
+            white-space: nowrap;
+        }
+
+
+        tbody tr:hover {
+
+            background: #f8fafc;
+
+            transition: 0.2s;
+        }
+
+
+        tbody tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        /* =========================================
+           TEXT STYLES
+        ========================================= */
+
+        .stock-name {
+
+            font-weight: 700;
+
+            color: #314252;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        .price {
+
+            color: #2e3d4c;
+        }
+
+
+        .negative {
+
+            color: #d93025;
+
+            font-weight: 500;
+        }
+
+
+        .positive {
+
+            color: #218c54;
+
+            font-weight: 600;
+        }
+
+
+        .percentage-green {
+
+            display: inline-block;
+
+            background: #dff2e7;
+
+            color: #257346;
+
+            padding: 7px 12px;
+
+            border-radius: 8px;
+
+            font-weight: 700;
+
+            font-size: 15px;
+        }
+
+
+        .strike {
+
+            font-weight: 700;
+
+            color: #27384a;
+        }
+
+
+        /* =========================================
+           EMPTY MESSAGE
+        ========================================= */
+
+        .empty-row {
+
+            text-align: center;
+
+            padding: 40px;
+
+            color: #7a8794;
+
+            font-size: 16px;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .footer {
+
+            margin-top: 28px;
+
+            text-align: center;
+
+            color: #718096;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1400px) {
+
+            .screener-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .screener-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .main-header {
+
+                padding: 20px;
+
+                gap: 20px;
+            }
+
+
+            .main-title {
+
+                font-size: 25px;
+            }
+
+
+            .header-right {
+
+                width: 100%;
+
+                flex-wrap: wrap;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+
+                padding: 10px;
+            }
+
+
+            .main-title {
+
+                font-size: 21px;
+            }
+
+
+            .card-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 8px;
+            }
+
+
+            .badge {
+
+                font-size: 14px;
+
+                padding: 10px 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+    <!-- =========================================
+         MAIN HEADER
+    ========================================== -->
+
+    <div class="main-header">
+
+
+        <div class="header-left">
+
+            <div class="title-row">
+
+                <div class="icon">
+                    📊
+                </div>
+
+                <div class="main-title">
+                    Nifty 100 Daily Multi-Screener
+                </div>
+
+            </div>
+
+
+            <div class="sync-time">
+
+                Live Data Sync |
+                08-Sep-2026 10:16 AM IST
+
+            </div>
+
+        </div>
+
+
+        <div class="header-right">
+
+            <div class="badge total-badge">
+
+                Total Stocks: 100
+
+            </div>
+
+
+            <div class="badge match-badge">
+
+                MWD Matches: 7
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         THREE SCREENERS
+    ========================================== -->
+
+    <div class="screener-grid">
+
+
+        <!-- =====================================
+             1. MWD SCREENER
+        ====================================== -->
+
+        <div class="screener-card">
+
+
+            <div class="card-header mwd-header">
+
+                <div class="card-title">
+
+                    1. MWD
+
+                </div>
+
+
+                <div class="card-subtitle">
+
+                    Monthly+Weekly+Daily
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Symbol</th>
+
+                            <th>Price</th>
+
+                            <th>52W Dist</th>
+
+                            <th>Rise</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="mwdTable">
+
+
+                        <!-- Python will populate data here -->
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                SOLARINDS
+                            </td>
+
+                            <td class="price">
+                                ₹22,400
+                            </td>
+
+                            <td class="negative">
+                                -0.27%
+                            </td>
+
+                            <td>
+
+                                <span class="percentage-green">
+                                    +9.28%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                HAL
+                            </td>
+
+                            <td class="price">
+                                ₹5,027.40
+                            </td>
+
+                            <td class="negative">
+                                -2.38%
+                            </td>
+
+                            <td>
+
+                                <span class="percentage-green">
+                                    +3.03%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                GRASIM
+                            </td>
+
+                            <td class="price">
+                                ₹3,318.20
+                            </td>
+
+                            <td class="negative">
+                                -2.72%
+                            </td>
+
+                            <td>
+
+                                <span class="percentage-green">
+                                    +8.04%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             2. SST SCREENER
+        ====================================== -->
+
+        <div class="screener-card">
+
+
+            <div class="card-header sst-header">
+
+                <div class="card-title">
+
+                    2. SST
+
+                </div>
+
+
+                <div class="card-subtitle">
+
+                    20-Day High Focus
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Stock</th>
+
+                            <th>Yesterday</th>
+
+                            <th>20D Away %</th>
+
+                            <th>Strike Rate</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="sstTable">
+
+
+                        <!-- Python will populate data here -->
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                SOLARINDS
+                            </td>
+
+                            <td class="price">
+                                ₹22,440.00
+                            </td>
+
+                            <td>
+                                0.04%
+                            </td>
+
+                            <td class="strike">
+                                100%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                BEL
+                            </td>
+
+                            <td class="price">
+                                ₹414.05
+                            </td>
+
+                            <td>
+                                0.55%
+                            </td>
+
+                            <td class="strike">
+                                50%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                DIVISLAB
+                            </td>
+
+                            <td class="price">
+                                ₹9,400.50
+                            </td>
+
+                            <td>
+                                0.70%
+                            </td>
+
+                            <td class="strike">
+                                60%
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             3. BLSH RSI SCREENER
+        ====================================== -->
+
+        <div class="screener-card">
+
+
+            <div class="card-header blsh-header">
+
+                <div class="card-title">
+
+                    3. BLSH RSI
+
+                </div>
+
+
+                <div class="card-subtitle">
+
+                    Trigger & Lows
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Stock</th>
+
+                            <th>CMP</th>
+
+                            <th>Trigger Away</th>
+
+                            <th>Strike Rate</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="blshTable">
+
+
+                        <!-- Python will populate data here -->
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                NTPC
+                            </td>
+
+                            <td class="price">
+                                338.60
+                            </td>
+
+                            <td class="negative">
+                                -3.31%
+                            </td>
+
+                            <td class="strike">
+                                100%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                RECLTD
+                            </td>
+
+                            <td class="price">
+                                315.65
+                            </td>
+
+                            <td class="negative">
+                                -4.52%
+                            </td>
+
+                            <td class="strike">
+                                100%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td class="stock-name">
+                                HDFCBANK
+                            </td>
+
+                            <td class="price">
+                                708.45
+                            </td>
+
+                            <td class="negative">
+                                -5.04%
+                            </td>
+
+                            <td class="strike">
+                                75%
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <div class="footer">
+
+        Nifty 100 Multi-Screener |
+        Data Source: Yahoo Finance |
+        For Educational & Research Purpose Only
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
