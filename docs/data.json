@@ -1,5 +1,5 @@
 {
-    "last_updated": "09-Sep-2026 04:04 PM IST",
+    "last_updated": "09-Sep-2026 04:22 PM IST",
     "latest_market_date": "09-Sep-2026",
     "total_stocks": 100,
     "mwd": {
@@ -1179,8 +1179,8 @@
                 "trigger_price": 251.4,
                 "trigger_away": -6.88,
                 "rsi_14": 34.54,
-                "target_yes": 4,
-                "target_no": 4,
+                "target_yes_1y": 2,
+                "target_no_1y": 2,
                 "strike_rate": 50.0
             },
             {
@@ -1191,9 +1191,9 @@
                 "trigger_price": 740.5,
                 "trigger_away": -7.21,
                 "rsi_14": 29.3,
-                "target_yes": 4,
-                "target_no": 1,
-                "strike_rate": 80.0
+                "target_yes_1y": 1,
+                "target_no_1y": 1,
+                "strike_rate": 50.0
             },
             {
                 "symbol": "HINDUNILVR",
@@ -1203,9 +1203,9 @@
                 "trigger_price": 2099.4,
                 "trigger_away": -7.35,
                 "rsi_14": 33.17,
-                "target_yes": 3,
-                "target_no": 1,
-                "strike_rate": 75.0
+                "target_yes_1y": 0,
+                "target_no_1y": 1,
+                "strike_rate": 0.0
             },
             {
                 "symbol": "CIPLA",
@@ -1215,9 +1215,9 @@
                 "trigger_price": 1488.1,
                 "trigger_away": -8.4,
                 "rsi_14": 31.25,
-                "target_yes": 4,
-                "target_no": 3,
-                "strike_rate": 57.14
+                "target_yes_1y": 2,
+                "target_no_1y": 1,
+                "strike_rate": 66.67
             },
             {
                 "symbol": "HDFCLIFE",
@@ -1227,9 +1227,9 @@
                 "trigger_price": 563.5,
                 "trigger_away": -8.78,
                 "rsi_14": 33.22,
-                "target_yes": 2,
-                "target_no": 0,
-                "strike_rate": 100.0
+                "target_yes_1y": 0,
+                "target_no_1y": 0,
+                "strike_rate": 0
             },
             {
                 "symbol": "DMART",
@@ -1239,8 +1239,8 @@
                 "trigger_price": 4098.9,
                 "trigger_away": -8.88,
                 "rsi_14": 35.15,
-                "target_yes": 6,
-                "target_no": 0,
+                "target_yes_1y": 2,
+                "target_no_1y": 0,
                 "strike_rate": 100.0
             },
             {
@@ -1251,9 +1251,9 @@
                 "trigger_price": 1109.8,
                 "trigger_away": -9.8,
                 "rsi_14": 31.66,
-                "target_yes": 6,
-                "target_no": 1,
-                "strike_rate": 85.71
+                "target_yes_1y": 2,
+                "target_no_1y": 1,
+                "strike_rate": 66.67
             },
             {
                 "symbol": "UNITDSPR",
@@ -1263,8 +1263,8 @@
                 "trigger_price": 1563.4,
                 "trigger_away": -10.12,
                 "rsi_14": 30.7,
-                "target_yes": 6,
-                "target_no": 0,
+                "target_yes_1y": 2,
+                "target_no_1y": 0,
                 "strike_rate": 100.0
             },
             {
@@ -1275,9 +1275,9 @@
                 "trigger_price": 90.58,
                 "trigger_away": -10.15,
                 "rsi_14": 26.56,
-                "target_yes": 2,
-                "target_no": 1,
-                "strike_rate": 66.67
+                "target_yes_1y": 1,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "NESTLEIND",
@@ -1287,9 +1287,9 @@
                 "trigger_price": 1553.0,
                 "trigger_away": -10.3,
                 "rsi_14": 34.7,
-                "target_yes": 7,
-                "target_no": 2,
-                "strike_rate": 77.78
+                "target_yes_1y": 4,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "TECHM",
@@ -1299,9 +1299,9 @@
                 "trigger_price": 1681.5,
                 "trigger_away": -10.32,
                 "rsi_14": 33.04,
-                "target_yes": 6,
-                "target_no": 1,
-                "strike_rate": 85.71
+                "target_yes_1y": 3,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "BRITANNIA",
@@ -1311,9 +1311,9 @@
                 "trigger_price": 5689.5,
                 "trigger_away": -10.54,
                 "rsi_14": 34.07,
-                "target_yes": 4,
-                "target_no": 2,
-                "strike_rate": 66.67
+                "target_yes_1y": 0,
+                "target_no_1y": 2,
+                "strike_rate": 0.0
             },
             {
                 "symbol": "ULTRACEMCO",
@@ -1323,9 +1323,9 @@
                 "trigger_price": 12204.0,
                 "trigger_away": -10.69,
                 "rsi_14": 29.29,
-                "target_yes": 5,
-                "target_no": 2,
-                "strike_rate": 71.43
+                "target_yes_1y": 1,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "SBILIFE",
@@ -1335,9 +1335,9 @@
                 "trigger_price": 1886.0,
                 "trigger_away": -10.71,
                 "rsi_14": 32.49,
-                "target_yes": 4,
-                "target_no": 2,
-                "strike_rate": 66.67
+                "target_yes_1y": 1,
+                "target_no_1y": 2,
+                "strike_rate": 33.33
             },
             {
                 "symbol": "ASIANPAINT",
@@ -1347,9 +1347,9 @@
                 "trigger_price": 2788.0,
                 "trigger_away": -10.72,
                 "rsi_14": 29.14,
-                "target_yes": 4,
-                "target_no": 4,
-                "strike_rate": 50.0
+                "target_yes_1y": 2,
+                "target_no_1y": 1,
+                "strike_rate": 66.67
             },
             {
                 "symbol": "HCLTECH",
@@ -1359,8 +1359,8 @@
                 "trigger_price": 1379.8,
                 "trigger_away": -10.87,
                 "rsi_14": 35.97,
-                "target_yes": 5,
-                "target_no": 0,
+                "target_yes_1y": 3,
+                "target_no_1y": 0,
                 "strike_rate": 100.0
             },
             {
@@ -1371,9 +1371,9 @@
                 "trigger_price": 3534.6,
                 "trigger_away": -10.88,
                 "rsi_14": 33.13,
-                "target_yes": 5,
-                "target_no": 3,
-                "strike_rate": 62.5
+                "target_yes_1y": 1,
+                "target_no_1y": 1,
+                "strike_rate": 50.0
             },
             {
                 "symbol": "MARUTI",
@@ -1383,8 +1383,8 @@
                 "trigger_price": 14181.0,
                 "trigger_away": -11.02,
                 "rsi_14": 26.96,
-                "target_yes": 7,
-                "target_no": 0,
+                "target_yes_1y": 2,
+                "target_no_1y": 0,
                 "strike_rate": 100.0
             },
             {
@@ -1395,9 +1395,9 @@
                 "trigger_price": 1124.5,
                 "trigger_away": -11.03,
                 "rsi_14": 34.89,
-                "target_yes": 5,
-                "target_no": 1,
-                "strike_rate": 83.33
+                "target_yes_1y": 2,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "AMBUJACEM",
@@ -1407,9 +1407,9 @@
                 "trigger_price": 447.5,
                 "trigger_away": -11.28,
                 "rsi_14": 34.68,
-                "target_yes": 4,
-                "target_no": 0,
-                "strike_rate": 100.0
+                "target_yes_1y": 0,
+                "target_no_1y": 0,
+                "strike_rate": 0
             },
             {
                 "symbol": "WIPRO",
@@ -1419,9 +1419,9 @@
                 "trigger_price": 188.37,
                 "trigger_away": -11.34,
                 "rsi_14": 30.71,
-                "target_yes": 3,
-                "target_no": 1,
-                "strike_rate": 75.0
+                "target_yes_1y": 1,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "INFY",
@@ -1431,9 +1431,9 @@
                 "trigger_price": 1195.0,
                 "trigger_away": -13.39,
                 "rsi_14": 31.81,
-                "target_yes": 2,
-                "target_no": 1,
-                "strike_rate": 66.67
+                "target_yes_1y": 1,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "TMPV",
@@ -1443,8 +1443,8 @@
                 "trigger_price": 351.55,
                 "trigger_away": -13.81,
                 "rsi_14": 29.46,
-                "target_yes": 3,
-                "target_no": 3,
+                "target_yes_1y": 2,
+                "target_no_1y": 2,
                 "strike_rate": 50.0
             },
             {
@@ -1455,9 +1455,9 @@
                 "trigger_price": 268.2,
                 "trigger_away": -13.87,
                 "rsi_14": 35.05,
-                "target_yes": 2,
-                "target_no": 1,
-                "strike_rate": 66.67
+                "target_yes_1y": 1,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "RECLTD",
@@ -1467,9 +1467,9 @@
                 "trigger_price": 368.7,
                 "trigger_away": -14.7,
                 "rsi_14": 34.09,
-                "target_yes": 4,
-                "target_no": 1,
-                "strike_rate": 80.0
+                "target_yes_1y": 2,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "SHREECEM",
@@ -1479,9 +1479,9 @@
                 "trigger_price": 26920.0,
                 "trigger_away": -14.75,
                 "rsi_14": 31.38,
-                "target_yes": 5,
-                "target_no": 4,
-                "strike_rate": 55.56
+                "target_yes_1y": 2,
+                "target_no_1y": 0,
+                "strike_rate": 100.0
             },
             {
                 "symbol": "PFC",
@@ -1491,9 +1491,9 @@
                 "trigger_price": 421.15,
                 "trigger_away": -16.56,
                 "rsi_14": 35.89,
-                "target_yes": 5,
-                "target_no": 3,
-                "strike_rate": 62.5
+                "target_yes_1y": 2,
+                "target_no_1y": 1,
+                "strike_rate": 66.67
             },
             {
                 "symbol": "GODREJCP",
@@ -1503,9 +1503,9 @@
                 "trigger_price": 1087.2,
                 "trigger_away": -20.55,
                 "rsi_14": 23.44,
-                "target_yes": 2,
-                "target_no": 3,
-                "strike_rate": 40.0
+                "target_yes_1y": 0,
+                "target_no_1y": 2,
+                "strike_rate": 0.0
             }
         ]
     }
