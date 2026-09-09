@@ -1,0 +1,20 @@
+{
+    "last_updated": "Not updated yet",
+    "latest_market_date": "-",
+    "total_stocks": 100,
+
+    "mwd": {
+        "count": 0,
+        "data": []
+    },
+
+    "sst": {
+        "count": 0,
+        "data": []
+    },
+
+    "blsh": {
+        "count": 0,
+        "data": []
+    }
+}
