@@ -1,20 +1,1512 @@
 {
-    "last_updated": "Not updated yet",
-    "latest_market_date": "-",
+    "last_updated": "09-Sep-2026 04:04 PM IST",
+    "latest_market_date": "09-Sep-2026",
     "total_stocks": 100,
-
     "mwd": {
-        "count": 0,
-        "data": []
+        "count": 16,
+        "data": [
+            {
+                "symbol": "APOLLOHOSP",
+                "company": "Apollo Hospitals Enterprise",
+                "price": 8967.0,
+                "high_52_week": 9050.0,
+                "distance_52w": -0.92,
+                "monthly_rise": 1.27,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "ADANIENT",
+                "company": "Adani Enterprises",
+                "price": 3104.7,
+                "high_52_week": 3245.0,
+                "distance_52w": -4.32,
+                "monthly_rise": 6.69,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "CGPOWER",
+                "company": "CG Power and Industrial Solutions",
+                "price": 926.95,
+                "high_52_week": 980.9,
+                "distance_52w": -5.5,
+                "monthly_rise": 2.77,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "ADANIPORTS",
+                "company": "Adani Ports and Special Economic Zone",
+                "price": 1775.0,
+                "high_52_week": 1891.1,
+                "distance_52w": -6.14,
+                "monthly_rise": 9.23,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "GAIL",
+                "company": "GAIL (India)",
+                "price": 174.9,
+                "high_52_week": 186.87,
+                "distance_52w": -6.41,
+                "monthly_rise": 0.86,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "COALINDIA",
+                "company": "Coal India",
+                "price": 431.0,
+                "high_52_week": 491.25,
+                "distance_52w": -12.26,
+                "monthly_rise": 7.28,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "HINDALCO",
+                "company": "Hindalco Industries",
+                "price": 1026.9,
+                "high_52_week": 1176.0,
+                "distance_52w": -12.68,
+                "monthly_rise": 0.38,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "MAXHEALTH",
+                "company": "Max Healthcare Institute",
+                "price": 1037.5,
+                "high_52_week": 1221.9,
+                "distance_52w": -15.09,
+                "monthly_rise": 1.52,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "CUMMINSIND",
+                "company": "Cummins India",
+                "price": 5170.5,
+                "high_52_week": 6100.0,
+                "distance_52w": -15.24,
+                "monthly_rise": 1.51,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "ADANIPOWER",
+                "company": "Adani Power",
+                "price": 214.9,
+                "high_52_week": 254.2,
+                "distance_52w": -15.46,
+                "monthly_rise": 6.39,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "HINDZINC",
+                "company": "Hindustan Zinc",
+                "price": 605.4,
+                "high_52_week": 733.0,
+                "distance_52w": -17.41,
+                "monthly_rise": 0.21,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "POWERGRID",
+                "company": "Power Grid Corporation of India",
+                "price": 265.85,
+                "high_52_week": 324.95,
+                "distance_52w": -18.19,
+                "monthly_rise": 0.97,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "NTPC",
+                "company": "NTPC",
+                "price": 334.5,
+                "high_52_week": 414.4,
+                "distance_52w": -19.28,
+                "monthly_rise": 2.17,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "ADANIGREEN",
+                "company": "Adani Green Energy",
+                "price": 1315.0,
+                "high_52_week": 1631.5,
+                "distance_52w": -19.4,
+                "monthly_rise": 7.79,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "TATAPOWER",
+                "company": "Tata Power",
+                "price": 370.0,
+                "high_52_week": 464.9,
+                "distance_52w": -20.41,
+                "monthly_rise": 6.46,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            },
+            {
+                "symbol": "VBL",
+                "company": "Varun Beverages",
+                "price": 407.0,
+                "high_52_week": 555.8,
+                "distance_52w": -26.77,
+                "monthly_rise": 0.63,
+                "daily": "BULLISH",
+                "weekly": "BULLISH",
+                "monthly": "BULLISH"
+            }
+        ]
     },
-
     "sst": {
-        "count": 0,
-        "data": []
+        "count": 98,
+        "data": [
+            {
+                "symbol": "APOLLOHOSP",
+                "company": "Apollo Hospitals Enterprise",
+                "price": 8967.0,
+                "high_20_day": 8984.0,
+                "distance_20d": 0.19,
+                "target_yes": 5,
+                "target_no": 5,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "CGPOWER",
+                "company": "CG Power and Industrial Solutions",
+                "price": 926.95,
+                "high_20_day": 930.55,
+                "distance_20d": 0.39,
+                "target_yes": 6,
+                "target_no": 1,
+                "strike_rate": 85.71
+            },
+            {
+                "symbol": "MAXHEALTH",
+                "company": "Max Healthcare Institute",
+                "price": 1037.5,
+                "high_20_day": 1042.1,
+                "distance_20d": 0.44,
+                "target_yes": 5,
+                "target_no": 4,
+                "strike_rate": 55.56
+            },
+            {
+                "symbol": "ADANIPORTS",
+                "company": "Adani Ports and Special Economic Zone",
+                "price": 1775.0,
+                "high_20_day": 1785.9,
+                "distance_20d": 0.61,
+                "target_yes": 4,
+                "target_no": 5,
+                "strike_rate": 44.44
+            },
+            {
+                "symbol": "TATASTEEL",
+                "company": "Tata Steel",
+                "price": 188.75,
+                "high_20_day": 190.26,
+                "distance_20d": 0.79,
+                "target_yes": 4,
+                "target_no": 6,
+                "strike_rate": 40.0
+            },
+            {
+                "symbol": "COALINDIA",
+                "company": "Coal India",
+                "price": 431.0,
+                "high_20_day": 435.35,
+                "distance_20d": 1.0,
+                "target_yes": 2,
+                "target_no": 6,
+                "strike_rate": 25.0
+            },
+            {
+                "symbol": "ADANIPOWER",
+                "company": "Adani Power",
+                "price": 214.9,
+                "high_20_day": 217.4,
+                "distance_20d": 1.15,
+                "target_yes": 6,
+                "target_no": 4,
+                "strike_rate": 60.0
+            },
+            {
+                "symbol": "SOLARINDS",
+                "company": "Solar Industries India",
+                "price": 22355.0,
+                "high_20_day": 22625.0,
+                "distance_20d": 1.19,
+                "target_yes": 7,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "DIVISLAB",
+                "company": "Divi's Laboratories",
+                "price": 9488.0,
+                "high_20_day": 9615.0,
+                "distance_20d": 1.32,
+                "target_yes": 7,
+                "target_no": 4,
+                "strike_rate": 63.64
+            },
+            {
+                "symbol": "GAIL",
+                "company": "GAIL (India)",
+                "price": 174.9,
+                "high_20_day": 177.5,
+                "distance_20d": 1.46,
+                "target_yes": 4,
+                "target_no": 3,
+                "strike_rate": 57.14
+            },
+            {
+                "symbol": "BOSCHLTD",
+                "company": "Bosch",
+                "price": 49100.0,
+                "high_20_day": 50000.0,
+                "distance_20d": 1.8,
+                "target_yes": 7,
+                "target_no": 2,
+                "strike_rate": 77.78
+            },
+            {
+                "symbol": "INDHOTEL",
+                "company": "Indian Hotels Co.",
+                "price": 722.75,
+                "high_20_day": 737.9,
+                "distance_20d": 2.05,
+                "target_yes": 5,
+                "target_no": 4,
+                "strike_rate": 55.56
+            },
+            {
+                "symbol": "ADANIENT",
+                "company": "Adani Enterprises",
+                "price": 3104.7,
+                "high_20_day": 3173.7,
+                "distance_20d": 2.17,
+                "target_yes": 4,
+                "target_no": 5,
+                "strike_rate": 44.44
+            },
+            {
+                "symbol": "BEL",
+                "company": "Bharat Electronics",
+                "price": 406.0,
+                "high_20_day": 416.35,
+                "distance_20d": 2.49,
+                "target_yes": 8,
+                "target_no": 2,
+                "strike_rate": 80.0
+            },
+            {
+                "symbol": "TORNTPHARM",
+                "company": "Torrent Pharmaceuticals",
+                "price": 4930.0,
+                "high_20_day": 5066.0,
+                "distance_20d": 2.68,
+                "target_yes": 5,
+                "target_no": 1,
+                "strike_rate": 83.33
+            },
+            {
+                "symbol": "GRASIM",
+                "company": "Grasim Industries",
+                "price": 3300.0,
+                "high_20_day": 3393.9,
+                "distance_20d": 2.77,
+                "target_yes": 5,
+                "target_no": 5,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "ADANIGREEN",
+                "company": "Adani Green Energy",
+                "price": 1315.0,
+                "high_20_day": 1352.7,
+                "distance_20d": 2.79,
+                "target_yes": 5,
+                "target_no": 4,
+                "strike_rate": 55.56
+            },
+            {
+                "symbol": "NTPC",
+                "company": "NTPC",
+                "price": 334.5,
+                "high_20_day": 344.45,
+                "distance_20d": 2.89,
+                "target_yes": 6,
+                "target_no": 3,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "HAL",
+                "company": "Hindustan Aeronautics",
+                "price": 5000.5,
+                "high_20_day": 5149.9,
+                "distance_20d": 2.9,
+                "target_yes": 6,
+                "target_no": 2,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "JSWSTEEL",
+                "company": "JSW Steel",
+                "price": 1310.0,
+                "high_20_day": 1351.0,
+                "distance_20d": 3.03,
+                "target_yes": 6,
+                "target_no": 3,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "PNB",
+                "company": "Punjab National Bank",
+                "price": 115.61,
+                "high_20_day": 119.35,
+                "distance_20d": 3.13,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "ONGC",
+                "company": "Oil & Natural Gas Corporation",
+                "price": 234.02,
+                "high_20_day": 242.19,
+                "distance_20d": 3.37,
+                "target_yes": 4,
+                "target_no": 4,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "TITAN",
+                "company": "Titan Company",
+                "price": 5005.0,
+                "high_20_day": 5186.7,
+                "distance_20d": 3.5,
+                "target_yes": 5,
+                "target_no": 8,
+                "strike_rate": 38.46
+            },
+            {
+                "symbol": "KOTAKBANK",
+                "company": "Kotak Mahindra Bank",
+                "price": 414.0,
+                "high_20_day": 429.1,
+                "distance_20d": 3.52,
+                "target_yes": 3,
+                "target_no": 3,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "POWERGRID",
+                "company": "Power Grid Corporation of India",
+                "price": 265.85,
+                "high_20_day": 275.95,
+                "distance_20d": 3.66,
+                "target_yes": 2,
+                "target_no": 7,
+                "strike_rate": 22.22
+            },
+            {
+                "symbol": "ETERNAL",
+                "company": "Eternal",
+                "price": 320.6,
+                "high_20_day": 332.95,
+                "distance_20d": 3.71,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "RELIANCE",
+                "company": "Reliance Industries",
+                "price": 1279.0,
+                "high_20_day": 1333.0,
+                "distance_20d": 4.05,
+                "target_yes": 4,
+                "target_no": 3,
+                "strike_rate": 57.14
+            },
+            {
+                "symbol": "JINDALSTEL",
+                "company": "Jindal Steel",
+                "price": 1146.5,
+                "high_20_day": 1196.4,
+                "distance_20d": 4.17,
+                "target_yes": 4,
+                "target_no": 6,
+                "strike_rate": 40.0
+            },
+            {
+                "symbol": "IOC",
+                "company": "Indian Oil Corporation",
+                "price": 135.6,
+                "high_20_day": 141.55,
+                "distance_20d": 4.2,
+                "target_yes": 4,
+                "target_no": 2,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "HINDZINC",
+                "company": "Hindustan Zinc",
+                "price": 605.4,
+                "high_20_day": 632.0,
+                "distance_20d": 4.21,
+                "target_yes": 6,
+                "target_no": 2,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "HYUNDAI",
+                "company": "Hyundai Motor India",
+                "price": 2182.4,
+                "high_20_day": 2281.0,
+                "distance_20d": 4.32,
+                "target_yes": 3,
+                "target_no": 1,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "UNIONBANK",
+                "company": "Union Bank of India",
+                "price": 183.89,
+                "high_20_day": 192.33,
+                "distance_20d": 4.39,
+                "target_yes": 6,
+                "target_no": 2,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "ICICIBANK",
+                "company": "ICICI Bank",
+                "price": 1389.1,
+                "high_20_day": 1454.0,
+                "distance_20d": 4.46,
+                "target_yes": 6,
+                "target_no": 7,
+                "strike_rate": 46.15
+            },
+            {
+                "symbol": "AXISBANK",
+                "company": "Axis Bank",
+                "price": 1238.5,
+                "high_20_day": 1300.0,
+                "distance_20d": 4.73,
+                "target_yes": 6,
+                "target_no": 2,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "SIEMENS",
+                "company": "Siemens",
+                "price": 3949.1,
+                "high_20_day": 4149.4,
+                "distance_20d": 4.83,
+                "target_yes": 8,
+                "target_no": 3,
+                "strike_rate": 72.73
+            },
+            {
+                "symbol": "BAJAJHLDNG",
+                "company": "Bajaj Holdings & Investment",
+                "price": 11078.0,
+                "high_20_day": 11644.0,
+                "distance_20d": 4.86,
+                "target_yes": 5,
+                "target_no": 5,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "LT",
+                "company": "Larsen & Toubro",
+                "price": 3922.6,
+                "high_20_day": 4125.3,
+                "distance_20d": 4.91,
+                "target_yes": 3,
+                "target_no": 8,
+                "strike_rate": 27.27
+            },
+            {
+                "symbol": "CHOLAFIN",
+                "company": "Cholamandalam Investment and Finance Company",
+                "price": 1829.0,
+                "high_20_day": 1927.9,
+                "distance_20d": 5.13,
+                "target_yes": 8,
+                "target_no": 4,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "DLF",
+                "company": "DLF",
+                "price": 655.1,
+                "high_20_day": 691.05,
+                "distance_20d": 5.2,
+                "target_yes": 4,
+                "target_no": 3,
+                "strike_rate": 57.14
+            },
+            {
+                "symbol": "DRREDDY",
+                "company": "Dr. Reddy's Laboratories",
+                "price": 1145.0,
+                "high_20_day": 1208.1,
+                "distance_20d": 5.22,
+                "target_yes": 3,
+                "target_no": 6,
+                "strike_rate": 33.33
+            },
+            {
+                "symbol": "TATAPOWER",
+                "company": "Tata Power",
+                "price": 370.0,
+                "high_20_day": 390.4,
+                "distance_20d": 5.23,
+                "target_yes": 4,
+                "target_no": 3,
+                "strike_rate": 57.14
+            },
+            {
+                "symbol": "EICHERMOT",
+                "company": "Eicher Motors",
+                "price": 7734.5,
+                "high_20_day": 8165.0,
+                "distance_20d": 5.27,
+                "target_yes": 6,
+                "target_no": 6,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "ABB",
+                "company": "ABB India",
+                "price": 7401.5,
+                "high_20_day": 7825.0,
+                "distance_20d": 5.41,
+                "target_yes": 6,
+                "target_no": 1,
+                "strike_rate": 85.71
+            },
+            {
+                "symbol": "BAJAJ-AUTO",
+                "company": "Bajaj Auto",
+                "price": 11790.0,
+                "high_20_day": 12470.0,
+                "distance_20d": 5.45,
+                "target_yes": 7,
+                "target_no": 2,
+                "strike_rate": 77.78
+            },
+            {
+                "symbol": "BAJAJFINSV",
+                "company": "Bajaj Finserv",
+                "price": 1927.0,
+                "high_20_day": 2038.0,
+                "distance_20d": 5.45,
+                "target_yes": 4,
+                "target_no": 6,
+                "strike_rate": 40.0
+            },
+            {
+                "symbol": "MOTHERSON",
+                "company": "Samvardhana Motherson International",
+                "price": 163.7,
+                "high_20_day": 173.27,
+                "distance_20d": 5.52,
+                "target_yes": 9,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "HINDALCO",
+                "company": "Hindalco Industries",
+                "price": 1026.9,
+                "high_20_day": 1087.95,
+                "distance_20d": 5.61,
+                "target_yes": 7,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "CUMMINSIND",
+                "company": "Cummins India",
+                "price": 5170.5,
+                "high_20_day": 5484.0,
+                "distance_20d": 5.72,
+                "target_yes": 6,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "SUNPHARMA",
+                "company": "Sun Pharmaceutical Industries",
+                "price": 1864.9,
+                "high_20_day": 1984.8,
+                "distance_20d": 6.04,
+                "target_yes": 4,
+                "target_no": 4,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "BAJFINANCE",
+                "company": "Bajaj Finance",
+                "price": 1039.3,
+                "high_20_day": 1107.0,
+                "distance_20d": 6.12,
+                "target_yes": 5,
+                "target_no": 2,
+                "strike_rate": 71.43
+            },
+            {
+                "symbol": "ZYDUSLIFE",
+                "company": "Zydus Lifesciences",
+                "price": 1127.4,
+                "high_20_day": 1202.9,
+                "distance_20d": 6.28,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "ITC",
+                "company": "ITC",
+                "price": 260.8,
+                "high_20_day": 278.5,
+                "distance_20d": 6.36,
+                "target_yes": 3,
+                "target_no": 4,
+                "strike_rate": 42.86
+            },
+            {
+                "symbol": "VEDL",
+                "company": "Vedanta",
+                "price": 272.5,
+                "high_20_day": 291.0,
+                "distance_20d": 6.36,
+                "target_yes": 5,
+                "target_no": 2,
+                "strike_rate": 71.43
+            },
+            {
+                "symbol": "CANBK",
+                "company": "Canara Bank",
+                "price": 124.08,
+                "high_20_day": 132.6,
+                "distance_20d": 6.43,
+                "target_yes": 3,
+                "target_no": 5,
+                "strike_rate": 37.5
+            },
+            {
+                "symbol": "AMBUJACEM",
+                "company": "Ambuja Cements",
+                "price": 397.0,
+                "high_20_day": 424.5,
+                "distance_20d": 6.48,
+                "target_yes": 3,
+                "target_no": 5,
+                "strike_rate": 37.5
+            },
+            {
+                "symbol": "TRENT",
+                "company": "Trent",
+                "price": 2820.0,
+                "high_20_day": 3020.6,
+                "distance_20d": 6.64,
+                "target_yes": 7,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "BANKBARODA",
+                "company": "Bank of Baroda",
+                "price": 234.1,
+                "high_20_day": 250.99,
+                "distance_20d": 6.73,
+                "target_yes": 3,
+                "target_no": 6,
+                "strike_rate": 33.33
+            },
+            {
+                "symbol": "BPCL",
+                "company": "Bharat Petroleum Corporation",
+                "price": 303.55,
+                "high_20_day": 326.35,
+                "distance_20d": 6.99,
+                "target_yes": 5,
+                "target_no": 5,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "HINDUNILVR",
+                "company": "Hindustan Unilever",
+                "price": 1945.0,
+                "high_20_day": 2092.0,
+                "distance_20d": 7.03,
+                "target_yes": 3,
+                "target_no": 3,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "HDFCBANK",
+                "company": "HDFC Bank",
+                "price": 687.1,
+                "high_20_day": 739.75,
+                "distance_20d": 7.12,
+                "target_yes": 4,
+                "target_no": 2,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "INDIGO",
+                "company": "InterGlobe Aviation",
+                "price": 4975.0,
+                "high_20_day": 5370.0,
+                "distance_20d": 7.36,
+                "target_yes": 4,
+                "target_no": 6,
+                "strike_rate": 40.0
+            },
+            {
+                "symbol": "TVSMOTOR",
+                "company": "TVS Motor Company",
+                "price": 4151.1,
+                "high_20_day": 4484.5,
+                "distance_20d": 7.43,
+                "target_yes": 5,
+                "target_no": 5,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "PFC",
+                "company": "Power Finance Corporation",
+                "price": 351.4,
+                "high_20_day": 379.8,
+                "distance_20d": 7.48,
+                "target_yes": 4,
+                "target_no": 6,
+                "strike_rate": 40.0
+            },
+            {
+                "symbol": "CIPLA",
+                "company": "Cipla",
+                "price": 1363.1,
+                "high_20_day": 1474.3,
+                "distance_20d": 7.54,
+                "target_yes": 3,
+                "target_no": 8,
+                "strike_rate": 27.27
+            },
+            {
+                "symbol": "PIDILITIND",
+                "company": "Pidilite Industries",
+                "price": 1572.0,
+                "high_20_day": 1707.5,
+                "distance_20d": 7.94,
+                "target_yes": 3,
+                "target_no": 11,
+                "strike_rate": 21.43
+            },
+            {
+                "symbol": "SBIN",
+                "company": "State Bank of India",
+                "price": 1000.5,
+                "high_20_day": 1086.8,
+                "distance_20d": 7.94,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "TCS",
+                "company": "Tata Consultancy Services",
+                "price": 2208.0,
+                "high_20_day": 2399.3,
+                "distance_20d": 7.97,
+                "target_yes": 2,
+                "target_no": 5,
+                "strike_rate": 28.57
+            },
+            {
+                "symbol": "LTM",
+                "company": "LTM",
+                "price": 4412.0,
+                "high_20_day": 4801.2,
+                "distance_20d": 8.11,
+                "target_yes": 6,
+                "target_no": 4,
+                "strike_rate": 60.0
+            },
+            {
+                "symbol": "IRFC",
+                "company": "Indian Railway Finance Corporation",
+                "price": 81.39,
+                "high_20_day": 88.6,
+                "distance_20d": 8.14,
+                "target_yes": 4,
+                "target_no": 2,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "SBILIFE",
+                "company": "SBI Life Insurance Company",
+                "price": 1684.0,
+                "high_20_day": 1833.6,
+                "distance_20d": 8.16,
+                "target_yes": 3,
+                "target_no": 7,
+                "strike_rate": 30.0
+            },
+            {
+                "symbol": "NESTLEIND",
+                "company": "Nestle India",
+                "price": 1393.0,
+                "high_20_day": 1520.9,
+                "distance_20d": 8.41,
+                "target_yes": 2,
+                "target_no": 9,
+                "strike_rate": 18.18
+            },
+            {
+                "symbol": "ULTRACEMCO",
+                "company": "UltraTech Cement",
+                "price": 10900.0,
+                "high_20_day": 11905.0,
+                "distance_20d": 8.44,
+                "target_yes": 4,
+                "target_no": 5,
+                "strike_rate": 44.44
+            },
+            {
+                "symbol": "TATACONSUM",
+                "company": "Tata Consumer Products",
+                "price": 1001.0,
+                "high_20_day": 1095.0,
+                "distance_20d": 8.58,
+                "target_yes": 6,
+                "target_no": 1,
+                "strike_rate": 85.71
+            },
+            {
+                "symbol": "TECHM",
+                "company": "Tech Mahindra",
+                "price": 1508.0,
+                "high_20_day": 1652.8,
+                "distance_20d": 8.76,
+                "target_yes": 7,
+                "target_no": 2,
+                "strike_rate": 77.78
+            },
+            {
+                "symbol": "HDFCLIFE",
+                "company": "HDFC Life Insurance Company",
+                "price": 514.0,
+                "high_20_day": 563.5,
+                "distance_20d": 8.78,
+                "target_yes": 3,
+                "target_no": 2,
+                "strike_rate": 60.0
+            },
+            {
+                "symbol": "M&M",
+                "company": "Mahindra & Mahindra",
+                "price": 3150.0,
+                "high_20_day": 3456.4,
+                "distance_20d": 8.86,
+                "target_yes": 6,
+                "target_no": 3,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "DMART",
+                "company": "Avenue Supermarts",
+                "price": 3735.0,
+                "high_20_day": 4098.9,
+                "distance_20d": 8.88,
+                "target_yes": 5,
+                "target_no": 4,
+                "strike_rate": 55.56
+            },
+            {
+                "symbol": "GODREJCP",
+                "company": "Godrej Consumer Products",
+                "price": 863.8,
+                "high_20_day": 948.0,
+                "distance_20d": 8.88,
+                "target_yes": 3,
+                "target_no": 3,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "VBL",
+                "company": "Varun Beverages",
+                "price": 407.0,
+                "high_20_day": 447.9,
+                "distance_20d": 9.13,
+                "target_yes": 4,
+                "target_no": 6,
+                "strike_rate": 40.0
+            },
+            {
+                "symbol": "MAZDOCK",
+                "company": "Mazagoan Dock Shipbuilders",
+                "price": 2408.8,
+                "high_20_day": 2656.8,
+                "distance_20d": 9.33,
+                "target_yes": 9,
+                "target_no": 3,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "RECLTD",
+                "company": "REC",
+                "price": 314.5,
+                "high_20_day": 347.2,
+                "distance_20d": 9.42,
+                "target_yes": 5,
+                "target_no": 2,
+                "strike_rate": 71.43
+            },
+            {
+                "symbol": "MARUTI",
+                "company": "Maruti Suzuki India",
+                "price": 12618.0,
+                "high_20_day": 13943.0,
+                "distance_20d": 9.5,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "BHARTIARTL",
+                "company": "Bharti Airtel",
+                "price": 1814.7,
+                "high_20_day": 2005.8,
+                "distance_20d": 9.53,
+                "target_yes": 7,
+                "target_no": 4,
+                "strike_rate": 63.64
+            },
+            {
+                "symbol": "HDFCAMC",
+                "company": "HDFC Asset Management Company",
+                "price": 2440.0,
+                "high_20_day": 2698.0,
+                "distance_20d": 9.56,
+                "target_yes": 3,
+                "target_no": 7,
+                "strike_rate": 30.0
+            },
+            {
+                "symbol": "ASIANPAINT",
+                "company": "Asian Paints",
+                "price": 2489.0,
+                "high_20_day": 2755.5,
+                "distance_20d": 9.67,
+                "target_yes": 4,
+                "target_no": 7,
+                "strike_rate": 36.36
+            },
+            {
+                "symbol": "UNITDSPR",
+                "company": "United Spirits",
+                "price": 1405.2,
+                "high_20_day": 1563.4,
+                "distance_20d": 10.12,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "WIPRO",
+                "company": "Wipro",
+                "price": 167.0,
+                "high_20_day": 185.84,
+                "distance_20d": 10.14,
+                "target_yes": 4,
+                "target_no": 3,
+                "strike_rate": 57.14
+            },
+            {
+                "symbol": "SHREECEM",
+                "company": "Shree Cement",
+                "price": 22950.0,
+                "high_20_day": 25575.0,
+                "distance_20d": 10.26,
+                "target_yes": 5,
+                "target_no": 7,
+                "strike_rate": 41.67
+            },
+            {
+                "symbol": "SHRIRAMFIN",
+                "company": "Shriram Finance",
+                "price": 1029.0,
+                "high_20_day": 1149.0,
+                "distance_20d": 10.44,
+                "target_yes": 8,
+                "target_no": 2,
+                "strike_rate": 80.0
+            },
+            {
+                "symbol": "BRITANNIA",
+                "company": "Britannia Industries",
+                "price": 5090.0,
+                "high_20_day": 5689.5,
+                "distance_20d": 10.54,
+                "target_yes": 6,
+                "target_no": 2,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "HCLTECH",
+                "company": "HCL Technologies",
+                "price": 1229.8,
+                "high_20_day": 1374.9,
+                "distance_20d": 10.55,
+                "target_yes": 4,
+                "target_no": 2,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "LODHA",
+                "company": "Lodha Developers",
+                "price": 1166.0,
+                "high_20_day": 1306.9,
+                "distance_20d": 10.78,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "INFY",
+                "company": "Infosys",
+                "price": 1035.0,
+                "high_20_day": 1175.0,
+                "distance_20d": 11.91,
+                "target_yes": 3,
+                "target_no": 1,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "JIOFIN",
+                "company": "Jio Financial Services",
+                "price": 231.0,
+                "high_20_day": 263.4,
+                "distance_20d": 12.3,
+                "target_yes": 3,
+                "target_no": 4,
+                "strike_rate": 42.86
+            },
+            {
+                "symbol": "ENRIN",
+                "company": "Siemens Energy India",
+                "price": 3183.7,
+                "high_20_day": 3639.0,
+                "distance_20d": 12.51,
+                "target_yes": 3,
+                "target_no": 1,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "ADANIENSOL",
+                "company": "Adani Energy Solutions",
+                "price": 1423.3,
+                "high_20_day": 1638.3,
+                "distance_20d": 13.12,
+                "target_yes": 6,
+                "target_no": 2,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "MUTHOOTFIN",
+                "company": "Muthoot Finance",
+                "price": 2815.0,
+                "high_20_day": 3246.5,
+                "distance_20d": 13.29,
+                "target_yes": 7,
+                "target_no": 3,
+                "strike_rate": 70.0
+            },
+            {
+                "symbol": "TMPV",
+                "company": "Tata Motors Passenger Vehicles",
+                "price": 303.0,
+                "high_20_day": 351.55,
+                "distance_20d": 13.81,
+                "target_yes": 2,
+                "target_no": 5,
+                "strike_rate": 28.57
+            }
+        ]
     },
-
     "blsh": {
-        "count": 0,
-        "data": []
+        "count": 28,
+        "data": [
+            {
+                "symbol": "BANKBARODA",
+                "company": "Bank of Baroda",
+                "cmp": 234.1,
+                "low_25_day": 234.05,
+                "trigger_price": 251.4,
+                "trigger_away": -6.88,
+                "rsi_14": 34.54,
+                "target_yes": 4,
+                "target_no": 4,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "HDFCBANK",
+                "company": "HDFC Bank",
+                "cmp": 687.1,
+                "low_25_day": 687.1,
+                "trigger_price": 740.5,
+                "trigger_away": -7.21,
+                "rsi_14": 29.3,
+                "target_yes": 4,
+                "target_no": 1,
+                "strike_rate": 80.0
+            },
+            {
+                "symbol": "HINDUNILVR",
+                "company": "Hindustan Unilever",
+                "cmp": 1945.0,
+                "low_25_day": 1936.0,
+                "trigger_price": 2099.4,
+                "trigger_away": -7.35,
+                "rsi_14": 33.17,
+                "target_yes": 3,
+                "target_no": 1,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "CIPLA",
+                "company": "Cipla",
+                "cmp": 1363.1,
+                "low_25_day": 1363.1,
+                "trigger_price": 1488.1,
+                "trigger_away": -8.4,
+                "rsi_14": 31.25,
+                "target_yes": 4,
+                "target_no": 3,
+                "strike_rate": 57.14
+            },
+            {
+                "symbol": "HDFCLIFE",
+                "company": "HDFC Life Insurance Company",
+                "cmp": 514.0,
+                "low_25_day": 508.95,
+                "trigger_price": 563.5,
+                "trigger_away": -8.78,
+                "rsi_14": 33.22,
+                "target_yes": 2,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "DMART",
+                "company": "Avenue Supermarts",
+                "cmp": 3735.0,
+                "low_25_day": 3680.5,
+                "trigger_price": 4098.9,
+                "trigger_away": -8.88,
+                "rsi_14": 35.15,
+                "target_yes": 6,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "TATACONSUM",
+                "company": "Tata Consumer Products",
+                "cmp": 1001.0,
+                "low_25_day": 1001.0,
+                "trigger_price": 1109.8,
+                "trigger_away": -9.8,
+                "rsi_14": 31.66,
+                "target_yes": 6,
+                "target_no": 1,
+                "strike_rate": 85.71
+            },
+            {
+                "symbol": "UNITDSPR",
+                "company": "United Spirits",
+                "cmp": 1405.2,
+                "low_25_day": 1395.2,
+                "trigger_price": 1563.4,
+                "trigger_away": -10.12,
+                "rsi_14": 30.7,
+                "target_yes": 6,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "IRFC",
+                "company": "Indian Railway Finance Corporation",
+                "cmp": 81.39,
+                "low_25_day": 81.12,
+                "trigger_price": 90.58,
+                "trigger_away": -10.15,
+                "rsi_14": 26.56,
+                "target_yes": 2,
+                "target_no": 1,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "NESTLEIND",
+                "company": "Nestle India",
+                "cmp": 1393.0,
+                "low_25_day": 1389.2,
+                "trigger_price": 1553.0,
+                "trigger_away": -10.3,
+                "rsi_14": 34.7,
+                "target_yes": 7,
+                "target_no": 2,
+                "strike_rate": 77.78
+            },
+            {
+                "symbol": "TECHM",
+                "company": "Tech Mahindra",
+                "cmp": 1508.0,
+                "low_25_day": 1498.0,
+                "trigger_price": 1681.5,
+                "trigger_away": -10.32,
+                "rsi_14": 33.04,
+                "target_yes": 6,
+                "target_no": 1,
+                "strike_rate": 85.71
+            },
+            {
+                "symbol": "BRITANNIA",
+                "company": "Britannia Industries",
+                "cmp": 5090.0,
+                "low_25_day": 5005.5,
+                "trigger_price": 5689.5,
+                "trigger_away": -10.54,
+                "rsi_14": 34.07,
+                "target_yes": 4,
+                "target_no": 2,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "ULTRACEMCO",
+                "company": "UltraTech Cement",
+                "cmp": 10900.0,
+                "low_25_day": 10860.0,
+                "trigger_price": 12204.0,
+                "trigger_away": -10.69,
+                "rsi_14": 29.29,
+                "target_yes": 5,
+                "target_no": 2,
+                "strike_rate": 71.43
+            },
+            {
+                "symbol": "SBILIFE",
+                "company": "SBI Life Insurance Company",
+                "cmp": 1684.0,
+                "low_25_day": 1676.0,
+                "trigger_price": 1886.0,
+                "trigger_away": -10.71,
+                "rsi_14": 32.49,
+                "target_yes": 4,
+                "target_no": 2,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "ASIANPAINT",
+                "company": "Asian Paints",
+                "cmp": 2489.0,
+                "low_25_day": 2457.4,
+                "trigger_price": 2788.0,
+                "trigger_away": -10.72,
+                "rsi_14": 29.14,
+                "target_yes": 4,
+                "target_no": 4,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "HCLTECH",
+                "company": "HCL Technologies",
+                "cmp": 1229.8,
+                "low_25_day": 1222.7,
+                "trigger_price": 1379.8,
+                "trigger_away": -10.87,
+                "rsi_14": 35.97,
+                "target_yes": 5,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "M&M",
+                "company": "Mahindra & Mahindra",
+                "cmp": 3150.0,
+                "low_25_day": 3096.3,
+                "trigger_price": 3534.6,
+                "trigger_away": -10.88,
+                "rsi_14": 33.13,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "MARUTI",
+                "company": "Maruti Suzuki India",
+                "cmp": 12618.0,
+                "low_25_day": 12537.0,
+                "trigger_price": 14181.0,
+                "trigger_away": -11.02,
+                "rsi_14": 26.96,
+                "target_yes": 7,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "SBIN",
+                "company": "State Bank of India",
+                "cmp": 1000.5,
+                "low_25_day": 992.4,
+                "trigger_price": 1124.5,
+                "trigger_away": -11.03,
+                "rsi_14": 34.89,
+                "target_yes": 5,
+                "target_no": 1,
+                "strike_rate": 83.33
+            },
+            {
+                "symbol": "AMBUJACEM",
+                "company": "Ambuja Cements",
+                "cmp": 397.0,
+                "low_25_day": 395.0,
+                "trigger_price": 447.5,
+                "trigger_away": -11.28,
+                "rsi_14": 34.68,
+                "target_yes": 4,
+                "target_no": 0,
+                "strike_rate": 100.0
+            },
+            {
+                "symbol": "WIPRO",
+                "company": "Wipro",
+                "cmp": 167.0,
+                "low_25_day": 166.37,
+                "trigger_price": 188.37,
+                "trigger_away": -11.34,
+                "rsi_14": 30.71,
+                "target_yes": 3,
+                "target_no": 1,
+                "strike_rate": 75.0
+            },
+            {
+                "symbol": "INFY",
+                "company": "Infosys",
+                "cmp": 1035.0,
+                "low_25_day": 1026.5,
+                "trigger_price": 1195.0,
+                "trigger_away": -13.39,
+                "rsi_14": 31.81,
+                "target_yes": 2,
+                "target_no": 1,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "TMPV",
+                "company": "Tata Motors Passenger Vehicles",
+                "cmp": 303.0,
+                "low_25_day": 300.8,
+                "trigger_price": 351.55,
+                "trigger_away": -13.81,
+                "rsi_14": 29.46,
+                "target_yes": 3,
+                "target_no": 3,
+                "strike_rate": 50.0
+            },
+            {
+                "symbol": "JIOFIN",
+                "company": "Jio Financial Services",
+                "cmp": 231.0,
+                "low_25_day": 230.63,
+                "trigger_price": 268.2,
+                "trigger_away": -13.87,
+                "rsi_14": 35.05,
+                "target_yes": 2,
+                "target_no": 1,
+                "strike_rate": 66.67
+            },
+            {
+                "symbol": "RECLTD",
+                "company": "REC",
+                "cmp": 314.5,
+                "low_25_day": 310.4,
+                "trigger_price": 368.7,
+                "trigger_away": -14.7,
+                "rsi_14": 34.09,
+                "target_yes": 4,
+                "target_no": 1,
+                "strike_rate": 80.0
+            },
+            {
+                "symbol": "SHREECEM",
+                "company": "Shree Cement",
+                "cmp": 22950.0,
+                "low_25_day": 22900.0,
+                "trigger_price": 26920.0,
+                "trigger_away": -14.75,
+                "rsi_14": 31.38,
+                "target_yes": 5,
+                "target_no": 4,
+                "strike_rate": 55.56
+            },
+            {
+                "symbol": "PFC",
+                "company": "Power Finance Corporation",
+                "cmp": 351.4,
+                "low_25_day": 336.3,
+                "trigger_price": 421.15,
+                "trigger_away": -16.56,
+                "rsi_14": 35.89,
+                "target_yes": 5,
+                "target_no": 3,
+                "strike_rate": 62.5
+            },
+            {
+                "symbol": "GODREJCP",
+                "company": "Godrej Consumer Products",
+                "cmp": 863.8,
+                "low_25_day": 855.15,
+                "trigger_price": 1087.2,
+                "trigger_away": -20.55,
+                "rsi_14": 23.44,
+                "target_yes": 2,
+                "target_no": 3,
+                "strike_rate": 40.0
+            }
+        ]
     }
 }
