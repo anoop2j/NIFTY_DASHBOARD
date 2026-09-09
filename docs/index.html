@@ -14,9 +14,9 @@ content="width=device-width, initial-scale=1.0">
 
 <style>
 
-/* =========================================================
+/* =====================================================
    GLOBAL
-========================================================= */
+===================================================== */
 
 * {
     box-sizing: border-box;
@@ -27,48 +27,44 @@ body {
 
     margin: 0;
 
-    padding: 18px;
-
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    background:
-        linear-gradient(
-            135deg,
-            #eef2f7,
-            #e3e9f1
-        );
+    background: #f4f6f9;
 
-    color: #293847;
+    color: #253545;
+
 }
 
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
 
 .dashboard {
 
     width: 100%;
 
-    max-width: 1920px;
+    min-height: 100vh;
 
-    margin: auto;
+    padding: 20px;
 
 }
 
 
-/* =========================================================
-   MAIN HEADER
-========================================================= */
+/* =====================================================
+   HEADER
+===================================================== */
 
 .main-header {
 
-    background: rgba(255,255,255,0.92);
+    background: white;
 
-    border-radius: 20px;
+    border-radius: 14px;
 
-    padding: 20px 38px;
-
-    margin-bottom: 28px;
+    padding: 22px 30px;
 
     display: flex;
 
@@ -81,68 +77,41 @@ body {
     gap: 20px;
 
     box-shadow:
-        0 8px 25px
+        0 3px 15px
         rgba(0,0,0,0.08);
-
-}
-
-
-.header-left {
-
-    display: flex;
-
-    flex-direction: column;
-
-}
-
-
-.title-row {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-}
-
-
-.title-icon {
-
-    font-size: 32px;
 
 }
 
 
 .main-title {
 
-    font-size: 30px;
+    font-size: 28px;
 
     font-weight: 700;
-
-    letter-spacing: 0.5px;
-
-    color: #293847;
 
 }
 
 
 .sync-time {
 
-    margin-top: 10px;
+    margin-top: 8px;
 
-    font-size: 16px;
+    color: #687786;
 
-    color: #5e6d7c;
+    font-size: 14px;
 
 }
 
+
+/* =====================================================
+   SUMMARY BADGES
+===================================================== */
 
 .header-right {
 
     display: flex;
 
-    gap: 12px;
+    gap: 10px;
 
     flex-wrap: wrap;
 
@@ -151,101 +120,224 @@ body {
 
 .badge {
 
-    padding: 13px 22px;
+    padding: 11px 18px;
 
-    border-radius: 30px;
+    border-radius: 25px;
 
-    font-size: 17px;
+    font-weight: bold;
 
-    font-weight: 700;
+    font-size: 14px;
 
 }
 
 
 .total-badge {
 
-    background: #dcebf5;
+    background: #e3edf7;
 
-    color: #255375;
+    color: #28587c;
 
 }
 
 
 .mwd-badge {
 
-    background: #dcefe3;
+    background: #dff0e5;
 
-    color: #286844;
+    color: #257044;
 
 }
 
 
 .sst-badge {
 
-    background: #ece1fa;
+    background: #eee3fb;
 
-    color: #6336a4;
+    color: #6438a4;
 
 }
 
 
 .blsh-badge {
 
-    background: #d8eee8;
+    background: #dcefe9;
 
-    color: #176d58;
-
-}
-
-
-/* =========================================================
-   SCREENER GRID
-========================================================= */
-
-.screener-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 26px;
+    color: #16715c;
 
 }
 
 
-/* =========================================================
-   CARD
-========================================================= */
+/* =====================================================
+   TABS
+===================================================== */
 
-.screener-card {
+.tabs {
+
+    margin-top: 25px;
+
+    display: flex;
+
+    gap: 8px;
+
+    border-bottom:
+        2px solid #dfe4ea;
+
+}
+
+
+.tab-button {
+
+    border: none;
+
+    background: #e9edf2;
+
+    padding: 16px 35px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    border-radius:
+        10px 10px 0 0;
+
+    color: #556575;
+
+    transition: 0.25s;
+
+}
+
+
+.tab-button:hover {
+
+    background: #dce3ea;
+
+}
+
+
+.tab-button.active {
 
     background: #ffffff;
 
-    border-radius: 20px;
+    color: #273747;
 
-    overflow: hidden;
-
-    box-shadow:
-        0 8px 25px
-        rgba(0,0,0,0.09);
+    border-top:
+        4px solid #2d65c8;
 
 }
 
 
-/* =========================================================
-   CARD HEADER
-========================================================= */
+/* Individual tab colours */
 
-.card-header {
+#mwdTab.active {
 
-    color: white;
+    border-top-color: #2764c7;
 
-    padding: 24px 22px;
+}
+
+
+#sstTab.active {
+
+    border-top-color: #713ac0;
+
+}
+
+
+#blshTab.active {
+
+    border-top-color: #16806a;
+
+}
+
+
+/* =====================================================
+   TAB CONTENT
+===================================================== */
+
+.tab-content {
+
+    display: none;
+
+    margin-top: 20px;
+
+}
+
+
+.tab-content.active {
+
+    display: block;
+
+}
+
+
+/* =====================================================
+   SCREENER PANEL
+===================================================== */
+
+.screener-panel {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 3px 18px
+        rgba(0,0,0,0.07);
+
+}
+
+
+/* =====================================================
+   PANEL HEADER
+===================================================== */
+
+.panel-header {
 
     display: flex;
 
     justify-content: space-between;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.panel-title {
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+}
+
+
+.panel-description {
+
+    color: #667788;
+
+    margin-top: 6px;
+
+    font-size: 14px;
+
+}
+
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+.filters {
+
+    display: flex;
 
     align-items: center;
 
@@ -254,65 +346,35 @@ body {
 }
 
 
-.mwd-header {
+.filter-label {
 
-    background:
-        linear-gradient(
-            135deg,
-            #3f68c7,
-            #234da5
-        );
+    font-size: 14px;
+
+    font-weight: bold;
 
 }
 
 
-.sst-header {
+select {
 
-    background:
-        linear-gradient(
-            135deg,
-            #7b42c9,
-            #5525a3
-        );
+    padding: 9px 12px;
 
-}
+    border:
 
+        1px solid #ccd4dc;
 
-.blsh-header {
+    border-radius: 7px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #23866f,
-            #12624f
-        );
+    font-size: 14px;
+
+    background: white;
 
 }
 
 
-.card-title {
-
-    font-size: 22px;
-
-    font-weight: 700;
-
-}
-
-
-.card-subtitle {
-
-    font-size: 17px;
-
-    font-weight: 600;
-
-    text-align: right;
-
-}
-
-
-/* =========================================================
+/* =====================================================
    TABLE
-========================================================= */
+===================================================== */
 
 .table-wrapper {
 
@@ -329,7 +391,7 @@ table {
 
     border-collapse: collapse;
 
-    min-width: 850px;
+    min-width: 1000px;
 
 }
 
@@ -343,18 +405,17 @@ thead {
 
 th {
 
-    padding: 14px 12px;
+    padding: 14px;
 
     text-align: left;
 
-    color: #596877;
+    color: #5a6978;
 
-    font-size: 14px;
-
-    font-weight: 700;
+    font-size: 13px;
 
     border-bottom:
-        1px solid #e2e7ed;
+
+        2px solid #e2e7ec;
 
     white-space: nowrap;
 
@@ -363,21 +424,15 @@ th {
 
 td {
 
-    padding: 14px 12px;
+    padding: 14px;
 
     border-bottom:
-        1px solid #e8ebef;
+
+        1px solid #e8edf1;
 
     font-size: 14px;
 
     white-space: nowrap;
-
-}
-
-
-tbody tr {
-
-    transition: 0.2s;
 
 }
 
@@ -389,164 +444,140 @@ tbody tr:hover {
 }
 
 
-tbody tr:last-child td {
-
-    border-bottom: none;
-
-}
-
-
-/* =========================================================
-   STOCK NAME
-========================================================= */
+/* =====================================================
+   STOCK
+===================================================== */
 
 .stock-name {
 
     font-weight: 700;
 
-    color: #304050;
-
-    letter-spacing: 0.3px;
+    color: #263747;
 
 }
 
 
-/* =========================================================
+/* =====================================================
    COLORS
-========================================================= */
+===================================================== */
 
 .green {
 
-    color: #18864c;
+    color: #148343;
 
-    font-weight: 700;
+    font-weight: bold;
 
 }
 
 
 .red {
 
-    color: #d93025;
+    color: #cf342c;
 
-    font-weight: 700;
+    font-weight: bold;
 
 }
 
 
 .orange {
 
-    color: #d97706;
+    color: #d47706;
 
-    font-weight: 700;
+    font-weight: bold;
 
 }
 
 
 .purple {
 
-    color: #6d3cb5;
+    color: #683ab0;
 
-    font-weight: 700;
+    font-weight: bold;
 
 }
 
 
-/* =========================================================
-   STATUS BADGES
-========================================================= */
+/* =====================================================
+   CANDLE BADGES
+===================================================== */
 
 .status {
 
     padding: 6px 9px;
 
-    border-radius: 7px;
+    border-radius: 6px;
 
     font-size: 11px;
 
-    font-weight: 700;
-
-    display: inline-block;
+    font-weight: bold;
 
 }
 
 
 .bullish {
 
-    background: #dcf2e5;
+    background: #dff3e7;
 
-    color: #207442;
+    color: #167543;
 
 }
 
 
 .bearish {
 
-    background: #fde1df;
+    background: #fde3e1;
 
-    color: #bf3028;
+    color: #c13129;
 
 }
 
 
 .neutral {
 
-    background: #e7e9ec;
+    background: #e8eaed;
 
-    color: #5c6570;
+    color: #59636d;
 
 }
 
 
-/* =========================================================
+/* =====================================================
    TARGET BADGES
-========================================================= */
+===================================================== */
 
 .target-yes {
 
-    background: #dff2e6;
+    background: #dff3e7;
 
-    color: #207442;
+    color: #167543;
 
     padding: 6px 10px;
 
-    border-radius: 7px;
+    border-radius: 6px;
 
-    font-weight: 700;
+    font-weight: bold;
 
 }
 
 
 .target-no {
 
-    background: #fde2df;
+    background: #fde3e1;
 
-    color: #bf3028;
+    color: #c13129;
 
     padding: 6px 10px;
 
-    border-radius: 7px;
+    border-radius: 6px;
 
-    font-weight: 700;
-
-}
-
-
-/* =========================================================
-   STRIKE RATE
-========================================================= */
-
-.strike-rate {
-
-    font-weight: 700;
-
-    color: #273847;
+    font-weight: bold;
 
 }
 
 
-/* =========================================================
+/* =====================================================
    EMPTY
-========================================================= */
+===================================================== */
 
 .empty {
 
@@ -554,79 +585,38 @@ tbody tr:last-child td {
 
     padding: 40px;
 
-    color: #7c8793;
+    color: #7b8794;
 
 }
 
 
-/* =========================================================
+/* =====================================================
    FOOTER
-========================================================= */
+===================================================== */
 
 .footer {
 
     text-align: center;
 
-    margin-top: 28px;
+    padding: 25px;
 
-    padding: 18px;
-
-    color: #687786;
+    color: #75818c;
 
     font-size: 13px;
 
 }
 
 
-/* =========================================================
-   LOADING
-========================================================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
-.loading {
-
-    text-align: center;
-
-    padding: 80px;
-
-    font-size: 20px;
-
-    color: #657484;
-
-}
+@media(max-width:700px) {
 
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+    .dashboard {
 
-@media (max-width: 1700px) {
-
-    .screener-grid {
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-    }
-
-}
-
-
-@media (max-width: 1100px) {
-
-    .screener-grid {
-
-        grid-template-columns: 1fr;
-
-    }
-
-}
-
-
-@media (max-width: 600px) {
-
-    body {
-
-        padding: 8px;
+        padding: 10px;
 
     }
 
@@ -640,23 +630,30 @@ tbody tr:last-child td {
 
     .main-title {
 
-        font-size: 23px;
+        font-size: 22px;
 
     }
 
 
-    .card-header {
+    .tabs {
 
-        flex-direction: column;
-
-        align-items: flex-start;
+        overflow-x: auto;
 
     }
 
 
-    .card-subtitle {
+    .tab-button {
 
-        text-align: left;
+        padding: 13px 22px;
+
+        white-space: nowrap;
+
+    }
+
+
+    .screener-panel {
+
+        padding: 12px;
 
     }
 
@@ -674,38 +671,34 @@ tbody tr:last-child td {
 
 
 <!-- =====================================================
-     MAIN HEADER
+     HEADER
 ===================================================== -->
 
 <div class="main-header">
 
 
-    <div class="header-left">
+    <div>
 
 
-        <div class="title-row">
+        <div class="main-title">
 
-            <div class="title-icon">
-                📊
-            </div>
-
-            <div class="main-title">
-                Nifty 100 Daily Multi-Screener
-            </div>
+            📊 Nifty 100 Daily Multi-Screener
 
         </div>
 
 
-        <div class="sync-time"
-             id="syncTime">
+        <div
+            class="sync-time"
+            id="syncTime">
 
-            Loading latest data...
+            Loading data...
 
         </div>
 
 
-        <div class="sync-time"
-             id="marketDate">
+        <div
+            class="sync-time"
+            id="marketDate">
 
         </div>
 
@@ -716,34 +709,38 @@ tbody tr:last-child td {
     <div class="header-right">
 
 
-        <div class="badge total-badge"
-             id="totalStocks">
+        <div
+            class="badge total-badge"
+            id="totalStocks">
 
-            Total Stocks: -
-
-        </div>
-
-
-        <div class="badge mwd-badge"
-             id="mwdCount">
-
-            MWD Matches: -
+            Total: -
 
         </div>
 
 
-        <div class="badge sst-badge"
-             id="sstCount">
+        <div
+            class="badge mwd-badge"
+            id="mwdCount">
 
-            SST Stocks: -
+            MWD: -
 
         </div>
 
 
-        <div class="badge blsh-badge"
-             id="blshCount">
+        <div
+            class="badge sst-badge"
+            id="sstCount">
 
-            BLSH RSI: -
+            SST: -
+
+        </div>
+
+
+        <div
+            class="badge blsh-badge"
+            id="blshCount">
+
+            BLSH: -
 
         </div>
 
@@ -756,76 +753,138 @@ tbody tr:last-child td {
 
 
 <!-- =====================================================
-     SCREENERS
+     TABS
 ===================================================== -->
 
-<div class="screener-grid">
+<div class="tabs">
+
+
+    <button
+
+        id="mwdTab"
+
+        class="tab-button active"
+
+        onclick="openTab('mwd')">
+
+        📈 MWD Screener
+
+    </button>
+
+
+    <button
+
+        id="sstTab"
+
+        class="tab-button"
+
+        onclick="openTab('sst')">
+
+        🚀 SST Screener
+
+    </button>
+
+
+    <button
+
+        id="blshTab"
+
+        class="tab-button"
+
+        onclick="openTab('blsh')">
+
+        📉 BLSH RSI
+
+    </button>
+
+
+</div>
+
 
 
 <!-- =====================================================
-     1. MWD
+     MWD TAB
 ===================================================== -->
 
-<div class="screener-card">
+<div
+
+    id="mwdContent"
+
+    class="tab-content active">
 
 
-    <div class="card-header mwd-header">
+    <div class="screener-panel">
 
 
-        <div class="card-title">
+        <div class="panel-header">
 
-            1. MWD
+
+            <div>
+
+
+                <div class="panel-title">
+
+                    MWD Momentum Screener
+
+                </div>
+
+
+                <div class="panel-description">
+
+                    Monthly + Weekly + Daily candles bullish |
+                    Stocks below 52-week high
+
+                </div>
+
+
+            </div>
+
 
         </div>
 
 
-        <div class="card-subtitle">
+        <div class="table-wrapper">
 
-            Monthly + Weekly + Daily
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Symbol</th>
+
+                        <th>Company</th>
+
+                        <th>CMP</th>
+
+                        <th>52 Week High</th>
+
+                        <th>Distance From 52W High</th>
+
+                        <th>Monthly Rise</th>
+
+                        <th>Daily</th>
+
+                        <th>Weekly</th>
+
+                        <th>Monthly</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="mwdTable">
+
+                </tbody>
+
+
+            </table>
+
 
         </div>
-
-
-    </div>
-
-
-    <div class="table-wrapper">
-
-
-        <table>
-
-
-            <thead>
-
-                <tr>
-
-                    <th>Symbol</th>
-
-                    <th>Price</th>
-
-                    <th>52W High</th>
-
-                    <th>52W Distance</th>
-
-                    <th>Monthly Rise</th>
-
-                    <th>Daily</th>
-
-                    <th>Weekly</th>
-
-                    <th>Monthly</th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="mwdTable">
-
-            </tbody>
-
-
-        </table>
 
 
     </div>
@@ -836,67 +895,149 @@ tbody tr:last-child td {
 
 
 <!-- =====================================================
-     2. SST
+     SST TAB
 ===================================================== -->
 
-<div class="screener-card">
+<div
+
+    id="sstContent"
+
+    class="tab-content">
 
 
-    <div class="card-header sst-header">
+    <div class="screener-panel">
 
 
-        <div class="card-title">
+        <div class="panel-header">
 
-            2. SST
+
+            <div>
+
+
+                <div class="panel-title">
+
+                    SST Screener
+
+                </div>
+
+
+                <div class="panel-description">
+
+                    20-Day High Analysis |
+                    Historical 6% Target Performance
+
+                </div>
+
+
+            </div>
+
+
+            <div class="filters">
+
+
+                <span class="filter-label">
+
+                    Minimum Strike Rate:
+
+                </span>
+
+
+                <select
+                    id="sstStrikeFilter"
+                    onchange="filterSST()">
+
+
+                    <option value="0">
+
+                        All Stocks
+
+                    </option>
+
+
+                    <option value="25">
+
+                        Above 25%
+
+                    </option>
+
+
+                    <option value="50">
+
+                        Above 50%
+
+                    </option>
+
+
+                    <option value="60">
+
+                        Above 60%
+
+                    </option>
+
+
+                    <option value="70">
+
+                        Above 70%
+
+                    </option>
+
+
+                    <option value="80">
+
+                        Above 80%
+
+                    </option>
+
+
+                </select>
+
+
+            </div>
+
 
         </div>
 
 
-        <div class="card-subtitle">
+        <div class="table-wrapper">
 
-            20-Day High Focus
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Symbol</th>
+
+                        <th>Company</th>
+
+                        <th>CMP</th>
+
+                        <th>20 Day High</th>
+
+                        <th>Distance From 20D High</th>
+
+                        <th>6% Target Yes</th>
+
+                        <th>6% Target No</th>
+
+                        <th>Strike Rate</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="sstTable">
+
+                </tbody>
+
+
+            </table>
+
 
         </div>
-
-
-    </div>
-
-
-    <div class="table-wrapper">
-
-
-        <table>
-
-
-            <thead>
-
-                <tr>
-
-                    <th>Stock</th>
-
-                    <th>CMP</th>
-
-                    <th>20D High</th>
-
-                    <th>20D High Away</th>
-
-                    <th>6% Yes</th>
-
-                    <th>6% No</th>
-
-                    <th>Strike Rate</th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="sstTable">
-
-            </tbody>
-
-
-        </table>
 
 
     </div>
@@ -907,77 +1048,159 @@ tbody tr:last-child td {
 
 
 <!-- =====================================================
-     3. BLSH RSI
+     BLSH TAB
 ===================================================== -->
 
-<div class="screener-card">
+<div
+
+    id="blshContent"
+
+    class="tab-content">
 
 
-    <div class="card-header blsh-header">
+    <div class="screener-panel">
 
 
-        <div class="card-title">
+        <div class="panel-header">
 
-            3. BLSH RSI
+
+            <div>
+
+
+                <div class="panel-title">
+
+                    BLSH RSI Screener
+
+                </div>
+
+
+                <div class="panel-description">
+
+                    RSI 14 below 36 |
+                    25-Day Low to Trigger Breakout Analysis |
+                    Last 1 Year Performance
+
+                </div>
+
+
+            </div>
+
+
+            <div class="filters">
+
+
+                <span class="filter-label">
+
+                    Minimum Strike Rate:
+
+                </span>
+
+
+                <select
+
+                    id="blshStrikeFilter"
+
+                    onchange="filterBLSH()">
+
+
+                    <option value="0">
+
+                        All Stocks
+
+                    </option>
+
+
+                    <option value="25">
+
+                        Above 25%
+
+                    </option>
+
+
+                    <option value="50">
+
+                        Above 50%
+
+                    </option>
+
+
+                    <option value="60">
+
+                        Above 60%
+
+                    </option>
+
+
+                    <option value="70">
+
+                        Above 70%
+
+                    </option>
+
+
+                    <option value="80">
+
+                        Above 80%
+
+                    </option>
+
+
+                </select>
+
+
+            </div>
+
 
         </div>
 
 
-        <div class="card-subtitle">
+        <div class="table-wrapper">
 
-            RSI &lt; 36 | 25-Day Trigger
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Symbol</th>
+
+                        <th>Company</th>
+
+                        <th>CMP</th>
+
+                        <th>25 Day Low</th>
+
+                        <th>25 Day High Trigger</th>
+
+                        <th>Trigger Away From CMP</th>
+
+                        <th>RSI 14</th>
+
+                        <th>3.14% Yes (1Y)</th>
+
+                        <th>3.14% No (1Y)</th>
+
+                        <th>Strike Rate</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="blshTable">
+
+                </tbody>
+
+
+            </table>
+
 
         </div>
 
 
     </div>
-
-
-    <div class="table-wrapper">
-
-
-        <table>
-
-
-            <thead>
-
-                <tr>
-
-                    <th>Stock</th>
-
-                    <th>CMP</th>
-
-                    <th>25D Low</th>
-
-                    <th>Trigger Price</th>
-
-                    <th>Trigger Away</th>
-
-                    <th>RSI 14</th>
-
-                    <th>3.14% Yes</th>
-
-                    <th>3.14% No</th>
-
-                    <th>Strike Rate</th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="blshTable">
-
-            </tbody>
-
-
-        </table>
-
-
-    </div>
-
-
-</div>
 
 
 </div>
@@ -990,34 +1213,116 @@ tbody tr:last-child td {
 
 <div class="footer">
 
-    Nifty 100 Daily Multi-Screener |
-    Data Source: Yahoo Finance |
-    For Educational & Research Purpose Only |
+
+    Nifty 100 Multi-Screener |
+    Yahoo Finance Data |
+    Educational Purpose Only |
     Not Investment Advice
 
-</div>
-
 
 </div>
 
 
+</div>
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
+
 
 <script>
 
 
-/* =========================================================
+/* =====================================================
+   GLOBAL DATA
+===================================================== */
+
+let dashboardData = {
+
+    mwd: [],
+
+    sst: [],
+
+    blsh: []
+
+};
+
+
+/* =====================================================
+   OPEN TAB
+===================================================== */
+
+function openTab(tab) {
+
+
+    // Remove active tab
+
+    document
+
+        .querySelectorAll(".tab-button")
+
+        .forEach(button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    // Hide all content
+
+    document
+
+        .querySelectorAll(".tab-content")
+
+        .forEach(content => {
+
+            content.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    // Activate selected tab
+
+    document
+
+        .getElementById(
+            tab + "Tab"
+        )
+
+        .classList.add(
+            "active"
+        );
+
+
+    document
+
+        .getElementById(
+            tab + "Content"
+        )
+
+        .classList.add(
+            "active"
+        );
+
+}
+
+
+/* =====================================================
    FORMAT PRICE
-========================================================= */
+===================================================== */
 
 function formatPrice(value) {
 
+
     if (
-        value === null ||
+
+        value === null
+
+        ||
+
         value === undefined
+
     ) {
 
         return "-";
@@ -1026,26 +1331,41 @@ function formatPrice(value) {
 
 
     return "₹" +
-        Number(value).toLocaleString(
+
+        Number(value)
+
+        .toLocaleString(
+
             "en-IN",
+
             {
+
                 minimumFractionDigits: 2,
+
                 maximumFractionDigits: 2
+
             }
+
         );
 
 }
 
 
-/* =========================================================
+/* =====================================================
    FORMAT PERCENT
-========================================================= */
+===================================================== */
 
 function formatPercent(value) {
 
+
     if (
-        value === null ||
+
+        value === null
+
+        ||
+
         value === undefined
+
     ) {
 
         return "-";
@@ -1053,27 +1373,27 @@ function formatPercent(value) {
     }
 
 
-    let sign = "";
+    return (
 
-    if (value > 0) {
+        Number(value)
 
-        sign = "+";
+        .toFixed(2)
 
-    }
+        +
 
+        "%"
 
-    return sign +
-        Number(value).toFixed(2) +
-        "%";
+    );
 
 }
 
 
-/* =========================================================
-   PERCENT COLOR
-========================================================= */
+/* =====================================================
+   PERCENT CLASS
+===================================================== */
 
 function percentClass(value) {
+
 
     if (value > 0) {
 
@@ -1081,20 +1401,22 @@ function percentClass(value) {
 
     }
 
-    else if (value < 0) {
+
+    if (value < 0) {
 
         return "red";
 
     }
+
 
     return "";
 
 }
 
 
-/* =========================================================
-   CANDLE STATUS
-========================================================= */
+/* =====================================================
+   STATUS BADGE
+===================================================== */
 
 function statusBadge(status) {
 
@@ -1108,7 +1430,8 @@ function statusBadge(status) {
 
     }
 
-    else if (status === "BEARISH") {
+
+    if (status === "BEARISH") {
 
         className = "bearish";
 
@@ -1116,22 +1439,27 @@ function statusBadge(status) {
 
 
     return `
+
         <span class="status ${className}">
+
             ${status}
+
         </span>
+
     `;
 
 }
 
 
-/* =========================================================
-   MWD TABLE
-========================================================= */
+/* =====================================================
+   RENDER MWD
+===================================================== */
 
 function renderMWD(data) {
 
 
     const table =
+
         document.getElementById(
             "mwdTable"
         );
@@ -1140,16 +1468,25 @@ function renderMWD(data) {
     table.innerHTML = "";
 
 
-    if (!data || data.length === 0) {
+    if (!data.length) {
+
 
         table.innerHTML = `
+
             <tr>
-                <td colspan="8"
+
+                <td
+                    colspan="9"
                     class="empty">
+
                     No MWD stocks found.
+
                 </td>
+
             </tr>
+
         `;
+
 
         return;
 
@@ -1163,9 +1500,17 @@ function renderMWD(data) {
 
         <tr>
 
+
             <td class="stock-name">
 
                 ${stock.symbol}
+
+            </td>
+
+
+            <td>
+
+                ${stock.company || "-"}
 
             </td>
 
@@ -1218,6 +1563,7 @@ function renderMWD(data) {
 
             </td>
 
+
         </tr>
 
         `;
@@ -1225,18 +1571,50 @@ function renderMWD(data) {
 
     });
 
+}
+
+
+/* =====================================================
+   FILTER SST
+===================================================== */
+
+function filterSST() {
+
+
+    const minimum =
+
+        Number(
+
+            document.getElementById(
+                "sstStrikeFilter"
+            ).value
+
+        );
+
+
+    const filtered =
+
+        dashboardData.sst.filter(stock =>
+
+            Number(stock.strike_rate) >= minimum
+
+        );
+
+
+    renderSST(filtered);
 
 }
 
 
-/* =========================================================
-   SST TABLE
-========================================================= */
+/* =====================================================
+   RENDER SST
+===================================================== */
 
 function renderSST(data) {
 
 
     const table =
+
         document.getElementById(
             "sstTable"
         );
@@ -1245,16 +1623,25 @@ function renderSST(data) {
     table.innerHTML = "";
 
 
-    if (!data || data.length === 0) {
+    if (!data.length) {
+
 
         table.innerHTML = `
+
             <tr>
-                <td colspan="7"
+
+                <td
+                    colspan="8"
                     class="empty">
-                    No SST data available.
+
+                    No stocks match selected strike rate.
+
                 </td>
+
             </tr>
+
         `;
+
 
         return;
 
@@ -1272,6 +1659,13 @@ function renderSST(data) {
             <td class="stock-name">
 
                 ${stock.symbol}
+
+            </td>
+
+
+            <td>
+
+                ${stock.company || "-"}
 
             </td>
 
@@ -1319,9 +1713,9 @@ function renderSST(data) {
             </td>
 
 
-            <td class="strike-rate">
+            <td class="green">
 
-                ${Number(stock.strike_rate).toFixed(2)}%
+                ${formatPercent(stock.strike_rate)}
 
             </td>
 
@@ -1333,18 +1727,50 @@ function renderSST(data) {
 
     });
 
+}
+
+
+/* =====================================================
+   FILTER BLSH
+===================================================== */
+
+function filterBLSH() {
+
+
+    const minimum =
+
+        Number(
+
+            document.getElementById(
+                "blshStrikeFilter"
+            ).value
+
+        );
+
+
+    const filtered =
+
+        dashboardData.blsh.filter(stock =>
+
+            Number(stock.strike_rate) >= minimum
+
+        );
+
+
+    renderBLSH(filtered);
 
 }
 
 
-/* =========================================================
-   BLSH TABLE
-========================================================= */
+/* =====================================================
+   RENDER BLSH
+===================================================== */
 
 function renderBLSH(data) {
 
 
     const table =
+
         document.getElementById(
             "blshTable"
         );
@@ -1353,16 +1779,25 @@ function renderBLSH(data) {
     table.innerHTML = "";
 
 
-    if (!data || data.length === 0) {
+    if (!data.length) {
+
 
         table.innerHTML = `
+
             <tr>
-                <td colspan="9"
+
+                <td
+                    colspan="10"
                     class="empty">
-                    No stocks found with RSI below 36.
+
+                    No stocks match selected strike rate.
+
                 </td>
+
             </tr>
+
         `;
+
 
         return;
 
@@ -1380,6 +1815,13 @@ function renderBLSH(data) {
             <td class="stock-name">
 
                 ${stock.symbol}
+
+            </td>
+
+
+            <td>
+
+                ${stock.company || "-"}
 
             </td>
 
@@ -1423,7 +1865,7 @@ function renderBLSH(data) {
 
                 <span class="target-yes">
 
-                    ${stock.target_yes}
+                    ${stock.target_yes_1y}
 
                 </span>
 
@@ -1434,16 +1876,16 @@ function renderBLSH(data) {
 
                 <span class="target-no">
 
-                    ${stock.target_no}
+                    ${stock.target_no_1y}
 
                 </span>
 
             </td>
 
 
-            <td class="strike-rate">
+            <td class="green">
 
-                ${Number(stock.strike_rate).toFixed(2)}%
+                ${formatPercent(stock.strike_rate)}
 
             </td>
 
@@ -1455,13 +1897,12 @@ function renderBLSH(data) {
 
     });
 
-
 }
 
 
-/* =========================================================
-   LOAD DATA
-========================================================= */
+/* =====================================================
+   LOAD DASHBOARD
+===================================================== */
 
 async function loadDashboard() {
 
@@ -1470,9 +1911,15 @@ async function loadDashboard() {
 
 
         const response =
+
             await fetch(
-                "data.json?ts=" +
+
+                "data.json?ts="
+
+                +
+
                 new Date().getTime()
+
             );
 
 
@@ -1486,25 +1933,52 @@ async function loadDashboard() {
 
 
         const data =
+
             await response.json();
 
 
-        /* =============================================
-           HEADER
-        ============================================== */
+        // Store data globally
 
+        dashboardData.mwd =
+
+            data.mwd.data || [];
+
+
+        dashboardData.sst =
+
+            data.sst.data || [];
+
+
+        dashboardData.blsh =
+
+            data.blsh.data || [];
+
+
+        // Header
 
         document.getElementById(
+
             "syncTime"
+
         ).innerHTML =
-            "Live Data Sync | " +
+
+            "Last Updated: "
+
+            +
+
             data.last_updated;
 
 
         document.getElementById(
+
             "marketDate"
+
         ).innerHTML =
-            "Latest Market Data | " +
+
+            "Latest Market Trading Date: "
+
+            +
+
             (
                 data.latest_market_date
                 || "-"
@@ -1512,54 +1986,76 @@ async function loadDashboard() {
 
 
         document.getElementById(
+
             "totalStocks"
+
         ).innerHTML =
-            "Total Stocks: " +
+
+            "Total: "
+
+            +
+
             data.total_stocks;
 
 
         document.getElementById(
+
             "mwdCount"
+
         ).innerHTML =
-            "MWD Matches: " +
+
+            "MWD: "
+
+            +
+
             data.mwd.count;
 
 
         document.getElementById(
+
             "sstCount"
+
         ).innerHTML =
-            "SST Stocks: " +
+
+            "SST: "
+
+            +
+
             data.sst.count;
 
 
         document.getElementById(
+
             "blshCount"
+
         ).innerHTML =
-            "BLSH RSI: " +
+
+            "BLSH: "
+
+            +
+
             data.blsh.count;
 
 
-        /* =============================================
-           TABLES
-        ============================================== */
-
+        // Render Tables
 
         renderMWD(
-            data.mwd.data
+            dashboardData.mwd
         );
 
 
         renderSST(
-            data.sst.data
+            dashboardData.sst
         );
 
 
         renderBLSH(
-            data.blsh.data
+            dashboardData.blsh
         );
 
 
     }
+
 
     catch (error) {
 
@@ -1568,20 +2064,21 @@ async function loadDashboard() {
 
 
         document.getElementById(
-            "syncTime"
-        ).innerHTML =
-            "Error loading latest screener data.";
 
+            "syncTime"
+
+        ).innerHTML =
+
+            "Error loading dashboard data.";
 
     }
-
 
 }
 
 
-/* =========================================================
+/* =====================================================
    START
-========================================================= */
+===================================================== */
 
 loadDashboard();
 
