@@ -2,24 +2,37 @@ name: Update Nifty 100 Multi Screener
 
 on:
   schedule:
-    # Runs daily at 5:30 AM IST
-    # GitHub cron uses UTC
+    # GitHub Actions cron uses UTC
+    # 00:00 UTC = 05:30 AM IST
     - cron: "0 0 * * *"
 
+  # Allows manual execution from GitHub Actions page
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  update-stock-data:
+  update-screener:
 
     runs-on: ubuntu-latest
 
     steps:
 
+      # -----------------------------------------------
+      # STEP 1 - CHECKOUT REPOSITORY
+      # -----------------------------------------------
+
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+        with:
+          persist-credentials: true
+
+
+      # -----------------------------------------------
+      # STEP 2 - SETUP PYTHON
+      # -----------------------------------------------
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -27,22 +40,60 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Dependencies
+
+      # -----------------------------------------------
+      # STEP 3 - INSTALL DEPENDENCIES
+      # -----------------------------------------------
+
+      - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Multi Screener
+
+      # -----------------------------------------------
+      # STEP 4 - RUN MULTI SCREENER
+      # -----------------------------------------------
+
+      - name: Run Nifty 100 Multi Screener
         run: |
           python multi_screener.py
 
-      - name: Commit Updated Dashboard
+
+      # -----------------------------------------------
+      # STEP 5 - CHECK GENERATED FILES
+      # -----------------------------------------------
+
+      - name: Check Generated Files
         run: |
+          echo "Checking docs folder..."
+          ls -la docs/
+
+          echo "Checking data.json..."
+          cat docs/data.json | head -50
+
+
+      # -----------------------------------------------
+      # STEP 6 - COMMIT UPDATED DATA
+      # -----------------------------------------------
+
+      - name: Commit and Push Updated Data
+        run: |
+
           git config --global user.name "GitHub Actions"
+
           git config --global user.email "actions@github.com"
 
-          git add docs/index.html
+          git add docs/data.json
 
-          git diff --quiet && git diff --staged --quiet || git commit -m "Daily Nifty 100 Multi Screener Update"
+          if git diff --cached --quiet; then
 
-          git push
+            echo "No changes in screener data."
+
+          else
+
+            git commit -m "Daily Nifty 100 Multi Screener Update"
+
+            git push
+
+          fi
