@@ -9,6 +9,7 @@ import warnings
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+
 warnings.filterwarnings("ignore")
 
 
@@ -19,29 +20,50 @@ warnings.filterwarnings("ignore")
 CSV_FILE = "nifty100_symbols.csv"
 
 OUTPUT_DIR = "docs"
-OUTPUT_FILE = os.path.join(OUTPUT_DIR, "data.json")
+
+OUTPUT_FILE = os.path.join(
+    OUTPUT_DIR,
+    "data.json"
+)
 
 IST = ZoneInfo("Asia/Kolkata")
 
-# Historical data period
 DOWNLOAD_PERIOD = "3y"
-
-# MWD
-MWD_52W_DAYS = 252
-
-# SST
-SST_LOOKBACK = 20
-SST_TARGET_PERCENT = 6.0
-
-# BLSH RSI
-BLSH_LOOKBACK = 25
-BLSH_TARGET_PERCENT = 3.14
-RSI_PERIOD = 14
-RSI_LIMIT = 36
 
 
 # ============================================================
-# READ NIFTY 100 CSV
+# MWD SETTINGS
+# ============================================================
+
+MWD_52W_DAYS = 252
+
+
+# ============================================================
+# SST SETTINGS
+# ============================================================
+
+SST_LOOKBACK = 20
+
+SST_TARGET_PERCENT = 6.0
+
+
+# ============================================================
+# BLSH SETTINGS
+# ============================================================
+
+BLSH_LOOKBACK = 25
+
+BLSH_TARGET_PERCENT = 3.14
+
+RSI_PERIOD = 14
+
+RSI_LIMIT = 36
+
+TRADING_DAYS_1_YEAR = 252
+
+
+# ============================================================
+# READ SYMBOLS
 # ============================================================
 
 def read_symbols():
@@ -54,11 +76,13 @@ def read_symbols():
     ]
 
     if "symbol" not in df.columns:
+
         raise ValueError(
-            "CSV file must contain symbol column"
+            "CSV must contain a column named symbol"
         )
 
     if "company" not in df.columns:
+
         df["company"] = df["symbol"]
 
     df = df.dropna(
@@ -92,32 +116,55 @@ def download_stock(symbol):
     try:
 
         df = yf.download(
+
             yahoo_symbol,
+
             period=DOWNLOAD_PERIOD,
+
             interval="1d",
+
             auto_adjust=False,
+
             progress=False,
+
             threads=False
+
         )
 
         if df is None or df.empty:
-            print(f"NO DATA : {symbol}")
+
+            print(
+                f"NO DATA : {symbol}"
+            )
+
             return None
 
-        # Handle MultiIndex columns if returned
-        if isinstance(df.columns, pd.MultiIndex):
+
+        # Handle Yahoo MultiIndex columns
+
+        if isinstance(
+            df.columns,
+            pd.MultiIndex
+        ):
 
             df.columns = [
                 col[0]
                 for col in df.columns
             ]
 
+
         required_columns = [
+
             "Open",
+
             "High",
+
             "Low",
+
             "Close"
+
         ]
+
 
         for col in required_columns:
 
@@ -129,9 +176,11 @@ def download_stock(symbol):
 
                 return None
 
+
         df = df.dropna(
             subset=required_columns
         )
+
 
         if len(df) < 300:
 
@@ -141,120 +190,186 @@ def download_stock(symbol):
 
             return None
 
+
         return df
+
 
     except Exception as e:
 
         print(
-            f"ERROR DOWNLOADING {symbol} : {e}"
+            f"DOWNLOAD ERROR {symbol} : {e}"
         )
 
         return None
 
 
 # ============================================================
-# RSI 14 CALCULATION
+# RSI CALCULATION
 # ============================================================
 
 def calculate_rsi(close, period=14):
 
     delta = close.diff()
 
-    gain = delta.clip(lower=0)
+    gain = delta.clip(
+        lower=0
+    )
 
-    loss = -delta.clip(upper=0)
+    loss = -delta.clip(
+        upper=0
+    )
+
 
     avg_gain = gain.ewm(
+
         alpha=1 / period,
+
         min_periods=period,
+
         adjust=False
+
     ).mean()
 
+
     avg_loss = loss.ewm(
+
         alpha=1 / period,
+
         min_periods=period,
+
         adjust=False
+
     ).mean()
+
 
     rs = avg_gain / avg_loss
 
+
     rsi = 100 - (
-        100 / (1 + rs)
+
+        100 /
+        (1 + rs)
+
     )
+
 
     return rsi
 
 
 # ============================================================
-# RESAMPLE DAILY DATA TO WEEKLY
+# WEEKLY DATA
 # ============================================================
 
 def get_weekly_data(df):
 
     weekly = pd.DataFrame()
 
+
     weekly["Open"] = (
+
         df["Open"]
+
         .resample("W-FRI")
+
         .first()
+
     )
+
 
     weekly["High"] = (
+
         df["High"]
+
         .resample("W-FRI")
+
         .max()
+
     )
+
 
     weekly["Low"] = (
+
         df["Low"]
+
         .resample("W-FRI")
+
         .min()
+
     )
+
 
     weekly["Close"] = (
+
         df["Close"]
+
         .resample("W-FRI")
+
         .last()
+
     )
 
+
     weekly = weekly.dropna()
+
 
     return weekly
 
 
 # ============================================================
-# RESAMPLE DAILY DATA TO MONTHLY
+# MONTHLY DATA
 # ============================================================
 
 def get_monthly_data(df):
 
     monthly = pd.DataFrame()
 
+
     monthly["Open"] = (
+
         df["Open"]
+
         .resample("ME")
+
         .first()
+
     )
+
 
     monthly["High"] = (
+
         df["High"]
+
         .resample("ME")
+
         .max()
+
     )
+
 
     monthly["Low"] = (
+
         df["Low"]
+
         .resample("ME")
+
         .min()
+
     )
+
 
     monthly["Close"] = (
+
         df["Close"]
+
         .resample("ME")
+
         .last()
+
     )
 
+
     monthly = monthly.dropna()
+
 
     return monthly
 
@@ -263,91 +378,138 @@ def get_monthly_data(df):
 # CANDLE STATUS
 # ============================================================
 
-def candle_status(open_price, close_price):
+def candle_status(
+    open_price,
+    close_price
+):
 
     if close_price > open_price:
+
         return "BULLISH"
 
+
     elif close_price < open_price:
+
         return "BEARISH"
 
-    else:
-        return "NEUTRAL"
+
+    return "NEUTRAL"
 
 
 # ============================================================
-# MWD SCREENER
+# MWD ANALYSIS
 # ============================================================
 
-def analyze_mwd(symbol, company, df):
+def analyze_mwd(
+    symbol,
+    company,
+    df
+):
 
     try:
 
+
         # ----------------------------------------------------
-        # DAILY CANDLE
+        # DAILY
         # ----------------------------------------------------
 
         daily_last = df.iloc[-1]
 
+
         daily_status = candle_status(
-            float(daily_last["Open"]),
-            float(daily_last["Close"])
+
+            float(
+                daily_last["Open"]
+            ),
+
+            float(
+                daily_last["Close"]
+            )
+
         )
 
 
         # ----------------------------------------------------
-        # WEEKLY CANDLE
+        # WEEKLY
         # ----------------------------------------------------
 
         weekly = get_weekly_data(df)
 
+
         if len(weekly) < 3:
+
             return None
+
 
         weekly_last = weekly.iloc[-1]
 
+
         weekly_status = candle_status(
-            float(weekly_last["Open"]),
-            float(weekly_last["Close"])
+
+            float(
+                weekly_last["Open"]
+            ),
+
+            float(
+                weekly_last["Close"]
+            )
+
         )
 
 
         # ----------------------------------------------------
-        # MONTHLY CANDLE
+        # MONTHLY
         # ----------------------------------------------------
 
         monthly = get_monthly_data(df)
 
+
         if len(monthly) < 3:
+
             return None
+
 
         monthly_last = monthly.iloc[-1]
 
+
         monthly_status = candle_status(
-            float(monthly_last["Open"]),
-            float(monthly_last["Close"])
+
+            float(
+                monthly_last["Open"]
+            ),
+
+            float(
+                monthly_last["Close"]
+            )
+
         )
 
 
         # ----------------------------------------------------
-        # MWD QUALIFICATION
+        # MWD CONDITION
         # ----------------------------------------------------
 
         if not (
-            monthly_status == "BULLISH"
+
+            daily_status == "BULLISH"
+
             and weekly_status == "BULLISH"
-            and daily_status == "BULLISH"
+
+            and monthly_status == "BULLISH"
+
         ):
 
             return None
 
 
         # ----------------------------------------------------
-        # LAST PRICE
+        # CMP
         # ----------------------------------------------------
 
         last_price = float(
+
             df["Close"].iloc[-1]
+
         )
 
 
@@ -359,12 +521,15 @@ def analyze_mwd(symbol, company, df):
             MWD_52W_DAYS
         )
 
+
         high_52_week = float(
+
             last_252["High"].max()
+
         )
 
 
-        # Exclude stocks already at / above 52W high
+        # Exclude stocks already crossing 52W High
 
         if last_price >= high_52_week:
 
@@ -376,32 +541,50 @@ def analyze_mwd(symbol, company, df):
         # ----------------------------------------------------
 
         distance_52w = (
+
             (
-                last_price - high_52_week
+                last_price
+                -
+                high_52_week
             )
+
             /
+
             high_52_week
+
         ) * 100
 
 
         # ----------------------------------------------------
-        # MONTHLY RISE %
+        # MONTHLY RISE
         # ----------------------------------------------------
 
         monthly_open = float(
+
             monthly_last["Open"]
+
         )
+
 
         monthly_close = float(
+
             monthly_last["Close"]
+
         )
 
+
         monthly_rise = (
+
             (
-                monthly_close - monthly_open
+                monthly_close
+                -
+                monthly_open
             )
+
             /
+
             monthly_open
+
         ) * 100
 
 
@@ -439,10 +622,11 @@ def analyze_mwd(symbol, company, df):
 
         }
 
+
     except Exception as e:
 
         print(
-            f"MWD ERROR {symbol} : {e}"
+            f"MWD ERROR {symbol}: {e}"
         )
 
         return None
@@ -450,19 +634,6 @@ def analyze_mwd(symbol, company, df):
 
 # ============================================================
 # SST HISTORICAL ANALYSIS
-#
-# Logic:
-#
-# New 20 Day Low
-#        ↓
-# Remember previous 20 Day High
-#        ↓
-# Wait for price to cross that high
-#        ↓
-# After breakout:
-#
-# +6% achieved = YES
-# New 20 Day Low before target = NO
 # ============================================================
 
 def calculate_sst_history(df):
@@ -471,13 +642,13 @@ def calculate_sst_history(df):
 
     target_no = 0
 
+
     waiting_for_breakout = False
 
-    in_trade = False
+    active_trade = False
+
 
     trigger_price = None
-
-    entry_price = None
 
     target_price = None
 
@@ -486,37 +657,46 @@ def calculate_sst_history(df):
 
 
     for i in range(
+
         start_index,
+
         len(df)
+
     ):
 
 
-        # Previous window excludes current day
-
         previous_data = df.iloc[
+
             i - SST_LOOKBACK:i
+
         ]
 
 
         previous_low = float(
+
             previous_data["Low"].min()
+
         )
 
+
         previous_high = float(
+
             previous_data["High"].max()
+
         )
 
 
         current_low = float(
+
             df["Low"].iloc[i]
+
         )
+
 
         current_high = float(
-            df["High"].iloc[i]
-        )
 
-        current_close = float(
-            df["Close"].iloc[i]
+            df["High"].iloc[i]
+
         )
 
 
@@ -525,61 +705,62 @@ def calculate_sst_history(df):
         # ----------------------------------------------------
 
         new_low = (
-            current_low < previous_low
+
+            current_low
+            <
+            previous_low
+
         )
 
 
-        # ----------------------------------------------------
-        # IF NEW LOW
-        # ----------------------------------------------------
-
         if new_low:
 
-            # If active trade failed before target
 
-            if in_trade:
+            if active_trade:
 
                 target_no += 1
 
-                in_trade = False
-
-                entry_price = None
+                active_trade = False
 
                 target_price = None
 
 
-            # Start waiting for breakout
+            trigger_price = previous_high
 
             waiting_for_breakout = True
-
-            trigger_price = previous_high
 
             continue
 
 
         # ----------------------------------------------------
-        # WAIT FOR BREAKOUT
+        # WAITING FOR BREAKOUT
         # ----------------------------------------------------
 
         if waiting_for_breakout:
 
+
             if current_high >= trigger_price:
 
-                entry_price = trigger_price
 
                 target_price = (
-                    entry_price
+
+                    trigger_price
+
                     *
+
                     (
                         1
                         +
                         SST_TARGET_PERCENT / 100
                     )
+
                 )
+
 
                 waiting_for_breakout = False
 
-                in_trade = True
+                active_trade = True
+
 
             continue
 
@@ -588,40 +769,39 @@ def calculate_sst_history(df):
         # ACTIVE TRADE
         # ----------------------------------------------------
 
-        if in_trade:
+        if active_trade:
 
-
-            # Target achieved
 
             if current_high >= target_price:
 
+
                 target_yes += 1
 
-                in_trade = False
-
-                entry_price = None
+                active_trade = False
 
                 target_price = None
 
-                continue
 
+    total = (
 
-    total_completed = (
-        target_yes + target_no
+        target_yes
+        +
+        target_no
+
     )
 
 
-    if total_completed > 0:
+    strike_rate = (
 
-        strike_rate = (
-            target_yes
-            /
-            total_completed
+        (
+            target_yes / total
         ) * 100
 
-    else:
+        if total > 0
 
-        strike_rate = 0
+        else 0
+
+    )
 
 
     return {
@@ -642,36 +822,48 @@ def calculate_sst_history(df):
 # SST CURRENT ANALYSIS
 # ============================================================
 
-def analyze_sst(symbol, company, df):
+def analyze_sst(
+    symbol,
+    company,
+    df
+):
 
     try:
 
-        if len(df) < SST_LOOKBACK + 10:
-
-            return None
-
 
         last_price = float(
+
             df["Close"].iloc[-1]
+
         )
 
 
-        previous_window = df.iloc[
-            -SST_LOOKBACK:
-        ]
+        last_20 = df.tail(
+
+            SST_LOOKBACK
+
+        )
 
 
         high_20_day = float(
-            previous_window["High"].max()
+
+            last_20["High"].max()
+
         )
 
 
         distance_20d = (
+
             (
-                high_20_day - last_price
+                high_20_day
+                -
+                last_price
             )
+
             /
+
             high_20_day
+
         ) * 100
 
 
@@ -713,78 +905,116 @@ def analyze_sst(symbol, company, df):
 
         }
 
+
     except Exception as e:
 
         print(
-            f"SST ERROR {symbol} : {e}"
+            f"SST ERROR {symbol}: {e}"
         )
 
         return None
 
 
 # ============================================================
-# BLSH HISTORICAL ANALYSIS
+# BLSH HISTORICAL ANALYSIS - LAST 1 YEAR
 #
 # Logic:
 #
 # New 25 Day Low
-#        ↓
-# Remember Previous 25 Day High as Trigger Price
-#        ↓
-# Wait until Trigger Price is crossed
-#        ↓
-# Target = Trigger Price + 3.14%
+#       ↓
+# Previous 25 Day High = Trigger
+#       ↓
+# Trigger Crossed
+#       ↓
+# Target = Trigger + 3.14%
 #
-# Target achieved = YES
-# New 25 Day Low before target = NO
+# YES = Target Achieved
+# NO  = New 25 Day Low before target
+#
+# Only events completed in last 252 trading days counted.
 # ============================================================
 
-def calculate_blsh_history(df):
+def calculate_blsh_history_1_year(df):
+
 
     target_yes = 0
 
     target_no = 0
 
+
     waiting_for_trigger = False
 
     active_trade = False
+
 
     trigger_price = None
 
     target_price = None
 
 
-    start_index = BLSH_LOOKBACK + RSI_PERIOD
+    # Start from sufficient history
+
+    start_index = max(
+
+        BLSH_LOOKBACK + RSI_PERIOD,
+
+        1
+
+    )
+
+
+    # Last one year starts here
+
+    one_year_start = max(
+
+        0,
+
+        len(df) - TRADING_DAYS_1_YEAR
+
+    )
 
 
     for i in range(
+
         start_index,
+
         len(df)
+
     ):
 
 
-        # Previous 25 days
-
         previous_data = df.iloc[
+
             i - BLSH_LOOKBACK:i
+
         ]
 
 
         previous_low = float(
+
             previous_data["Low"].min()
+
         )
 
+
         previous_high = float(
+
             previous_data["High"].max()
+
         )
 
 
         current_low = float(
+
             df["Low"].iloc[i]
+
         )
 
+
         current_high = float(
+
             df["High"].iloc[i]
+
         )
 
 
@@ -793,34 +1023,45 @@ def calculate_blsh_history(df):
         # ----------------------------------------------------
 
         new_25_day_low = (
-            current_low < previous_low
+
+            current_low
+            <
+            previous_low
+
         )
 
 
         # ----------------------------------------------------
-        # IF NEW LOW
+        # NEW LOW DETECTED
         # ----------------------------------------------------
 
         if new_25_day_low:
 
 
-            # Active trade fails if another
-            # fresh 25-day low comes before target
+            # Active trade fails
 
             if active_trade:
 
-                target_no += 1
+
+                # Count only if failure occurred
+                # in last 1 year
+
+                if i >= one_year_start:
+
+                    target_no += 1
+
 
                 active_trade = False
 
                 target_price = None
 
 
-            # Set new trigger
+            # Set fresh trigger
 
             trigger_price = previous_high
 
             waiting_for_trigger = True
+
 
             continue
 
@@ -831,21 +1072,29 @@ def calculate_blsh_history(df):
 
         if waiting_for_trigger:
 
+
             if current_high >= trigger_price:
 
+
                 target_price = (
+
                     trigger_price
+
                     *
+
                     (
                         1
                         +
                         BLSH_TARGET_PERCENT / 100
                     )
+
                 )
+
 
                 waiting_for_trigger = False
 
                 active_trade = True
+
 
             continue
 
@@ -857,42 +1106,50 @@ def calculate_blsh_history(df):
         if active_trade:
 
 
-            # Target achieved
+            # TARGET ACHIEVED
 
             if current_high >= target_price:
 
-                target_yes += 1
+
+                # Count only if achieved in last 1 year
+
+                if i >= one_year_start:
+
+                    target_yes += 1
+
 
                 active_trade = False
 
                 target_price = None
 
-                continue
 
+    total = (
 
-    total_completed = (
-        target_yes + target_no
+        target_yes
+        +
+        target_no
+
     )
 
 
-    if total_completed > 0:
+    strike_rate = (
 
-        strike_rate = (
-            target_yes
-            /
-            total_completed
+        (
+            target_yes / total
         ) * 100
 
-    else:
+        if total > 0
 
-        strike_rate = 0
+        else 0
+
+    )
 
 
     return {
 
-        "target_yes": target_yes,
+        "target_yes_1y": target_yes,
 
-        "target_no": target_no,
+        "target_no_1y": target_no,
 
         "strike_rate": round(
             strike_rate,
@@ -904,44 +1161,46 @@ def calculate_blsh_history(df):
 
 # ============================================================
 # BLSH CURRENT ANALYSIS
-#
-# Show only:
-#
-# RSI 14 < 36
 # ============================================================
 
-def analyze_blsh(symbol, company, df):
+def analyze_blsh(
+    symbol,
+    company,
+    df
+):
 
     try:
 
-        if len(df) < 100:
 
-            return None
+        df = df.copy()
 
 
         # ----------------------------------------------------
         # RSI
         # ----------------------------------------------------
 
-        df = df.copy()
-
         df["RSI"] = calculate_rsi(
+
             df["Close"],
+
             RSI_PERIOD
+
         )
 
 
         current_rsi = float(
+
             df["RSI"].iloc[-1]
+
         )
 
-
-        # Show ONLY RSI below 36
 
         if pd.isna(current_rsi):
 
             return None
 
+
+        # ONLY RSI BELOW 36
 
         if current_rsi >= RSI_LIMIT:
 
@@ -949,55 +1208,65 @@ def analyze_blsh(symbol, company, df):
 
 
         # ----------------------------------------------------
-        # CURRENT PRICE
+        # CMP
         # ----------------------------------------------------
 
-        last_price = float(
+        cmp = float(
+
             df["Close"].iloc[-1]
+
         )
 
 
         # ----------------------------------------------------
-        # CURRENT 25 DAY LOW
+        # CURRENT 25 DAY DATA
         # ----------------------------------------------------
 
         last_25 = df.tail(
+
             BLSH_LOOKBACK
+
         )
 
 
         low_25_day = float(
+
             last_25["Low"].min()
+
         )
 
-
-        # ----------------------------------------------------
-        # CURRENT 25 DAY HIGH = TRIGGER PRICE
-        # ----------------------------------------------------
 
         trigger_price = float(
+
             last_25["High"].max()
+
         )
 
 
         # ----------------------------------------------------
-        # TRIGGER PRICE AWAY FROM CMP
+        # TRIGGER AWAY FROM CMP
         # ----------------------------------------------------
 
         trigger_away = (
+
             (
-                last_price - trigger_price
+                cmp
+                -
+                trigger_price
             )
+
             /
+
             trigger_price
+
         ) * 100
 
 
         # ----------------------------------------------------
-        # HISTORICAL ANALYSIS
+        # LAST ONE YEAR PERFORMANCE
         # ----------------------------------------------------
 
-        history = calculate_blsh_history(df)
+        history = calculate_blsh_history_1_year(df)
 
 
         return {
@@ -1007,7 +1276,7 @@ def analyze_blsh(symbol, company, df):
             "company": company,
 
             "cmp": round(
-                last_price,
+                cmp,
                 2
             ),
 
@@ -1031,12 +1300,12 @@ def analyze_blsh(symbol, company, df):
                 2
             ),
 
-            "target_yes": history[
-                "target_yes"
+            "target_yes_1y": history[
+                "target_yes_1y"
             ],
 
-            "target_no": history[
-                "target_no"
+            "target_no_1y": history[
+                "target_no_1y"
             ],
 
             "strike_rate": history[
@@ -1045,25 +1314,27 @@ def analyze_blsh(symbol, company, df):
 
         }
 
+
     except Exception as e:
 
         print(
-            f"BLSH ERROR {symbol} : {e}"
+            f"BLSH ERROR {symbol}: {e}"
         )
 
         return None
 
 
 # ============================================================
-# MAIN PROCESS
+# MAIN
 # ============================================================
 
 def main():
 
+
     print("=" * 70)
 
     print(
-        "NIFTY 100 DAILY MULTI SCREENER"
+        "NIFTY 100 MULTI SCREENER"
     )
 
     print("=" * 70)
@@ -1086,13 +1357,17 @@ def main():
 
 
     # ========================================================
-    # PROCESS EACH STOCK
+    # PROCESS ALL STOCKS
     # ========================================================
 
     for count, stock in enumerate(
+
         symbols,
+
         start=1
+
     ):
+
 
         symbol = stock["symbol"]
 
@@ -1100,7 +1375,9 @@ def main():
 
 
         print(
-            f"[{count}/{total_stocks}] Processing {symbol}"
+
+            f"[{count}/{total_stocks}] {symbol}"
+
         )
 
 
@@ -1112,11 +1389,12 @@ def main():
             continue
 
 
-        # Latest market date
-
         latest_market_date = (
+
             df.index[-1]
+
             .strftime("%d-%b-%Y")
+
         )
 
 
@@ -1124,132 +1402,151 @@ def main():
         # MWD
         # ----------------------------------------------------
 
-        mwd = analyze_mwd(
+        result = analyze_mwd(
+
             symbol,
+
             company,
+
             df
+
         )
 
 
-        if mwd:
+        if result:
 
-            mwd_results.append(mwd)
+            mwd_results.append(
+                result
+            )
 
 
         # ----------------------------------------------------
         # SST
         # ----------------------------------------------------
 
-        sst = analyze_sst(
+        result = analyze_sst(
+
             symbol,
+
             company,
+
             df
+
         )
 
 
-        if sst:
+        if result:
 
-            sst_results.append(sst)
+            sst_results.append(
+                result
+            )
 
 
         # ----------------------------------------------------
         # BLSH
         # ----------------------------------------------------
 
-        blsh = analyze_blsh(
+        result = analyze_blsh(
+
             symbol,
+
             company,
+
             df
+
         )
 
 
-        if blsh:
+        if result:
 
-            blsh_results.append(blsh)
+            blsh_results.append(
+                result
+            )
 
 
-        # Reduce Yahoo Finance rate limiting
-
-        time.sleep(0.30)
+        time.sleep(0.20)
 
 
     # ========================================================
-    # SORT RESULTS
-    # ========================================================
-
-
-    # MWD:
-    # Nearest to 52 week high first
+    # SORT MWD
     #
-    # Example:
-    # -0.50%
-    # -2.00%
-    # -8.00%
+    # Nearest 52W High first
+    # ========================================================
 
     mwd_results = sorted(
 
         mwd_results,
 
-        key=lambda x: x[
-            "distance_52w"
-        ],
+        key=lambda x:
+
+            x["distance_52w"],
 
         reverse=True
 
     )
 
 
-    # SST:
-    # Nearest to 20 day high first
+    # ========================================================
+    # SORT SST
     #
-    # Example:
-    # 0.10%
-    # 0.50%
-    # 2.00%
+    # Nearest 20 Day High first
+    # ========================================================
 
     sst_results = sorted(
 
         sst_results,
 
-        key=lambda x: x[
-            "distance_20d"
-        ]
+        key=lambda x:
+
+            x["distance_20d"]
 
     )
 
 
-    # BLSH:
-    # Nearest trigger price first
+    # ========================================================
+    # SORT BLSH
+    #
+    # Nearest Trigger Price first
+    # ========================================================
 
     blsh_results = sorted(
 
         blsh_results,
 
-        key=lambda x: abs(
-            x["trigger_away"]
-        )
+        key=lambda x:
+
+            abs(
+                x["trigger_away"]
+            )
 
     )
 
 
     # ========================================================
-    # GENERATE IST TIME
+    # IST TIME
     # ========================================================
 
     current_time = datetime.now(
+
         IST
+
     ).strftime(
+
         "%d-%b-%Y %I:%M %p IST"
+
     )
 
 
     # ========================================================
-    # CREATE OUTPUT DIRECTORY
+    # OUTPUT DIRECTORY
     # ========================================================
 
     os.makedirs(
+
         OUTPUT_DIR,
+
         exist_ok=True
+
     )
 
 
@@ -1259,16 +1556,21 @@ def main():
 
     output = {
 
+
         "last_updated": current_time,
 
+
         "latest_market_date": latest_market_date,
+
 
         "total_stocks": total_stocks,
 
 
         "mwd": {
 
-            "count": len(mwd_results),
+            "count": len(
+                mwd_results
+            ),
 
             "data": mwd_results
 
@@ -1277,7 +1579,9 @@ def main():
 
         "sst": {
 
-            "count": len(sst_results),
+            "count": len(
+                sst_results
+            ),
 
             "data": sst_results
 
@@ -1286,7 +1590,9 @@ def main():
 
         "blsh": {
 
-            "count": len(blsh_results),
+            "count": len(
+                blsh_results
+            ),
 
             "data": blsh_results
 
@@ -1300,10 +1606,15 @@ def main():
     # ========================================================
 
     with open(
+
         OUTPUT_FILE,
+
         "w",
+
         encoding="utf-8"
+
     ) as f:
+
 
         json.dump(
 
@@ -1318,9 +1629,13 @@ def main():
         )
 
 
+    print()
+
     print("=" * 70)
 
-    print("PROCESS COMPLETED")
+    print("COMPLETED")
+
+    print("=" * 70)
 
     print(
         f"Total Stocks : {total_stocks}"
@@ -1338,15 +1653,17 @@ def main():
         f"BLSH Stocks  : {len(blsh_results)}"
     )
 
+    print()
+
     print(
-        f"Output File  : {OUTPUT_FILE}"
+        f"Updated IST : {current_time}"
     )
 
     print("=" * 70)
 
 
 # ============================================================
-# START PROGRAM
+# START
 # ============================================================
 
 if __name__ == "__main__":
