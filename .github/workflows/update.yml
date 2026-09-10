@@ -25,9 +25,9 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
-
         with:
           persist-credentials: true
+          fetch-depth: 0
 
 
       # -----------------------------------------------
@@ -36,7 +36,6 @@ jobs:
 
       - name: Setup Python
         uses: actions/setup-python@v5
-
         with:
           python-version: "3.11"
 
@@ -57,7 +56,9 @@ jobs:
 
       - name: Run Nifty 100 Multi Screener
         run: |
+          echo "Starting Nifty 100 Multi Screener..."
           python multi_screener.py
+          echo "Multi Screener execution completed."
 
 
       # -----------------------------------------------
@@ -66,34 +67,118 @@ jobs:
 
       - name: Check Generated Files
         run: |
-          echo "Checking docs folder..."
-          ls -la docs/
+          echo "=========================================="
+          echo "Checking docs folder"
+          echo "=========================================="
 
-          echo "Checking data.json..."
-          cat docs/data.json | head -50
+          ls -lah docs/
+
+          echo ""
+          echo "=========================================="
+          echo "Checking data.json"
+          echo "=========================================="
+
+          if [ -f docs/data.json ]; then
+            ls -lh docs/data.json
+            head -50 docs/data.json
+          else
+            echo "WARNING: docs/data.json not found"
+          fi
+
+          echo ""
+          echo "=========================================="
+          echo "Checking index.html"
+          echo "=========================================="
+
+          if [ -f docs/index.html ]; then
+            ls -lh docs/index.html
+            echo "index.html exists."
+            echo "First 20 lines:"
+            head -20 docs/index.html
+          else
+            echo "ERROR: docs/index.html not found"
+            exit 1
+          fi
 
 
       # -----------------------------------------------
-      # STEP 6 - COMMIT UPDATED DATA
+      # STEP 6 - SHOW FILE CHANGES
       # -----------------------------------------------
 
-      - name: Commit and Push Updated Data
+      - name: Check Git Changes
+        run: |
+          echo "=========================================="
+          echo "Git Status"
+          echo "=========================================="
+
+          git status
+
+          echo ""
+          echo "=========================================="
+          echo "Changed Files"
+          echo "=========================================="
+
+          git diff --name-only
+
+
+      # -----------------------------------------------
+      # STEP 7 - COMMIT UPDATED DOCS
+      # -----------------------------------------------
+
+      - name: Commit and Push Updated Screener
         run: |
 
           git config --global user.name "GitHub Actions"
 
           git config --global user.email "actions@github.com"
 
-          git add docs/data.json
+          echo "Adding updated docs files..."
+
+          git add docs/
+
+          echo ""
+          echo "Checking staged changes..."
+
+          git diff --cached --name-only
 
           if git diff --cached --quiet; then
 
-            echo "No changes in screener data."
+            echo ""
+            echo "No changes in docs folder."
+            echo "Nothing to commit."
 
           else
 
+            echo ""
+            echo "Changes detected."
+
             git commit -m "Daily Nifty 100 Multi Screener Update"
+
+            echo ""
+            echo "Pushing changes to GitHub..."
 
             git push
 
+            echo ""
+            echo "Successfully pushed updated screener."
+
           fi
+
+
+      # -----------------------------------------------
+      # STEP 8 - FINAL STATUS
+      # -----------------------------------------------
+
+      - name: Final Status
+        run: |
+          echo "=========================================="
+          echo "NIFTY 100 MULTI SCREENER WORKFLOW COMPLETE"
+          echo "=========================================="
+
+          echo ""
+          echo "Generated files:"
+          ls -lah docs/
+
+          echo ""
+          echo "Git commit:"
+          git log -1 --oneline
