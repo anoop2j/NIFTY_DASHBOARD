@@ -583,30 +583,6 @@ def sst_screen(
 
 # ============================================================
 # BLSH HISTORICAL STATISTICS
-#
-# FINAL LOGIC:
-#
-# 1. Find a NEW 25-DAY LOW.
-#
-# 2. That day's low becomes the reference low.
-#
-# 3. Trigger = reference low + 6.5%.
-#
-# 4. Once price reaches trigger:
-#       trade becomes active.
-#
-# 5. Target = trigger + 3.14%.
-#
-# 6. If target is reached before another
-#    new 25-day low:
-#       YES
-#
-# 7. If another new 25-day low occurs
-#    before target:
-#       NO
-#
-# IMPORTANT:
-# NO 25-DAY HIGH IS USED.
 # ============================================================
 
 def blsh_history_1_year(df):
@@ -658,13 +634,10 @@ def blsh_history_1_year(df):
             BLSH_LOOKBACK
         ):
 
-            # If a trade was already active,
-            # new 25-day low means target failed.
             if trigger_active:
 
                 no += 1
 
-            # Start a fresh BLSH setup
             reference_low = current_low
 
             trigger_price = (
@@ -703,8 +676,6 @@ def blsh_history_1_year(df):
 
                 trigger_active = True
 
-                # If target is achieved on
-                # the same trading day
                 if current_high >= target_price:
 
                     yes += 1
@@ -754,20 +725,6 @@ def blsh_history_1_year(df):
 
 # ============================================================
 # BLSH CURRENT SCREEN
-#
-# FINAL RULE:
-#
-# RSI < 36
-# AND
-# CURRENT DAY MAKES NEW 25-DAY LOW
-#
-# Trigger:
-# 25-Day Low x 1.065
-#
-# Target:
-# Trigger x 1.0314
-#
-# No 25-Day High used.
 # ============================================================
 
 def blsh_screen(
@@ -870,9 +827,6 @@ def blsh_screen(
 
     # --------------------------------------------------------
     # DISTANCE FROM CMP TO TRIGGER
-    #
-    # Positive = trigger above CMP
-    # Negative = CMP already above trigger
     # --------------------------------------------------------
 
     trigger_away = (
@@ -1696,9 +1650,9 @@ tr:last-child td {{
                 {
                     rows_mwd()
                     or
-                    '<tr><td colspan="6">
+                    '''<tr><td colspan="6">
                     No matching stocks
-                    </td></tr>'
+                    </td></tr>'''
                 }
 
             </tbody>
@@ -1807,9 +1761,9 @@ tr:last-child td {{
                 {
                     rows_sst()
                     or
-                    '<tr><td colspan="8">
+                    '''<tr><td colspan="8">
                     No matching stocks
-                    </td></tr>'
+                    </td></tr>'''
                 }
 
             </tbody>
@@ -1925,9 +1879,9 @@ tr:last-child td {{
                 {
                     rows_blsh()
                     or
-                    '<tr><td colspan="11">
+                    '''<tr><td colspan="11">
                     No current matching stocks
-                    </td></tr>'
+                    </td></tr>'''
                 }
 
             </tbody>
