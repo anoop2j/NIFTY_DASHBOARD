@@ -1,27 +1,29 @@
+
+
 <!DOCTYPE html>
 
-<html lang="en">
+<html>
 
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1.0"
+>
 
-<title>Nifty 100 Daily Multi-Screener</title>
+<title>
+Nifty 100 Daily Multi-Screener
+</title>
 
 
 <style>
 
-/* =====================================================
-   GLOBAL
-===================================================== */
-
 * {
     box-sizing: border-box;
 }
-
 
 body {
 
@@ -29,632 +31,412 @@ body {
 
     font-family:
         Arial,
-        Helvetica,
         sans-serif;
 
-    background: #f4f6f9;
+    background:
+        #eef2f7;
 
-    color: #253545;
+    color:
+        #26384d;
 
+    padding:
+        20px;
 }
 
 
-/* =====================================================
-   DASHBOARD
-===================================================== */
+.top {
 
-.dashboard {
+    background:
+        #ffffff;
 
-    width: 100%;
+    border-radius:
+        18px;
 
-    min-height: 100vh;
+    padding:
+        20px 36px;
 
-    padding: 20px;
+    display:
+        flex;
 
-}
+    justify-content:
+        space-between;
 
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-.main-header {
-
-    background: white;
-
-    border-radius: 14px;
-
-    padding: 22px 30px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 20px;
+    align-items:
+        center;
 
     box-shadow:
-        0 3px 15px
-        rgba(0,0,0,0.08);
+        0 8px 25px #ccd5e055;
 
+    margin-bottom:
+        25px;
 }
 
 
-.main-title {
+.title {
 
-    font-size: 28px;
+    font-size:
+        30px;
 
-    font-weight: 700;
-
+    font-weight:
+        800;
 }
 
 
-.sync-time {
+.subtitle {
 
-    margin-top: 8px;
+    margin-top:
+        10px;
 
-    color: #687786;
-
-    font-size: 14px;
-
+    color:
+        #5d6d7e;
 }
 
 
-/* =====================================================
-   SUMMARY BADGES
-===================================================== */
+.badges {
 
-.header-right {
+    display:
+        flex;
 
-    display: flex;
+    gap:
+        10px;
 
-    gap: 10px;
-
-    flex-wrap: wrap;
-
+    flex-wrap:
+        wrap;
 }
 
 
 .badge {
 
-    padding: 11px 18px;
+    padding:
+        12px 22px;
 
-    border-radius: 25px;
+    border-radius:
+        25px;
 
-    font-weight: bold;
+    font-weight:
+        bold;
 
-    font-size: 14px;
-
+    background:
+        #dcebf5;
 }
 
 
-.total-badge {
+.badge.green {
 
-    background: #e3edf7;
+    background:
+        #dcefe2;
 
-    color: #28587c;
-
+    color:
+        #29683c;
 }
 
-
-.mwd-badge {
-
-    background: #dff0e5;
-
-    color: #257044;
-
-}
-
-
-.sst-badge {
-
-    background: #eee3fb;
-
-    color: #6438a4;
-
-}
-
-
-.blsh-badge {
-
-    background: #dcefe9;
-
-    color: #16715c;
-
-}
-
-
-/* =====================================================
-   TABS
-===================================================== */
 
 .tabs {
 
-    margin-top: 25px;
+    display:
+        flex;
 
-    display: flex;
+    gap:
+        10px;
 
-    gap: 8px;
+    margin-bottom:
+        20px;
 
-    border-bottom:
-        2px solid #dfe4ea;
-
+    flex-wrap:
+        wrap;
 }
 
 
-.tab-button {
+.tab {
 
-    border: none;
+    border:
+        none;
 
-    background: #e9edf2;
-
-    padding: 16px 35px;
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    cursor: pointer;
+    padding:
+        14px 28px;
 
     border-radius:
-        10px 10px 0 0;
+        10px;
 
-    color: #556575;
+    background:
+        #d7dee8;
 
-    transition: 0.25s;
+    color:
+        #26384d;
 
+    font-size:
+        16px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
 }
 
 
-.tab-button:hover {
+.tab.active {
 
-    background: #dce3ea;
+    background:
+        #2858b5;
 
+    color:
+        white;
 }
 
-
-.tab-button.active {
-
-    background: #ffffff;
-
-    color: #273747;
-
-    border-top:
-        4px solid #2d65c8;
-
-}
-
-
-/* Individual tab colours */
-
-#mwdTab.active {
-
-    border-top-color: #2764c7;
-
-}
-
-
-#sstTab.active {
-
-    border-top-color: #713ac0;
-
-}
-
-
-#blshTab.active {
-
-    border-top-color: #16806a;
-
-}
-
-
-/* =====================================================
-   TAB CONTENT
-===================================================== */
 
 .tab-content {
 
-    display: none;
+    display:
+        none;
 
-    margin-top: 20px;
+    background:
+        white;
 
+    border-radius:
+        18px;
+
+    overflow:
+        hidden;
+
+    box-shadow:
+        0 8px 25px #ccd5e055;
 }
 
 
 .tab-content.active {
 
-    display: block;
-
+    display:
+        block;
 }
 
 
-/* =====================================================
-   SCREENER PANEL
-===================================================== */
+.panel-head {
 
-.screener-panel {
+    padding:
+        22px 25px;
 
-    background: white;
+    color:
+        white;
 
-    border-radius: 14px;
+    font-size:
+        22px;
 
-    padding: 24px;
+    font-weight:
+        800;
 
-    box-shadow:
-        0 3px 18px
-        rgba(0,0,0,0.07);
+    display:
+        flex;
 
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
 }
 
 
-/* =====================================================
-   PANEL HEADER
-===================================================== */
+.mwd-head {
+    background:
+        #2858b5;
+}
 
-.panel-header {
+.sst-head {
+    background:
+        #6b31c7;
+}
 
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 15px;
-
-    margin-bottom: 20px;
-
+.blsh-head {
+    background:
+        #147b65;
 }
 
 
-.panel-title {
+.panel-sub {
 
-    font-size: 24px;
+    font-size:
+        15px;
 
-    font-weight: 700;
-
+    font-weight:
+        normal;
 }
 
-
-.panel-description {
-
-    color: #667788;
-
-    margin-top: 6px;
-
-    font-size: 14px;
-
-}
-
-
-/* =====================================================
-   FILTERS
-===================================================== */
 
 .filters {
 
-    display: flex;
+    padding:
+        14px 20px;
 
-    align-items: center;
+    background:
+        #f8fafc;
 
-    gap: 10px;
+    border-bottom:
+        1px solid #e5e8ec;
 
+    display:
+        flex;
+
+    gap:
+        15px;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
 }
 
 
-.filter-label {
+select,
+input {
 
-    font-size: 14px;
-
-    font-weight: bold;
-
-}
-
-
-select {
-
-    padding: 9px 12px;
+    padding:
+        8px;
 
     border:
+        1px solid #ccd4dd;
 
-        1px solid #ccd4dc;
-
-    border-radius: 7px;
-
-    font-size: 14px;
-
-    background: white;
-
+    border-radius:
+        6px;
 }
 
 
-/* =====================================================
-   TABLE
-===================================================== */
+label {
 
-.table-wrapper {
+    font-size:
+        13px;
 
-    width: 100%;
+    font-weight:
+        bold;
+}
 
-    overflow-x: auto;
 
+.table-wrap {
+
+    width:
+        100%;
+
+    overflow-x:
+        auto;
 }
 
 
 table {
 
-    width: 100%;
+    width:
+        100%;
 
-    border-collapse: collapse;
+    border-collapse:
+        collapse;
 
-    min-width: 1000px;
-
-}
-
-
-thead {
-
-    background: #f3f5f8;
-
+    min-width:
+        900px;
 }
 
 
 th {
 
-    padding: 14px;
+    text-align:
+        left;
 
-    text-align: left;
+    color:
+        #607080;
 
-    color: #5a6978;
+    background:
+        #f6f7f9;
 
-    font-size: 13px;
+    padding:
+        13px;
 
-    border-bottom:
+    font-size:
+        14px;
 
-        2px solid #e2e7ec;
-
-    white-space: nowrap;
-
+    white-space:
+        nowrap;
 }
 
 
 td {
 
-    padding: 14px;
+    padding:
+        14px 13px;
 
     border-bottom:
+        1px solid #e5e8ec;
 
-        1px solid #e8edf1;
+    font-size:
+        14px;
 
-    font-size: 14px;
-
-    white-space: nowrap;
-
+    white-space:
+        nowrap;
 }
 
 
-tbody tr:hover {
+tr:last-child td {
 
-    background: #f7faff;
-
+    border-bottom:
+        none;
 }
 
 
-/* =====================================================
-   STOCK
-===================================================== */
+.positive {
 
-.stock-name {
+    background:
+        #e0f0e7;
 
-    font-weight: 700;
+    color:
+        #1c7043;
 
-    color: #263747;
+    padding:
+        5px 8px;
 
+    border-radius:
+        6px;
+
+    font-weight:
+        bold;
 }
 
-
-/* =====================================================
-   COLORS
-===================================================== */
-
-.green {
-
-    color: #148343;
-
-    font-weight: bold;
-
-}
-
-
-.red {
-
-    color: #cf342c;
-
-    font-weight: bold;
-
-}
-
-
-.orange {
-
-    color: #d47706;
-
-    font-weight: bold;
-
-}
-
-
-.purple {
-
-    color: #683ab0;
-
-    font-weight: bold;
-
-}
-
-
-/* =====================================================
-   CANDLE BADGES
-===================================================== */
-
-.status {
-
-    padding: 6px 9px;
-
-    border-radius: 6px;
-
-    font-size: 11px;
-
-    font-weight: bold;
-
-}
-
-
-.bullish {
-
-    background: #dff3e7;
-
-    color: #167543;
-
-}
-
-
-.bearish {
-
-    background: #fde3e1;
-
-    color: #c13129;
-
-}
-
-
-.neutral {
-
-    background: #e8eaed;
-
-    color: #59636d;
-
-}
-
-
-/* =====================================================
-   TARGET BADGES
-===================================================== */
-
-.target-yes {
-
-    background: #dff3e7;
-
-    color: #167543;
-
-    padding: 6px 10px;
-
-    border-radius: 6px;
-
-    font-weight: bold;
-
-}
-
-
-.target-no {
-
-    background: #fde3e1;
-
-    color: #c13129;
-
-    padding: 6px 10px;
-
-    border-radius: 6px;
-
-    font-weight: bold;
-
-}
-
-
-/* =====================================================
-   EMPTY
-===================================================== */
-
-.empty {
-
-    text-align: center;
-
-    padding: 40px;
-
-    color: #7b8794;
-
-}
-
-
-/* =====================================================
-   FOOTER
-===================================================== */
 
 .footer {
 
-    text-align: center;
+    margin-top:
+        25px;
 
-    padding: 25px;
+    text-align:
+        center;
 
-    color: #75818c;
+    color:
+        #64748b;
 
-    font-size: 13px;
-
+    font-size:
+        13px;
 }
 
 
-/* =====================================================
-   MOBILE
-===================================================== */
-
 @media(max-width:700px) {
 
-
-    .dashboard {
-
-        padding: 10px;
-
+    body {
+        padding:
+            10px;
     }
 
+    .top {
+        padding:
+            18px;
 
-    .main-header {
-
-        padding: 20px;
-
+        display:
+            block;
     }
 
-
-    .main-title {
-
-        font-size: 22px;
-
+    .badges {
+        margin-top:
+            15px;
     }
 
-
-    .tabs {
-
-        overflow-x: auto;
-
-    }
-
-
-    .tab-button {
-
-        padding: 13px 22px;
-
-        white-space: nowrap;
-
-    }
-
-
-    .screener-panel {
-
-        padding: 12px;
-
+    .title {
+        font-size:
+            24px;
     }
 
 }
@@ -667,1421 +449,4612 @@ tbody tr:hover {
 <body>
 
 
-<div class="dashboard">
-
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<div class="main-header">
-
+<div class="top">
 
     <div>
 
-
-        <div class="main-title">
-
+        <div class="title">
             📊 Nifty 100 Daily Multi-Screener
-
         </div>
 
-
-        <div
-            class="sync-time"
-            id="syncTime">
-
-            Loading data...
-
+        <div class="subtitle">
+            Live Data Sync | 10-Sep-2026 05:22 PM IST
         </div>
-
-
-        <div
-            class="sync-time"
-            id="marketDate">
-
-        </div>
-
 
     </div>
 
 
-    <div class="header-right">
+    <div class="badges">
 
-
-        <div
-            class="badge total-badge"
-            id="totalStocks">
-
-            Total: -
-
+        <div class="badge">
+            Total Stocks:
+            100
         </div>
 
-
-        <div
-            class="badge mwd-badge"
-            id="mwdCount">
-
-            MWD: -
-
+        <div class="badge green">
+            MWD Matches:
+            7
         </div>
 
-
-        <div
-            class="badge sst-badge"
-            id="sstCount">
-
-            SST: -
-
+        <div class="badge green">
+            SST Matches:
+            98
         </div>
 
-
-        <div
-            class="badge blsh-badge"
-            id="blshCount">
-
-            BLSH: -
-
+        <div class="badge green">
+            BLSH Matches:
+            15
         </div>
-
 
     </div>
-
 
 </div>
 
-
-
-<!-- =====================================================
-     TABS
-===================================================== -->
 
 <div class="tabs">
 
-
     <button
-
-        id="mwdTab"
-
-        class="tab-button active"
-
-        onclick="openTab('mwd')">
-
-        📈 MWD Screener
-
+        class="tab active"
+        onclick="showTab('mwd', this)"
+    >
+        1. MWD
     </button>
 
-
     <button
-
-        id="sstTab"
-
-        class="tab-button"
-
-        onclick="openTab('sst')">
-
-        🚀 SST Screener
-
+        class="tab"
+        onclick="showTab('sst', this)"
+    >
+        2. SST
     </button>
 
-
     <button
-
-        id="blshTab"
-
-        class="tab-button"
-
-        onclick="openTab('blsh')">
-
-        📉 BLSH RSI
-
+        class="tab"
+        onclick="showTab('blsh', this)"
+    >
+        3. BLSH RSI
     </button>
-
 
 </div>
 
 
-
-<!-- =====================================================
-     MWD TAB
-===================================================== -->
+<!-- ===================================================== -->
+<!-- MWD -->
+<!-- ===================================================== -->
 
 <div
+    id="mwd"
+    class="tab-content active"
+>
 
-    id="mwdContent"
+    <div class="panel-head mwd-head">
 
-    class="tab-content active">
+        <span>
+            MWD
+        </span>
 
-
-    <div class="screener-panel">
-
-
-        <div class="panel-header">
-
-
-            <div>
-
-
-                <div class="panel-title">
-
-                    MWD Momentum Screener
-
-                </div>
-
-
-                <div class="panel-description">
-
-                    Monthly + Weekly + Daily candles bullish |
-                    Stocks below 52-week high
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
-        <div class="table-wrapper">
-
-
-            <table>
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Symbol</th>
-
-                        <th>Company</th>
-
-                        <th>CMP</th>
-
-                        <th>52 Week High</th>
-
-                        <th>Distance From 52W High</th>
-
-                        <th>Monthly Rise</th>
-
-                        <th>Daily</th>
-
-                        <th>Weekly</th>
-
-                        <th>Monthly</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="mwdTable">
-
-                </tbody>
-
-
-            </table>
-
-
-        </div>
-
+        <span class="panel-sub">
+            Monthly + Weekly + Daily
+        </span>
 
     </div>
 
 
-</div>
+    <div class="filters">
 
+        <label>
+            52W Distance ≥
 
+            <input
+                id="dist"
+                type="number"
+                value="-10"
+                step="0.1"
+            >
 
-<!-- =====================================================
-     SST TAB
-===================================================== -->
+        </label>
 
-<div
 
-    id="sstContent"
+        <label>
+            Monthly Rise ≥
 
-    class="tab-content">
+            <input
+                id="rise"
+                type="number"
+                value="2"
+                step="0.1"
+            >
 
-
-    <div class="screener-panel">
-
-
-        <div class="panel-header">
-
-
-            <div>
-
-
-                <div class="panel-title">
-
-                    SST Screener
-
-                </div>
-
-
-                <div class="panel-description">
-
-                    20-Day High Analysis |
-                    Historical 6% Target Performance
-
-                </div>
-
-
-            </div>
-
-
-            <div class="filters">
-
-
-                <span class="filter-label">
-
-                    Minimum Strike Rate:
-
-                </span>
-
-
-                <select
-                    id="sstStrikeFilter"
-                    onchange="filterSST()">
-
-
-                    <option value="0">
-
-                        All Stocks
-
-                    </option>
-
-
-                    <option value="25">
-
-                        Above 25%
-
-                    </option>
-
-
-                    <option value="50">
-
-                        Above 50%
-
-                    </option>
-
-
-                    <option value="60">
-
-                        Above 60%
-
-                    </option>
-
-
-                    <option value="70">
-
-                        Above 70%
-
-                    </option>
-
-
-                    <option value="80">
-
-                        Above 80%
-
-                    </option>
-
-
-                </select>
-
-
-            </div>
-
-
-        </div>
-
-
-        <div class="table-wrapper">
-
-
-            <table>
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Symbol</th>
-
-                        <th>Company</th>
-
-                        <th>CMP</th>
-
-                        <th>20 Day High</th>
-
-                        <th>Distance From 20D High</th>
-
-                        <th>6% Target Yes</th>
-
-                        <th>6% Target No</th>
-
-                        <th>Strike Rate</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="sstTable">
-
-                </tbody>
-
-
-            </table>
-
-
-        </div>
-
+        </label>
 
     </div>
 
 
+    <div class="table-wrap">
+
+        <table id="mwdTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Symbol</th>
+
+                    <th>Company</th>
+
+                    <th>CMP</th>
+
+                    <th>52W High</th>
+
+                    <th>52W Distance</th>
+
+                    <th>Monthly Rise</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                
+            <tr
+                data-distance="-1.13"
+                data-rise="9.28"
+            >
+                <td>SOLARINDS</td>
+
+                <td>Solar Industries India</td>
+
+                <td>
+                    ₹22,370.00
+                </td>
+
+                <td>
+                    ₹22,625.00
+                </td>
+
+                <td>
+                    -1.13%
+                </td>
+
+                <td>
+                    <span class="positive">
+                        +9.28%
+                    </span>
+                </td>
+            </tr>
+            
+            <tr
+                data-distance="-2.7"
+                data-rise="8.04"
+            >
+                <td>GRASIM</td>
+
+                <td>Grasim Industries</td>
+
+                <td>
+                    ₹3,319.00
+                </td>
+
+                <td>
+                    ₹3,411.10
+                </td>
+
+                <td>
+                    -2.70%
+                </td>
+
+                <td>
+                    <span class="positive">
+                        +8.04%
+                    </span>
+                </td>
+            </tr>
+            
+            <tr
+                data-distance="-3.48"
+                data-rise="2.25"
+            >
+                <td>JSWSTEEL</td>
+
+                <td>JSW Steel</td>
+
+                <td>
+                    ₹1,304.00
+                </td>
+
+                <td>
+                    ₹1,351.00
+                </td>
+
+                <td>
+                    -3.48%
+                </td>
+
+                <td>
+                    <span class="positive">
+                        +2.25%
+                    </span>
+                </td>
+            </tr>
+            
+            <tr
+                data-distance="-8.09"
+                data-rise="6.99"
+            >
+                <td>KOTAKBANK</td>
+
+                <td>Kotak Mahindra Bank</td>
+
+                <td>
+                    ₹416.55
+                </td>
+
+                <td>
+                    ₹453.20
+                </td>
+
+                <td>
+                    -8.09%
+                </td>
+
+                <td>
+                    <span class="positive">
+                        +6.99%
+                    </span>
+                </td>
+            </tr>
+            
+            <tr
+                data-distance="-12.15"
+                data-rise="5.1"
+            >
+                <td>AXISBANK</td>
+
+                <td>Axis Bank</td>
+
+                <td>
+                    ₹1,246.00
+                </td>
+
+                <td>
+                    ₹1,418.30
+                </td>
+
+                <td>
+                    -12.15%
+                </td>
+
+                <td>
+                    <span class="positive">
+                        +5.10%
+                    </span>
+                </td>
+            </tr>
+            
+            <tr
+                data-distance="-13.54"
+                data-rise="1.08"
+            >
+                <td>PNB</td>
+
+                <td>Punjab National Bank</td>
+
+                <td>
+                    ₹116.85
+                </td>
+
+                <td>
+                    ₹135.15
+                </td>
+
+                <td>
+                    -13.54%
+                </td>
+
+                <td>
+                    <span class="positive">
+                        +1.08%
+                    </span>
+                </td>
+            </tr>
+            
+            <tr
+                data-distance="-17.48"
+                data-rise="3.41"
+            >
+                <td>DLF</td>
+
+                <td>DLF</td>
+
+                <td>
+                    ₹655.85
+                </td>
+
+                <td>
+                    ₹794.80
+                </td>
+
+                <td>
+                    -17.48%
+                </td>
+
+                <td>
+                    <span class="positive">
+                        +3.41%
+                    </span>
+                </td>
+            </tr>
+            
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
 
 
-
-<!-- =====================================================
-     BLSH TAB
-===================================================== -->
+<!-- ===================================================== -->
+<!-- SST -->
+<!-- ===================================================== -->
 
 <div
-
-    id="blshContent"
-
-    class="tab-content">
-
-
-    <div class="screener-panel">
-
-
-        <div class="panel-header">
-
-
-            <div>
-
-
-                <div class="panel-title">
-
-                    BLSH RSI Screener
-
-                </div>
-
-
-                <div class="panel-description">
-
-                    RSI 14 below 36 |
-                    25-Day Low to Trigger Breakout Analysis |
-                    Last 1 Year Performance
-
-                </div>
-
-
-            </div>
-
-
-            <div class="filters">
-
-
-                <span class="filter-label">
-
-                    Minimum Strike Rate:
-
-                </span>
-
-
-                <select
-
-                    id="blshStrikeFilter"
-
-                    onchange="filterBLSH()">
-
-
-                    <option value="0">
-
-                        All Stocks
-
-                    </option>
-
-
-                    <option value="25">
-
-                        Above 25%
-
-                    </option>
-
-
-                    <option value="50">
-
-                        Above 50%
-
-                    </option>
-
-
-                    <option value="60">
-
-                        Above 60%
-
-                    </option>
-
-
-                    <option value="70">
-
-                        Above 70%
-
-                    </option>
-
-
-                    <option value="80">
-
-                        Above 80%
-
-                    </option>
-
-
-                </select>
-
-
-            </div>
-
-
-        </div>
-
-
-        <div class="table-wrapper">
-
-
-            <table>
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Symbol</th>
-
-                        <th>Company</th>
-
-                        <th>CMP</th>
-
-                        <th>25 Day Low</th>
-
-                        <th>25 Day High Trigger</th>
-
-                        <th>Trigger Away From CMP</th>
-
-                        <th>RSI 14</th>
-
-                        <th>3.14% Yes (1Y)</th>
-
-                        <th>3.14% No (1Y)</th>
-
-                        <th>Strike Rate</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="blshTable">
-
-                </tbody>
-
-
-            </table>
-
-
-        </div>
-
+    id="sst"
+    class="tab-content"
+>
+
+    <div class="panel-head sst-head">
+
+        <span>
+            SST
+        </span>
+
+        <span class="panel-sub">
+            20-Day High | 6% Target
+        </span>
 
     </div>
 
 
+    <div class="filters">
+
+        <label>
+            Strike Rate:
+
+            <select
+                id="sstStrike"
+                onchange="filterSST()"
+            >
+
+                <option value="0">
+                    All
+                </option>
+
+                <option value="25">
+                    &gt; 25%
+                </option>
+
+                <option value="50">
+                    &gt; 50%
+                </option>
+
+                <option value="60">
+                    &gt; 60%
+                </option>
+
+                <option value="70">
+                    &gt; 70%
+                </option>
+
+                <option value="80">
+                    &gt; 80%
+                </option>
+
+            </select>
+
+        </label>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table id="sstTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Symbol</th>
+
+                    <th>Company</th>
+
+                    <th>CMP</th>
+
+                    <th>20-Day High</th>
+
+                    <th>20D Away %</th>
+
+                    <th>6% Target YES</th>
+
+                    <th>6% Target NO</th>
+
+                    <th>Strike Rate</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                
+            <tr>
+
+                <td>MAXHEALTH</td>
+
+                <td>Max Healthcare Institute</td>
+
+                <td>
+                    ₹1,038.60
+                </td>
+
+                <td>
+                    ₹1,042.10
+                </td>
+
+                <td>
+                    0.34%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    75.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>COALINDIA</td>
+
+                <td>Coal India</td>
+
+                <td>
+                    ₹432.00
+                </td>
+
+                <td>
+                    ₹436.30
+                </td>
+
+                <td>
+                    0.99%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ADANIPORTS</td>
+
+                <td>Adani Ports and Special Economic Zone</td>
+
+                <td>
+                    ₹1,768.00
+                </td>
+
+                <td>
+                    ₹1,785.90
+                </td>
+
+                <td>
+                    1.00%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SOLARINDS</td>
+
+                <td>Solar Industries India</td>
+
+                <td>
+                    ₹22,370.00
+                </td>
+
+                <td>
+                    ₹22,625.00
+                </td>
+
+                <td>
+                    1.13%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>APOLLOHOSP</td>
+
+                <td>Apollo Hospitals Enterprise</td>
+
+                <td>
+                    ₹8,900.00
+                </td>
+
+                <td>
+                    ₹9,024.00
+                </td>
+
+                <td>
+                    1.37%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>POWERGRID</td>
+
+                <td>Power Grid Corporation of India</td>
+
+                <td>
+                    ₹271.75
+                </td>
+
+                <td>
+                    ₹275.95
+                </td>
+
+                <td>
+                    1.52%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    20.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>GRASIM</td>
+
+                <td>Grasim Industries</td>
+
+                <td>
+                    ₹3,319.00
+                </td>
+
+                <td>
+                    ₹3,371.00
+                </td>
+
+                <td>
+                    1.54%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>GAIL</td>
+
+                <td>GAIL (India)</td>
+
+                <td>
+                    ₹174.49
+                </td>
+
+                <td>
+                    ₹177.50
+                </td>
+
+                <td>
+                    1.70%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>CGPOWER</td>
+
+                <td>CG Power and Industrial Solutions</td>
+
+                <td>
+                    ₹914.55
+                </td>
+
+                <td>
+                    ₹931.00
+                </td>
+
+                <td>
+                    1.77%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ADANIPOWER</td>
+
+                <td>Adani Power</td>
+
+                <td>
+                    ₹213.50
+                </td>
+
+                <td>
+                    ₹217.40
+                </td>
+
+                <td>
+                    1.79%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TATASTEEL</td>
+
+                <td>Tata Steel</td>
+
+                <td>
+                    ₹186.78
+                </td>
+
+                <td>
+                    ₹190.26
+                </td>
+
+                <td>
+                    1.83%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>DIVISLAB</td>
+
+                <td>Divi's Laboratories</td>
+
+                <td>
+                    ₹9,438.50
+                </td>
+
+                <td>
+                    ₹9,615.00
+                </td>
+
+                <td>
+                    1.84%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    60.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>PNB</td>
+
+                <td>Punjab National Bank</td>
+
+                <td>
+                    ₹116.85
+                </td>
+
+                <td>
+                    ₹119.10
+                </td>
+
+                <td>
+                    1.89%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ONGC</td>
+
+                <td>Oil & Natural Gas Corporation</td>
+
+                <td>
+                    ₹237.27
+                </td>
+
+                <td>
+                    ₹242.19
+                </td>
+
+                <td>
+                    2.03%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BOSCHLTD</td>
+
+                <td>Bosch</td>
+
+                <td>
+                    ₹48,775.00
+                </td>
+
+                <td>
+                    ₹50,000.00
+                </td>
+
+                <td>
+                    2.45%
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TORNTPHARM</td>
+
+                <td>Torrent Pharmaceuticals</td>
+
+                <td>
+                    ₹4,930.00
+                </td>
+
+                <td>
+                    ₹5,066.00
+                </td>
+
+                <td>
+                    2.68%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BEL</td>
+
+                <td>Bharat Electronics</td>
+
+                <td>
+                    ₹405.00
+                </td>
+
+                <td>
+                    ₹416.35
+                </td>
+
+                <td>
+                    2.73%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>NTPC</td>
+
+                <td>NTPC</td>
+
+                <td>
+                    ₹335.00
+                </td>
+
+                <td>
+                    ₹344.45
+                </td>
+
+                <td>
+                    2.74%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>KOTAKBANK</td>
+
+                <td>Kotak Mahindra Bank</td>
+
+                <td>
+                    ₹416.55
+                </td>
+
+                <td>
+                    ₹429.10
+                </td>
+
+                <td>
+                    2.92%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>INDHOTEL</td>
+
+                <td>Indian Hotels Co.</td>
+
+                <td>
+                    ₹715.75
+                </td>
+
+                <td>
+                    ₹737.90
+                </td>
+
+                <td>
+                    3.00%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    20.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ADANIENT</td>
+
+                <td>Adani Enterprises</td>
+
+                <td>
+                    ₹3,077.20
+                </td>
+
+                <td>
+                    ₹3,173.70
+                </td>
+
+                <td>
+                    3.04%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TITAN</td>
+
+                <td>Titan Company</td>
+
+                <td>
+                    ₹5,021.00
+                </td>
+
+                <td>
+                    ₹5,186.70
+                </td>
+
+                <td>
+                    3.19%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ETERNAL</td>
+
+                <td>Eternal</td>
+
+                <td>
+                    ₹322.10
+                </td>
+
+                <td>
+                    ₹332.95
+                </td>
+
+                <td>
+                    3.26%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HYUNDAI</td>
+
+                <td>Hyundai Motor India</td>
+
+                <td>
+                    ₹2,205.00
+                </td>
+
+                <td>
+                    ₹2,281.00
+                </td>
+
+                <td>
+                    3.33%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>JSWSTEEL</td>
+
+                <td>JSW Steel</td>
+
+                <td>
+                    ₹1,304.00
+                </td>
+
+                <td>
+                    ₹1,351.00
+                </td>
+
+                <td>
+                    3.48%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>CHOLAFIN</td>
+
+                <td>Cholamandalam Investment and Finance Company</td>
+
+                <td>
+                    ₹1,859.00
+                </td>
+
+                <td>
+                    ₹1,927.90
+                </td>
+
+                <td>
+                    3.57%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ADANIGREEN</td>
+
+                <td>Adani Green Energy</td>
+
+                <td>
+                    ₹1,299.10
+                </td>
+
+                <td>
+                    ₹1,348.00
+                </td>
+
+                <td>
+                    3.63%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HAL</td>
+
+                <td>Hindustan Aeronautics</td>
+
+                <td>
+                    ₹4,950.00
+                </td>
+
+                <td>
+                    ₹5,149.90
+                </td>
+
+                <td>
+                    3.88%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>LT</td>
+
+                <td>Larsen & Toubro</td>
+
+                <td>
+                    ₹3,955.00
+                </td>
+
+                <td>
+                    ₹4,125.30
+                </td>
+
+                <td>
+                    4.13%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>AXISBANK</td>
+
+                <td>Axis Bank</td>
+
+                <td>
+                    ₹1,246.00
+                </td>
+
+                <td>
+                    ₹1,300.00
+                </td>
+
+                <td>
+                    4.15%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>IOC</td>
+
+                <td>Indian Oil Corporation</td>
+
+                <td>
+                    ₹134.94
+                </td>
+
+                <td>
+                    ₹141.15
+                </td>
+
+                <td>
+                    4.40%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>RELIANCE</td>
+
+                <td>Reliance Industries</td>
+
+                <td>
+                    ₹1,274.00
+                </td>
+
+                <td>
+                    ₹1,333.00
+                </td>
+
+                <td>
+                    4.43%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BAJAJFINSV</td>
+
+                <td>Bajaj Finserv</td>
+
+                <td>
+                    ₹1,940.50
+                </td>
+
+                <td>
+                    ₹2,033.60
+                </td>
+
+                <td>
+                    4.58%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SIEMENS</td>
+
+                <td>Siemens</td>
+
+                <td>
+                    ₹3,954.40
+                </td>
+
+                <td>
+                    ₹4,149.40
+                </td>
+
+                <td>
+                    4.70%
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    80.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ICICIBANK</td>
+
+                <td>ICICI Bank</td>
+
+                <td>
+                    ₹1,384.50
+                </td>
+
+                <td>
+                    ₹1,454.00
+                </td>
+
+                <td>
+                    4.78%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    16.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>JINDALSTEL</td>
+
+                <td>Jindal Steel</td>
+
+                <td>
+                    ₹1,137.00
+                </td>
+
+                <td>
+                    ₹1,196.40
+                </td>
+
+                <td>
+                    4.96%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    75.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>DLF</td>
+
+                <td>DLF</td>
+
+                <td>
+                    ₹655.85
+                </td>
+
+                <td>
+                    ₹691.05
+                </td>
+
+                <td>
+                    5.09%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>DRREDDY</td>
+
+                <td>Dr. Reddy's Laboratories</td>
+
+                <td>
+                    ₹1,143.00
+                </td>
+
+                <td>
+                    ₹1,205.90
+                </td>
+
+                <td>
+                    5.22%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BANKBARODA</td>
+
+                <td>Bank of Baroda</td>
+
+                <td>
+                    ₹237.62
+                </td>
+
+                <td>
+                    ₹250.79
+                </td>
+
+                <td>
+                    5.25%
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HINDALCO</td>
+
+                <td>Hindalco Industries</td>
+
+                <td>
+                    ₹1,014.00
+                </td>
+
+                <td>
+                    ₹1,073.00
+                </td>
+
+                <td>
+                    5.50%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BAJAJHLDNG</td>
+
+                <td>Bajaj Holdings & Investment</td>
+
+                <td>
+                    ₹10,992.00
+                </td>
+
+                <td>
+                    ₹11,644.00
+                </td>
+
+                <td>
+                    5.60%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    16.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>CANBK</td>
+
+                <td>Canara Bank</td>
+
+                <td>
+                    ₹124.60
+                </td>
+
+                <td>
+                    ₹132.02
+                </td>
+
+                <td>
+                    5.62%
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    0.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BAJAJ-AUTO</td>
+
+                <td>Bajaj Auto</td>
+
+                <td>
+                    ₹11,768.00
+                </td>
+
+                <td>
+                    ₹12,470.00
+                </td>
+
+                <td>
+                    5.63%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    60.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>EICHERMOT</td>
+
+                <td>Eicher Motors</td>
+
+                <td>
+                    ₹7,697.00
+                </td>
+
+                <td>
+                    ₹8,165.00
+                </td>
+
+                <td>
+                    5.73%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BAJFINANCE</td>
+
+                <td>Bajaj Finance</td>
+
+                <td>
+                    ₹1,043.50
+                </td>
+
+                <td>
+                    ₹1,107.00
+                </td>
+
+                <td>
+                    5.74%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>MOTHERSON</td>
+
+                <td>Samvardhana Motherson International</td>
+
+                <td>
+                    ₹163.20
+                </td>
+
+                <td>
+                    ₹173.27
+                </td>
+
+                <td>
+                    5.81%
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TATAPOWER</td>
+
+                <td>Tata Power</td>
+
+                <td>
+                    ₹367.00
+                </td>
+
+                <td>
+                    ₹390.40
+                </td>
+
+                <td>
+                    5.99%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>CUMMINSIND</td>
+
+                <td>Cummins India</td>
+
+                <td>
+                    ₹5,155.00
+                </td>
+
+                <td>
+                    ₹5,484.00
+                </td>
+
+                <td>
+                    6.00%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HINDZINC</td>
+
+                <td>Hindustan Zinc</td>
+
+                <td>
+                    ₹593.60
+                </td>
+
+                <td>
+                    ₹632.00
+                </td>
+
+                <td>
+                    6.08%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HDFCBANK</td>
+
+                <td>HDFC Bank</td>
+
+                <td>
+                    ₹693.80
+                </td>
+
+                <td>
+                    ₹739.75
+                </td>
+
+                <td>
+                    6.21%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SUNPHARMA</td>
+
+                <td>Sun Pharmaceutical Industries</td>
+
+                <td>
+                    ₹1,861.00
+                </td>
+
+                <td>
+                    ₹1,984.80
+                </td>
+
+                <td>
+                    6.24%
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ABB</td>
+
+                <td>ABB India</td>
+
+                <td>
+                    ₹7,329.00
+                </td>
+
+                <td>
+                    ₹7,825.00
+                </td>
+
+                <td>
+                    6.34%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>AMBUJACEM</td>
+
+                <td>Ambuja Cements</td>
+
+                <td>
+                    ₹395.60
+                </td>
+
+                <td>
+                    ₹422.80
+                </td>
+
+                <td>
+                    6.43%
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    6
+                </td>
+
+                <td>
+                    0.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SBILIFE</td>
+
+                <td>SBI Life Insurance Company</td>
+
+                <td>
+                    ₹1,700.60
+                </td>
+
+                <td>
+                    ₹1,820.90
+                </td>
+
+                <td>
+                    6.61%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HDFCLIFE</td>
+
+                <td>HDFC Life Insurance Company</td>
+
+                <td>
+                    ₹526.15
+                </td>
+
+                <td>
+                    ₹563.50
+                </td>
+
+                <td>
+                    6.63%
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    0.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SBIN</td>
+
+                <td>State Bank of India</td>
+
+                <td>
+                    ₹1,009.70
+                </td>
+
+                <td>
+                    ₹1,082.00
+                </td>
+
+                <td>
+                    6.68%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TRENT</td>
+
+                <td>Trent</td>
+
+                <td>
+                    ₹2,818.70
+                </td>
+
+                <td>
+                    ₹3,020.60
+                </td>
+
+                <td>
+                    6.68%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ZYDUSLIFE</td>
+
+                <td>Zydus Lifesciences</td>
+
+                <td>
+                    ₹1,117.80
+                </td>
+
+                <td>
+                    ₹1,198.90
+                </td>
+
+                <td>
+                    6.76%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>UNIONBANK</td>
+
+                <td>Union Bank of India</td>
+
+                <td>
+                    ₹179.20
+                </td>
+
+                <td>
+                    ₹192.33
+                </td>
+
+                <td>
+                    6.83%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ITC</td>
+
+                <td>ITC</td>
+
+                <td>
+                    ₹259.30
+                </td>
+
+                <td>
+                    ₹278.35
+                </td>
+
+                <td>
+                    6.84%
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    0.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>CIPLA</td>
+
+                <td>Cipla</td>
+
+                <td>
+                    ₹1,373.30
+                </td>
+
+                <td>
+                    ₹1,474.30
+                </td>
+
+                <td>
+                    6.85%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    20.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>PFC</td>
+
+                <td>Power Finance Corporation</td>
+
+                <td>
+                    ₹352.80
+                </td>
+
+                <td>
+                    ₹379.80
+                </td>
+
+                <td>
+                    7.11%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ULTRACEMCO</td>
+
+                <td>UltraTech Cement</td>
+
+                <td>
+                    ₹10,979.00
+                </td>
+
+                <td>
+                    ₹11,820.00
+                </td>
+
+                <td>
+                    7.12%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BPCL</td>
+
+                <td>Bharat Petroleum Corporation</td>
+
+                <td>
+                    ₹303.00
+                </td>
+
+                <td>
+                    ₹326.35
+                </td>
+
+                <td>
+                    7.15%
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    0.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HINDUNILVR</td>
+
+                <td>Hindustan Unilever</td>
+
+                <td>
+                    ₹1,942.30
+                </td>
+
+                <td>
+                    ₹2,092.00
+                </td>
+
+                <td>
+                    7.16%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    16.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>VEDL</td>
+
+                <td>Vedanta</td>
+
+                <td>
+                    ₹269.05
+                </td>
+
+                <td>
+                    ₹291.00
+                </td>
+
+                <td>
+                    7.54%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TECHM</td>
+
+                <td>Tech Mahindra</td>
+
+                <td>
+                    ₹1,525.80
+                </td>
+
+                <td>
+                    ₹1,652.00
+                </td>
+
+                <td>
+                    7.64%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    75.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>INDIGO</td>
+
+                <td>InterGlobe Aviation</td>
+
+                <td>
+                    ₹4,945.00
+                </td>
+
+                <td>
+                    ₹5,370.00
+                </td>
+
+                <td>
+                    7.91%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    16.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TVSMOTOR</td>
+
+                <td>TVS Motor Company</td>
+
+                <td>
+                    ₹4,121.50
+                </td>
+
+                <td>
+                    ₹4,484.50
+                </td>
+
+                <td>
+                    8.09%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>PIDILITIND</td>
+
+                <td>Pidilite Industries</td>
+
+                <td>
+                    ₹1,569.00
+                </td>
+
+                <td>
+                    ₹1,707.50
+                </td>
+
+                <td>
+                    8.11%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    16.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TCS</td>
+
+                <td>Tata Consultancy Services</td>
+
+                <td>
+                    ₹2,204.10
+                </td>
+
+                <td>
+                    ₹2,399.30
+                </td>
+
+                <td>
+                    8.14%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>GODREJCP</td>
+
+                <td>Godrej Consumer Products</td>
+
+                <td>
+                    ₹869.90
+                </td>
+
+                <td>
+                    ₹948.00
+                </td>
+
+                <td>
+                    8.24%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BHARTIARTL</td>
+
+                <td>Bharti Airtel</td>
+
+                <td>
+                    ₹1,839.00
+                </td>
+
+                <td>
+                    ₹2,005.80
+                </td>
+
+                <td>
+                    8.32%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>VBL</td>
+
+                <td>Varun Beverages</td>
+
+                <td>
+                    ₹410.50
+                </td>
+
+                <td>
+                    ₹447.90
+                </td>
+
+                <td>
+                    8.35%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>IRFC</td>
+
+                <td>Indian Railway Finance Corporation</td>
+
+                <td>
+                    ₹81.08
+                </td>
+
+                <td>
+                    ₹88.60
+                </td>
+
+                <td>
+                    8.49%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>NESTLEIND</td>
+
+                <td>Nestle India</td>
+
+                <td>
+                    ₹1,386.20
+                </td>
+
+                <td>
+                    ₹1,515.80
+                </td>
+
+                <td>
+                    8.55%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    60.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TATACONSUM</td>
+
+                <td>Tata Consumer Products</td>
+
+                <td>
+                    ₹999.60
+                </td>
+
+                <td>
+                    ₹1,093.40
+                </td>
+
+                <td>
+                    8.58%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>LTM</td>
+
+                <td>LTM</td>
+
+                <td>
+                    ₹4,374.00
+                </td>
+
+                <td>
+                    ₹4,801.20
+                </td>
+
+                <td>
+                    8.90%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    75.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>RECLTD</td>
+
+                <td>REC</td>
+
+                <td>
+                    ₹313.80
+                </td>
+
+                <td>
+                    ₹344.50
+                </td>
+
+                <td>
+                    8.91%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SHRIRAMFIN</td>
+
+                <td>Shriram Finance</td>
+
+                <td>
+                    ₹1,038.00
+                </td>
+
+                <td>
+                    ₹1,142.00
+                </td>
+
+                <td>
+                    9.11%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    75.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ASIANPAINT</td>
+
+                <td>Asian Paints</td>
+
+                <td>
+                    ₹2,498.10
+                </td>
+
+                <td>
+                    ₹2,751.00
+                </td>
+
+                <td>
+                    9.19%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>M&M</td>
+
+                <td>Mahindra & Mahindra</td>
+
+                <td>
+                    ₹3,123.80
+                </td>
+
+                <td>
+                    ₹3,456.40
+                </td>
+
+                <td>
+                    9.62%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>MARUTI</td>
+
+                <td>Maruti Suzuki India</td>
+
+                <td>
+                    ₹12,590.00
+                </td>
+
+                <td>
+                    ₹13,943.00
+                </td>
+
+                <td>
+                    9.70%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    66.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HDFCAMC</td>
+
+                <td>HDFC Asset Management Company</td>
+
+                <td>
+                    ₹2,433.80
+                </td>
+
+                <td>
+                    ₹2,698.00
+                </td>
+
+                <td>
+                    9.79%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SHREECEM</td>
+
+                <td>Shree Cement</td>
+
+                <td>
+                    ₹22,785.00
+                </td>
+
+                <td>
+                    ₹25,300.00
+                </td>
+
+                <td>
+                    9.94%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    20.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>DMART</td>
+
+                <td>Avenue Supermarts</td>
+
+                <td>
+                    ₹3,690.00
+                </td>
+
+                <td>
+                    ₹4,098.90
+                </td>
+
+                <td>
+                    9.98%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>MAZDOCK</td>
+
+                <td>Mazagoan Dock Shipbuilders</td>
+
+                <td>
+                    ₹2,383.20
+                </td>
+
+                <td>
+                    ₹2,656.80
+                </td>
+
+                <td>
+                    10.30%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>UNITDSPR</td>
+
+                <td>United Spirits</td>
+
+                <td>
+                    ₹1,400.00
+                </td>
+
+                <td>
+                    ₹1,563.40
+                </td>
+
+                <td>
+                    10.45%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>WIPRO</td>
+
+                <td>Wipro</td>
+
+                <td>
+                    ₹166.30
+                </td>
+
+                <td>
+                    ₹185.84
+                </td>
+
+                <td>
+                    10.51%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>LODHA</td>
+
+                <td>Lodha Developers</td>
+
+                <td>
+                    ₹1,163.40
+                </td>
+
+                <td>
+                    ₹1,306.90
+                </td>
+
+                <td>
+                    10.98%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BRITANNIA</td>
+
+                <td>Britannia Industries</td>
+
+                <td>
+                    ₹5,009.00
+                </td>
+
+                <td>
+                    ₹5,630.00
+                </td>
+
+                <td>
+                    11.03%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    16.67%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TMPV</td>
+
+                <td>Tata Motors Passenger Vehicles</td>
+
+                <td>
+                    ₹300.50
+                </td>
+
+                <td>
+                    ₹337.75
+                </td>
+
+                <td>
+                    11.03%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>INFY</td>
+
+                <td>Infosys</td>
+
+                <td>
+                    ₹1,036.50
+                </td>
+
+                <td>
+                    ₹1,174.10
+                </td>
+
+                <td>
+                    11.72%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    50.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HCLTECH</td>
+
+                <td>HCL Technologies</td>
+
+                <td>
+                    ₹1,207.00
+                </td>
+
+                <td>
+                    ₹1,374.90
+                </td>
+
+                <td>
+                    12.21%
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>MUTHOOTFIN</td>
+
+                <td>Muthoot Finance</td>
+
+                <td>
+                    ₹2,841.50
+                </td>
+
+                <td>
+                    ₹3,246.50
+                </td>
+
+                <td>
+                    12.47%
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    0.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>JIOFIN</td>
+
+                <td>Jio Financial Services</td>
+
+                <td>
+                    ₹230.25
+                </td>
+
+                <td>
+                    ₹263.40
+                </td>
+
+                <td>
+                    12.59%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    25.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ENRIN</td>
+
+                <td>Siemens Energy India</td>
+
+                <td>
+                    ₹3,179.10
+                </td>
+
+                <td>
+                    ₹3,639.00
+                </td>
+
+                <td>
+                    12.64%
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    60.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>ADANIENSOL</td>
+
+                <td>Adani Energy Solutions</td>
+
+                <td>
+                    ₹1,391.90
+                </td>
+
+                <td>
+                    ₹1,637.00
+                </td>
+
+                <td>
+                    14.97%
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
 
 
+<!-- ===================================================== -->
+<!-- BLSH RSI -->
+<!-- ===================================================== -->
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
+<div
+    id="blsh"
+    class="tab-content"
+>
+
+    <div class="panel-head blsh-head">
+
+        <span>
+            BLSH RSI
+        </span>
+
+        <span class="panel-sub">
+            RSI &lt; 36 | New 25-Day Low |
+            Trigger +6.5% | Target +3.14%
+        </span>
+
+    </div>
+
+
+    <div class="filters">
+
+        <label>
+            Strike Rate:
+
+            <select
+                id="blshStrike"
+                onchange="filterBLSH()"
+            >
+
+                <option value="0">
+                    All
+                </option>
+
+                <option value="25">
+                    &gt; 25%
+                </option>
+
+                <option value="50">
+                    &gt; 50%
+                </option>
+
+                <option value="60">
+                    &gt; 60%
+                </option>
+
+                <option value="70">
+                    &gt; 70%
+                </option>
+
+                <option value="80">
+                    &gt; 80%
+                </option>
+
+            </select>
+
+        </label>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table id="blshTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Symbol</th>
+
+                    <th>Company</th>
+
+                    <th>CMP</th>
+
+                    <th>25-Day Low</th>
+
+                    <th>Trigger +6.5%</th>
+
+                    <th>Target +3.14%</th>
+
+                    <th>Trigger Away %</th>
+
+                    <th>RSI(14)</th>
+
+                    <th>3.14% YES (1Y)</th>
+
+                    <th>3.14% NO (1Y)</th>
+
+                    <th>Strike Rate</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                
+            <tr>
+
+                <td>ULTRACEMCO</td>
+
+                <td>UltraTech Cement</td>
+
+                <td>
+                    ₹10,979.00
+                </td>
+
+                <td>
+                    ₹10,858.00
+                </td>
+
+                <td>
+                    ₹11,563.77
+                </td>
+
+                <td>
+                    ₹11,926.87
+                </td>
+
+                <td>
+                    5.06%
+                </td>
+
+                <td>
+                    33.01
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    75.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HDFCBANK</td>
+
+                <td>HDFC Bank</td>
+
+                <td>
+                    ₹693.80
+                </td>
+
+                <td>
+                    ₹686.20
+                </td>
+
+                <td>
+                    ₹730.80
+                </td>
+
+                <td>
+                    ₹753.75
+                </td>
+
+                <td>
+                    5.06%
+                </td>
+
+                <td>
+                    34.45
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>HCLTECH</td>
+
+                <td>HCL Technologies</td>
+
+                <td>
+                    ₹1,207.00
+                </td>
+
+                <td>
+                    ₹1,196.90
+                </td>
+
+                <td>
+                    ₹1,274.70
+                </td>
+
+                <td>
+                    ₹1,314.72
+                </td>
+
+                <td>
+                    5.31%
+                </td>
+
+                <td>
+                    32.94
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    71.43%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TATACONSUM</td>
+
+                <td>Tata Consumer Products</td>
+
+                <td>
+                    ₹999.60
+                </td>
+
+                <td>
+                    ₹992.50
+                </td>
+
+                <td>
+                    ₹1,057.01
+                </td>
+
+                <td>
+                    ₹1,090.20
+                </td>
+
+                <td>
+                    5.43%
+                </td>
+
+                <td>
+                    31.31
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    33.33%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>DMART</td>
+
+                <td>Avenue Supermarts</td>
+
+                <td>
+                    ₹3,690.00
+                </td>
+
+                <td>
+                    ₹3,664.00
+                </td>
+
+                <td>
+                    ₹3,902.16
+                </td>
+
+                <td>
+                    ₹4,024.69
+                </td>
+
+                <td>
+                    5.44%
+                </td>
+
+                <td>
+                    32.08
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    60.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>NESTLEIND</td>
+
+                <td>Nestle India</td>
+
+                <td>
+                    ₹1,386.20
+                </td>
+
+                <td>
+                    ₹1,377.70
+                </td>
+
+                <td>
+                    ₹1,467.25
+                </td>
+
+                <td>
+                    ₹1,513.32
+                </td>
+
+                <td>
+                    5.52%
+                </td>
+
+                <td>
+                    33.45
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>UNITDSPR</td>
+
+                <td>United Spirits</td>
+
+                <td>
+                    ₹1,400.00
+                </td>
+
+                <td>
+                    ₹1,391.40
+                </td>
+
+                <td>
+                    ₹1,481.84
+                </td>
+
+                <td>
+                    ₹1,528.37
+                </td>
+
+                <td>
+                    5.52%
+                </td>
+
+                <td>
+                    29.93
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    75.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>MARUTI</td>
+
+                <td>Maruti Suzuki India</td>
+
+                <td>
+                    ₹12,590.00
+                </td>
+
+                <td>
+                    ₹12,517.00
+                </td>
+
+                <td>
+                    ₹13,330.60
+                </td>
+
+                <td>
+                    ₹13,749.19
+                </td>
+
+                <td>
+                    5.56%
+                </td>
+
+                <td>
+                    26.48
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    80.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>JIOFIN</td>
+
+                <td>Jio Financial Services</td>
+
+                <td>
+                    ₹230.25
+                </td>
+
+                <td>
+                    ₹229.10
+                </td>
+
+                <td>
+                    ₹243.99
+                </td>
+
+                <td>
+                    ₹251.65
+                </td>
+
+                <td>
+                    5.63%
+                </td>
+
+                <td>
+                    34.33
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    57.14%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>AMBUJACEM</td>
+
+                <td>Ambuja Cements</td>
+
+                <td>
+                    ₹395.60
+                </td>
+
+                <td>
+                    ₹394.05
+                </td>
+
+                <td>
+                    ₹419.66
+                </td>
+
+                <td>
+                    ₹432.84
+                </td>
+
+                <td>
+                    5.73%
+                </td>
+
+                <td>
+                    33.71
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    4
+                </td>
+
+                <td>
+                    42.86%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>IRFC</td>
+
+                <td>Indian Railway Finance Corporation</td>
+
+                <td>
+                    ₹81.08
+                </td>
+
+                <td>
+                    ₹80.76
+                </td>
+
+                <td>
+                    ₹86.01
+                </td>
+
+                <td>
+                    ₹88.71
+                </td>
+
+                <td>
+                    5.73%
+                </td>
+
+                <td>
+                    25.62
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    28.57%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>SHREECEM</td>
+
+                <td>Shree Cement</td>
+
+                <td>
+                    ₹22,785.00
+                </td>
+
+                <td>
+                    ₹22,700.00
+                </td>
+
+                <td>
+                    ₹24,175.50
+                </td>
+
+                <td>
+                    ₹24,934.61
+                </td>
+
+                <td>
+                    5.75%
+                </td>
+
+                <td>
+                    30.11
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    0
+                </td>
+
+                <td>
+                    100.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>BRITANNIA</td>
+
+                <td>Britannia Industries</td>
+
+                <td>
+                    ₹5,009.00
+                </td>
+
+                <td>
+                    ₹4,997.00
+                </td>
+
+                <td>
+                    ₹5,321.80
+                </td>
+
+                <td>
+                    ₹5,488.91
+                </td>
+
+                <td>
+                    5.88%
+                </td>
+
+                <td>
+                    30.14
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    3
+                </td>
+
+                <td>
+                    40.00%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>WIPRO</td>
+
+                <td>Wipro</td>
+
+                <td>
+                    ₹166.30
+                </td>
+
+                <td>
+                    ₹166.00
+                </td>
+
+                <td>
+                    ₹176.79
+                </td>
+
+                <td>
+                    ₹182.34
+                </td>
+
+                <td>
+                    5.93%
+                </td>
+
+                <td>
+                    30.00
+                </td>
+
+                <td>
+                    5
+                </td>
+
+                <td>
+                    2
+                </td>
+
+                <td>
+                    71.43%
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td>TMPV</td>
+
+                <td>Tata Motors Passenger Vehicles</td>
+
+                <td>
+                    ₹300.50
+                </td>
+
+                <td>
+                    ₹300.05
+                </td>
+
+                <td>
+                    ₹319.55
+                </td>
+
+                <td>
+                    ₹329.59
+                </td>
+
+                <td>
+                    5.96%
+                </td>
+
+                <td>
+                    27.81
+                </td>
+
+                <td>
+                    6
+                </td>
+
+                <td>
+                    1
+                </td>
+
+                <td>
+                    85.71%
+                </td>
+
+            </tr>
+            
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
 
 <div class="footer">
 
-
-    Nifty 100 Multi-Screener |
-    Yahoo Finance Data |
-    Educational Purpose Only |
-    Not Investment Advice
-
+    Updated in IST • Yahoo Finance data •
+    Educational use only, not investment advice
 
 </div>
-
-
-</div>
-
 
 
 <script>
 
 
-/* =====================================================
-   GLOBAL DATA
-===================================================== */
-
-let dashboardData = {
-
-    mwd: [],
-
-    sst: [],
-
-    blsh: []
-
-};
-
-
-/* =====================================================
-   OPEN TAB
-===================================================== */
-
-function openTab(tab) {
-
-
-    // Remove active tab
+function showTab(
+    tabName,
+    button
+) {
 
     document
-
-        .querySelectorAll(".tab-button")
-
-        .forEach(button => {
-
-            button.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    // Hide all content
-
-    document
-
-        .querySelectorAll(".tab-content")
-
-        .forEach(content => {
-
-            content.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    // Activate selected tab
-
-    document
-
-        .getElementById(
-            tab + "Tab"
+        .querySelectorAll(
+            '.tab-content'
         )
-
-        .classList.add(
-            "active"
-        );
-
-
-    document
-
-        .getElementById(
-            tab + "Content"
-        )
-
-        .classList.add(
-            "active"
-        );
-
-}
-
-
-/* =====================================================
-   FORMAT PRICE
-===================================================== */
-
-function formatPrice(value) {
-
-
-    if (
-
-        value === null
-
-        ||
-
-        value === undefined
-
-    ) {
-
-        return "-";
-
-    }
-
-
-    return "₹" +
-
-        Number(value)
-
-        .toLocaleString(
-
-            "en-IN",
-
-            {
-
-                minimumFractionDigits: 2,
-
-                maximumFractionDigits: 2
-
+        .forEach(
+            function(tab) {
+                tab.classList.remove(
+                    'active'
+                );
             }
-
         );
 
-}
+
+    document
+        .querySelectorAll(
+            '.tab'
+        )
+        .forEach(
+            function(tab) {
+                tab.classList.remove(
+                    'active'
+                );
+            }
+        );
 
 
-/* =====================================================
-   FORMAT PERCENT
-===================================================== */
-
-function formatPercent(value) {
-
-
-    if (
-
-        value === null
-
-        ||
-
-        value === undefined
-
-    ) {
-
-        return "-";
-
-    }
+    document
+        .getElementById(tabName)
+        .classList.add(
+            'active'
+        );
 
 
-    return (
-
-        Number(value)
-
-        .toFixed(2)
-
-        +
-
-        "%"
-
+    button.classList.add(
+        'active'
     );
 
 }
 
 
-/* =====================================================
-   PERCENT CLASS
-===================================================== */
+function filterMWD() {
 
-function percentClass(value) {
+    const distance =
+        parseFloat(
+            document
+                .getElementById(
+                    'dist'
+                )
+                .value
+        );
 
-
-    if (value > 0) {
-
-        return "green";
-
-    }
-
-
-    if (value < 0) {
-
-        return "red";
-
-    }
-
-
-    return "";
-
-}
-
-
-/* =====================================================
-   STATUS BADGE
-===================================================== */
-
-function statusBadge(status) {
-
-
-    let className = "neutral";
-
-
-    if (status === "BULLISH") {
-
-        className = "bullish";
-
-    }
-
-
-    if (status === "BEARISH") {
-
-        className = "bearish";
-
-    }
-
-
-    return `
-
-        <span class="status ${className}">
-
-            ${status}
-
-        </span>
-
-    `;
-
-}
-
-
-/* =====================================================
-   RENDER MWD
-===================================================== */
-
-function renderMWD(data) {
-
-
-    const table =
-
-        document.getElementById(
-            "mwdTable"
+    const rise =
+        parseFloat(
+            document
+                .getElementById(
+                    'rise'
+                )
+                .value
         );
 
 
-    table.innerHTML = "";
+    document
+        .querySelectorAll(
+            '#mwdTable tbody tr'
+        )
+        .forEach(
+            function(row) {
+
+                const d =
+                    parseFloat(
+                        row.dataset.distance
+                    );
+
+                const r =
+                    parseFloat(
+                        row.dataset.rise
+                    );
 
 
-    if (!data.length) {
+                if (
+                    !isNaN(d)
+                    && !isNaN(r)
+                ) {
 
+                    row.style.display =
+                        (
+                            d >= distance
+                            &&
+                            r >= rise
+                        )
+                        ? ''
+                        : 'none';
 
-        table.innerHTML = `
+                }
 
-            <tr>
-
-                <td
-                    colspan="9"
-                    class="empty">
-
-                    No MWD stocks found.
-
-                </td>
-
-            </tr>
-
-        `;
-
-
-        return;
-
-    }
-
-
-    data.forEach(stock => {
-
-
-        table.innerHTML += `
-
-        <tr>
-
-
-            <td class="stock-name">
-
-                ${stock.symbol}
-
-            </td>
-
-
-            <td>
-
-                ${stock.company || "-"}
-
-            </td>
-
-
-            <td>
-
-                ${formatPrice(stock.price)}
-
-            </td>
-
-
-            <td>
-
-                ${formatPrice(stock.high_52_week)}
-
-            </td>
-
-
-            <td class="${percentClass(stock.distance_52w)}">
-
-                ${formatPercent(stock.distance_52w)}
-
-            </td>
-
-
-            <td class="${percentClass(stock.monthly_rise)}">
-
-                ${formatPercent(stock.monthly_rise)}
-
-            </td>
-
-
-            <td>
-
-                ${statusBadge(stock.daily)}
-
-            </td>
-
-
-            <td>
-
-                ${statusBadge(stock.weekly)}
-
-            </td>
-
-
-            <td>
-
-                ${statusBadge(stock.monthly)}
-
-            </td>
-
-
-        </tr>
-
-        `;
-
-
-    });
+            }
+        );
 
 }
 
-
-/* =====================================================
-   FILTER SST
-===================================================== */
 
 function filterSST() {
 
-
     const minimum =
-
-        Number(
-
-            document.getElementById(
-                "sstStrikeFilter"
-            ).value
-
+        parseFloat(
+            document
+                .getElementById(
+                    'sstStrike'
+                )
+                .value
         );
 
 
-    const filtered =
+    document
+        .querySelectorAll(
+            '#sstTable tbody tr'
+        )
+        .forEach(
+            function(row) {
 
-        dashboardData.sst.filter(stock =>
+                const cells =
+                    row.querySelectorAll(
+                        'td'
+                    );
 
-            Number(stock.strike_rate) >= minimum
+                if (
+                    cells.length < 8
+                ) {
+                    return;
+                }
 
+
+                const strike =
+                    parseFloat(
+                        cells[7]
+                            .innerText
+                            .replace(
+                                '%',
+                                ''
+                            )
+                    );
+
+
+                row.style.display =
+                    strike >= minimum
+                    ? ''
+                    : 'none';
+
+            }
         );
-
-
-    renderSST(filtered);
 
 }
 
-
-/* =====================================================
-   RENDER SST
-===================================================== */
-
-function renderSST(data) {
-
-
-    const table =
-
-        document.getElementById(
-            "sstTable"
-        );
-
-
-    table.innerHTML = "";
-
-
-    if (!data.length) {
-
-
-        table.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="8"
-                    class="empty">
-
-                    No stocks match selected strike rate.
-
-                </td>
-
-            </tr>
-
-        `;
-
-
-        return;
-
-    }
-
-
-    data.forEach(stock => {
-
-
-        table.innerHTML += `
-
-        <tr>
-
-
-            <td class="stock-name">
-
-                ${stock.symbol}
-
-            </td>
-
-
-            <td>
-
-                ${stock.company || "-"}
-
-            </td>
-
-
-            <td>
-
-                ${formatPrice(stock.price)}
-
-            </td>
-
-
-            <td>
-
-                ${formatPrice(stock.high_20_day)}
-
-            </td>
-
-
-            <td class="orange">
-
-                ${formatPercent(stock.distance_20d)}
-
-            </td>
-
-
-            <td>
-
-                <span class="target-yes">
-
-                    ${stock.target_yes}
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="target-no">
-
-                    ${stock.target_no}
-
-                </span>
-
-            </td>
-
-
-            <td class="green">
-
-                ${formatPercent(stock.strike_rate)}
-
-            </td>
-
-
-        </tr>
-
-        `;
-
-
-    });
-
-}
-
-
-/* =====================================================
-   FILTER BLSH
-===================================================== */
 
 function filterBLSH() {
 
-
     const minimum =
-
-        Number(
-
-            document.getElementById(
-                "blshStrikeFilter"
-            ).value
-
+        parseFloat(
+            document
+                .getElementById(
+                    'blshStrike'
+                )
+                .value
         );
 
 
-    const filtered =
+    document
+        .querySelectorAll(
+            '#blshTable tbody tr'
+        )
+        .forEach(
+            function(row) {
 
-        dashboardData.blsh.filter(stock =>
+                const cells =
+                    row.querySelectorAll(
+                        'td'
+                    );
 
-            Number(stock.strike_rate) >= minimum
+                if (
+                    cells.length < 11
+                ) {
+                    return;
+                }
 
+
+                const strike =
+                    parseFloat(
+                        cells[10]
+                            .innerText
+                            .replace(
+                                '%',
+                                ''
+                            )
+                    );
+
+
+                row.style.display =
+                    strike >= minimum
+                    ? ''
+                    : 'none';
+
+            }
         );
-
-
-    renderBLSH(filtered);
 
 }
 
 
-/* =====================================================
-   RENDER BLSH
-===================================================== */
-
-function renderBLSH(data) {
-
-
-    const table =
-
-        document.getElementById(
-            "blshTable"
-        );
-
-
-    table.innerHTML = "";
-
-
-    if (!data.length) {
-
-
-        table.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="10"
-                    class="empty">
-
-                    No stocks match selected strike rate.
-
-                </td>
-
-            </tr>
-
-        `;
-
-
-        return;
-
-    }
-
-
-    data.forEach(stock => {
-
-
-        table.innerHTML += `
-
-        <tr>
-
-
-            <td class="stock-name">
-
-                ${stock.symbol}
-
-            </td>
-
-
-            <td>
-
-                ${stock.company || "-"}
-
-            </td>
-
-
-            <td>
-
-                ${formatPrice(stock.cmp)}
-
-            </td>
-
-
-            <td>
-
-                ${formatPrice(stock.low_25_day)}
-
-            </td>
-
-
-            <td>
-
-                ${formatPrice(stock.trigger_price)}
-
-            </td>
-
-
-            <td class="${percentClass(stock.trigger_away)}">
-
-                ${formatPercent(stock.trigger_away)}
-
-            </td>
-
-
-            <td class="purple">
-
-                ${Number(stock.rsi_14).toFixed(2)}
-
-            </td>
-
-
-            <td>
-
-                <span class="target-yes">
-
-                    ${stock.target_yes_1y}
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="target-no">
-
-                    ${stock.target_no_1y}
-
-                </span>
-
-            </td>
-
-
-            <td class="green">
-
-                ${formatPercent(stock.strike_rate)}
-
-            </td>
-
-
-        </tr>
-
-        `;
-
-
-    });
-
-}
-
-
-/* =====================================================
-   LOAD DASHBOARD
-===================================================== */
-
-async function loadDashboard() {
-
-
-    try {
-
-
-        const response =
-
-            await fetch(
-
-                "data.json?ts="
-
-                +
-
-                new Date().getTime()
-
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Unable to load data.json"
-            );
-
-        }
-
-
-        const data =
-
-            await response.json();
-
-
-        // Store data globally
-
-        dashboardData.mwd =
-
-            data.mwd.data || [];
-
-
-        dashboardData.sst =
-
-            data.sst.data || [];
-
-
-        dashboardData.blsh =
-
-            data.blsh.data || [];
-
-
-        // Header
-
-        document.getElementById(
-
-            "syncTime"
-
-        ).innerHTML =
-
-            "Last Updated: "
-
-            +
-
-            data.last_updated;
-
-
-        document.getElementById(
-
-            "marketDate"
-
-        ).innerHTML =
-
-            "Latest Market Trading Date: "
-
-            +
-
-            (
-                data.latest_market_date
-                || "-"
-            );
-
-
-        document.getElementById(
-
-            "totalStocks"
-
-        ).innerHTML =
-
-            "Total: "
-
-            +
-
-            data.total_stocks;
-
-
-        document.getElementById(
-
-            "mwdCount"
-
-        ).innerHTML =
-
-            "MWD: "
-
-            +
-
-            data.mwd.count;
-
-
-        document.getElementById(
-
-            "sstCount"
-
-        ).innerHTML =
-
-            "SST: "
-
-            +
-
-            data.sst.count;
-
-
-        document.getElementById(
-
-            "blshCount"
-
-        ).innerHTML =
-
-            "BLSH: "
-
-            +
-
-            data.blsh.count;
-
-
-        // Render Tables
-
-        renderMWD(
-            dashboardData.mwd
-        );
-
-
-        renderSST(
-            dashboardData.sst
-        );
-
-
-        renderBLSH(
-            dashboardData.blsh
-        );
-
-
-    }
-
-
-    catch (error) {
-
-
-        console.error(error);
-
-
-        document.getElementById(
-
-            "syncTime"
-
-        ).innerHTML =
-
-            "Error loading dashboard data.";
-
-    }
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-loadDashboard();
-
+document
+    .getElementById(
+        'dist'
+    )
+    .addEventListener(
+        'input',
+        filterMWD
+    );
+
+
+document
+    .getElementById(
+        'rise'
+    )
+    .addEventListener(
+        'input',
+        filterMWD
+    );
+
+
+filterMWD();
+filterSST();
+filterBLSH();
 
 </script>
 
@@ -2089,3 +5062,4 @@ loadDashboard();
 </body>
 
 </html>
+
