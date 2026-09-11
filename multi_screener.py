@@ -275,7 +275,6 @@ def cycle_statistics(df, lookback, target_pct):
     for i in range(lookback, len(data)):
         current_high = float(data["High"].iloc[i])
 
-        # Detect new breakout and register trade
         if is_new_high(data, i, lookback):
             entry_price = float(data["High"].iloc[i - lookback:i].max())
             target_price = entry_price * (1 + target_pct / 100)
@@ -289,7 +288,6 @@ def cycle_statistics(df, lookback, target_pct):
 
         low_occurred = is_new_low(data, i, lookback)
 
-        # Check all active open trades
         for trade in open_trades:
             if trade["status"] != "OPEN":
                 continue
