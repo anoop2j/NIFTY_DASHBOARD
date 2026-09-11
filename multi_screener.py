@@ -248,13 +248,16 @@ def is_new_low(df, i, lookback):
 def is_new_high(df, i, lookback):
     if i < lookback:
         return False
-    current_high = float(df["High"].iloc[i])
-    previous_high = float(df["High"].iloc[i - lookback:i].max())
-    return current_high > previous_high
+    current_high = float(data_slice_high(df, i, lookback))
+    return float(df["High"].iloc[i]) > current_high
+
+
+def data_slice_high(df, i, lookback):
+    return df["High"].iloc[i - lookback:i].max()
 
 
 # ============================================================
-# SST HISTORICAL STATISTICS
+# SST HISTORICAL STATISTICS (EXACT MATCH FOR SHEET)
 # ============================================================
 
 def cycle_statistics(df, lookback, target_pct):
@@ -271,23 +274,31 @@ def cycle_statistics(df, lookback, target_pct):
     yes = 0
     no = 0
     open_trades = []
+    
+    # Prevents triggering on consecutive streak candles of the same rally
+    last_breakout_index = -100
 
     for i in range(lookback, len(data)):
         current_high = float(data["High"].iloc[i])
 
+        # New 20-day high breakout check
         if is_new_high(data, i, lookback):
-            entry_price = float(data["High"].iloc[i - lookback:i].max())
-            target_price = entry_price * (1 + target_pct / 100)
+            # Only trigger if it's a new setup (not a consecutive candle in an ongoing breakout)
+            if i > last_breakout_index + 1 or not any(t["status"] == "OPEN" for t in open_trades):
+                entry_price = float(data["High"].iloc[i - lookback:i].max())
+                target_price = entry_price * (1 + target_pct / 100)
 
-            open_trades.append({
-                "entry_index": i,
-                "entry_price": entry_price,
-                "target_price": target_price,
-                "status": "OPEN"
-            })
+                open_trades.append({
+                    "entry_index": i,
+                    "entry_price": entry_price,
+                    "target_price": target_price,
+                    "status": "OPEN"
+                })
+                last_breakout_index = i
 
         low_occurred = is_new_low(data, i, lookback)
 
+        # Update status of open trades
         for trade in open_trades:
             if trade["status"] != "OPEN":
                 continue
