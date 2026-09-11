@@ -1293,24 +1293,26 @@ def build_html(
                 data-rise="{x['rise']}"
             >
 
-                <td>{x['symbol']}</td>
+                <td><strong>{x['symbol']}</strong></td>
 
-                <td>{x['company']}</td>
+                <td class="company">{x['company']}</td>
 
-                <td>
+                <td class="num">
                     ₹{x['price']:,.2f}
                 </td>
 
-                <td>
+                <td class="num">
                     ₹{x['high52']:,.2f}
                 </td>
 
-                <td>
-                    {x['distance']:.2f}%
+                <td class="num">
+                    <span class="chip {'negative' if x['distance'] < 0 else 'positive'}">
+                        {x['distance']:.2f}%
+                    </span>
                 </td>
 
-                <td>
-                    <span class="positive">
+                <td class="num">
+                    <span class="chip positive">
                         +{x['rise']:.2f}%
                     </span>
                 </td>
@@ -1333,32 +1335,38 @@ def build_html(
             f"""
             <tr>
 
-                <td>{x['symbol']}</td>
+                <td><strong>{x['symbol']}</strong></td>
 
-                <td>{x['company']}</td>
+                <td class="company">{x['company']}</td>
 
-                <td>
+                <td class="num">
                     ₹{x['price']:,.2f}
                 </td>
 
-                <td>
+                <td class="num">
                     ₹{x['high20']:,.2f}
                 </td>
 
-                <td>
+                <td class="num">
                     {x['away']:.2f}%
                 </td>
 
-                <td>
-                    {x['yes']}
+                <td class="num">
+                    <span class="chip positive">
+                        {x['yes']}
+                    </span>
                 </td>
 
-                <td>
-                    {x['no']}
+                <td class="num">
+                    <span class="chip negative">
+                        {x['no']}
+                    </span>
                 </td>
 
-                <td>
-                    {x['strike']:.2f}%
+                <td class="num">
+                    <span class="chip {'positive' if x['strike'] >= 50 else 'neutral'}">
+                        {x['strike']:.2f}%
+                    </span>
                 </td>
 
             </tr>
@@ -1379,44 +1387,50 @@ def build_html(
             f"""
             <tr>
 
-                <td>{x['symbol']}</td>
+                <td><strong>{x['symbol']}</strong></td>
 
-                <td>{x['company']}</td>
+                <td class="company">{x['company']}</td>
 
-                <td>
+                <td class="num">
                     ₹{x['cmp']:,.2f}
                 </td>
 
-                <td>
+                <td class="num">
                     ₹{x['low_25_day']:,.2f}
                 </td>
 
-                <td>
+                <td class="num">
                     ₹{x['trigger_price']:,.2f}
                 </td>
 
-                <td>
+                <td class="num">
                     ₹{x['target_price']:,.2f}
                 </td>
 
-                <td>
+                <td class="num">
                     {x['trigger_away']:.2f}%
                 </td>
 
-                <td>
+                <td class="num">
                     {x['rsi']:.2f}
                 </td>
 
-                <td>
-                    {x['yes']}
+                <td class="num">
+                    <span class="chip positive">
+                        {x['yes']}
+                    </span>
                 </td>
 
-                <td>
-                    {x['no']}
+                <td class="num">
+                    <span class="chip negative">
+                        {x['no']}
+                    </span>
                 </td>
 
-                <td>
-                    {x['strike']:.2f}%
+                <td class="num">
+                    <span class="chip {'positive' if x['strike'] >= 50 else 'neutral'}">
+                        {x['strike']:.2f}%
+                    </span>
                 </td>
 
             </tr>
@@ -1449,8 +1463,48 @@ def build_html(
 Nifty 100 Daily Multi-Screener
 </title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
+
+:root {{
+
+    /* -- surfaces --------------------------------------- */
+    --bg:            #eef1f6;
+    --surface:       #ffffff;
+    --surface-alt:   #f6f8fb;
+    --border:        #e2e7f0;
+
+    /* -- ink --------------------------------------------- */
+    --ink:           #10192b;
+    --ink-soft:      #5b6579;
+    --ink-faint:     #8993a6;
+
+    /* -- accent (gains / targets) ------------------------ */
+    --gold:          #a9781f;
+    --gold-soft:     #f7eed9;
+
+    /* -- semantic ----------------------------------------- */
+    --green:         #147347;
+    --green-soft:    #e2f3e9;
+    --red:           #ae2f27;
+    --red-soft:      #fbe9e7;
+
+    /* -- strategy colors ----------------------------------- */
+    --indigo:        #29418f;
+    --indigo-soft:   #e6ebfa;
+    --plum:          #6a3382;
+    --plum-soft:     #f0e6f6;
+    --teal:          #0e6e63;
+    --teal-soft:     #e0f2ef;
+
+    --radius-lg:     16px;
+    --radius-sm:     10px;
+    --shadow:        0 1px 2px rgba(16,25,43,0.04), 0 10px 24px rgba(16,25,43,0.06);
+}}
+
 
 * {{
     box-sizing: border-box;
@@ -1462,30 +1516,41 @@ body {{
     margin: 0;
 
     font-family:
+        'Inter',
         Arial,
         sans-serif;
 
     background:
-        #eef2f7;
+        var(--bg);
 
     color:
-        #26384d;
+        var(--ink);
 
     padding:
-        20px;
+        28px;
+
+    -webkit-font-smoothing:
+        antialiased;
 }}
 
+
+/* ============================================================ */
+/* TOP HEADER                                                   */
+/* ============================================================ */
 
 .top {{
 
     background:
-        #ffffff;
+        var(--surface);
+
+    border:
+        1px solid var(--border);
 
     border-radius:
-        18px;
+        var(--radius-lg);
 
     padding:
-        20px 36px;
+        26px 34px;
 
     display:
         flex;
@@ -1497,30 +1562,47 @@ body {{
         center;
 
     box-shadow:
-        0 8px 25px #ccd5e055;
+        var(--shadow);
 
     margin-bottom:
-        25px;
+        22px;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        18px;
 }}
 
 
 .title {{
 
+    font-family:
+        'Space Grotesk',
+        'Inter',
+        sans-serif;
+
     font-size:
-        30px;
+        27px;
 
     font-weight:
-        800;
+        700;
+
+    letter-spacing:
+        -0.01em;
 }}
 
 
 .subtitle {{
 
     margin-top:
-        10px;
+        6px;
 
     color:
-        #5d6d7e;
+        var(--ink-soft);
+
+    font-size:
+        14px;
 }}
 
 
@@ -1540,42 +1622,95 @@ body {{
 .badge {{
 
     padding:
-        12px 22px;
+        10px 18px;
 
     border-radius:
-        25px;
+        999px;
 
     font-weight:
-        bold;
+        600;
+
+    font-size:
+        14px;
 
     background:
-        #dcebf5;
-}}
-
-
-.badge.green {{
-
-    background:
-        #dcefe2;
+        var(--surface-alt);
 
     color:
-        #29683c;
-}}
+        var(--ink-soft);
 
-
-.tabs {{
+    border:
+        1px solid var(--border);
 
     display:
         flex;
 
+    align-items:
+        center;
+
     gap:
-        10px;
+        8px;
+
+    white-space:
+        nowrap;
+}}
+
+
+.badge .dot {{
+
+    width:
+        8px;
+
+    height:
+        8px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--ink-faint);
+
+    flex-shrink:
+        0;
+}}
+
+
+.badge strong {{
+    color: var(--ink);
+}}
+
+
+.badge.mwd .dot {{ background: var(--indigo); }}
+.badge.sst .dot {{ background: var(--plum); }}
+.badge.blsh .dot {{ background: var(--teal); }}
+
+
+/* ============================================================ */
+/* TABS                                                          */
+/* ============================================================ */
+
+.tabs {{
+
+    display:
+        inline-flex;
+
+    gap:
+        4px;
 
     margin-bottom:
-        20px;
+        18px;
 
-    flex-wrap:
-        wrap;
+    padding:
+        5px;
+
+    background:
+        var(--surface-alt);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius-sm);
 }}
 
 
@@ -1585,37 +1720,49 @@ body {{
         none;
 
     padding:
-        14px 28px;
+        11px 24px;
 
     border-radius:
-        10px;
+        7px;
 
     background:
-        #d7dee8;
+        transparent;
 
     color:
-        #26384d;
+        var(--ink-soft);
+
+    font-family:
+        'Inter',
+        sans-serif;
 
     font-size:
-        16px;
+        14px;
 
     font-weight:
-        bold;
+        600;
 
     cursor:
         pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
 }}
 
 
-.tab.active {{
-
-    background:
-        #2858b5;
-
-    color:
-        white;
+.tab:hover {{
+    color: var(--ink);
 }}
 
+
+.tab.active.mwd {{ background: var(--indigo); color: #fff; }}
+.tab.active.sst {{ background: var(--plum);   color: #fff; }}
+.tab.active.blsh {{ background: var(--teal);   color: #fff; }}
+
+
+/* ============================================================ */
+/* PANELS                                                         */
+/* ============================================================ */
 
 .tab-content {{
 
@@ -1623,16 +1770,19 @@ body {{
         none;
 
     background:
-        white;
+        var(--surface);
+
+    border:
+        1px solid var(--border);
 
     border-radius:
-        18px;
+        var(--radius-lg);
 
     overflow:
         hidden;
 
     box-shadow:
-        0 8px 25px #ccd5e055;
+        var(--shadow);
 }}
 
 
@@ -1646,16 +1796,20 @@ body {{
 .panel-head {{
 
     padding:
-        22px 25px;
+        20px 26px;
 
     color:
-        white;
+        #ffffff;
+
+    font-family:
+        'Space Grotesk',
+        sans-serif;
 
     font-size:
-        22px;
+        20px;
 
     font-weight:
-        800;
+        700;
 
     display:
         flex;
@@ -1665,53 +1819,63 @@ body {{
 
     align-items:
         center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
 }}
 
 
 .mwd-head {{
-    background:
-        #2858b5;
+    background: var(--indigo);
 }}
 
 
 .sst-head {{
-    background:
-        #6b31c7;
+    background: var(--plum);
 }}
 
 
 .blsh-head {{
-    background:
-        #147b65;
+    background: var(--teal);
 }}
 
 
 .panel-sub {{
 
+    font-family:
+        'Inter',
+        sans-serif;
+
     font-size:
-        15px;
+        13px;
 
     font-weight:
-        normal;
+        500;
+
+    opacity:
+        0.85;
 }}
 
 
 .filters {{
 
     padding:
-        14px 20px;
+        14px 26px;
 
     background:
-        #f8fafc;
+        var(--surface-alt);
 
     border-bottom:
-        1px solid #e5e8ec;
+        1px solid var(--border);
 
     display:
         flex;
 
     gap:
-        15px;
+        20px;
 
     align-items:
         center;
@@ -1725,25 +1889,65 @@ select,
 input {{
 
     padding:
-        8px;
+        8px 10px;
 
     border:
-        1px solid #ccd4dd;
+        1px solid var(--border);
 
     border-radius:
-        6px;
+        7px;
+
+    font-family:
+        'Inter',
+        sans-serif;
+
+    font-size:
+        13px;
+
+    color:
+        var(--ink);
+
+    background:
+        var(--surface);
+}}
+
+
+select:focus,
+input:focus {{
+
+    outline:
+        2px solid var(--indigo);
+
+    outline-offset:
+        1px;
 }}
 
 
 label {{
 
     font-size:
-        13px;
+        12.5px;
 
     font-weight:
-        bold;
+        600;
+
+    color:
+        var(--ink-soft);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
 }}
 
+
+/* ============================================================ */
+/* TABLE                                                          */
+/* ============================================================ */
 
 .table-wrap {{
 
@@ -1774,13 +1978,38 @@ th {{
         left;
 
     color:
-        #607080;
+        var(--ink-faint);
 
     background:
-        #f6f7f9;
+        var(--surface-alt);
 
     padding:
-        13px;
+        12px 16px;
+
+    font-size:
+        11.5px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.02em;
+
+    white-space:
+        nowrap;
+
+    border-bottom:
+        1px solid var(--border);
+}}
+
+
+td {{
+
+    padding:
+        14px 16px;
+
+    border-bottom:
+        1px solid var(--border);
 
     font-size:
         14px;
@@ -1790,19 +2019,27 @@ th {{
 }}
 
 
-td {{
+td.num {{
 
-    padding:
-        14px 13px;
+    font-family:
+        'IBM Plex Mono',
+        monospace;
 
-    border-bottom:
-        1px solid #e5e8ec;
+    font-variant-numeric:
+        tabular-nums;
 
     font-size:
-        14px;
+        13.5px;
+}}
 
-    white-space:
-        nowrap;
+
+td.company {{
+    color: var(--ink-soft);
+}}
+
+
+tbody tr:hover {{
+    background: var(--surface-alt);
 }}
 
 
@@ -1813,38 +2050,71 @@ tr:last-child td {{
 }}
 
 
-.positive {{
+/* ============================================================ */
+/* CHIPS                                                          */
+/* ============================================================ */
 
-    background:
-        #e0f0e7;
+.chip {{
 
-    color:
-        #1c7043;
+    display:
+        inline-flex;
+
+    align-items:
+        center;
 
     padding:
-        5px 8px;
+        4px 10px;
 
     border-radius:
         6px;
 
     font-weight:
-        bold;
+        600;
+
+    font-family:
+        'IBM Plex Mono',
+        monospace;
+
+    font-size:
+        13px;
 }}
 
+
+.chip.positive {{
+    background: var(--green-soft);
+    color: var(--green);
+}}
+
+
+.chip.negative {{
+    background: var(--red-soft);
+    color: var(--red);
+}}
+
+
+.chip.neutral {{
+    background: var(--gold-soft);
+    color: var(--gold);
+}}
+
+
+/* ============================================================ */
+/* FOOTER                                                          */
+/* ============================================================ */
 
 .footer {{
 
     margin-top:
-        25px;
+        22px;
 
     text-align:
         center;
 
     color:
-        #64748b;
+        var(--ink-faint);
 
     font-size:
-        13px;
+        12.5px;
 }}
 
 
@@ -1852,7 +2122,7 @@ tr:last-child td {{
 
     body {{
         padding:
-            10px;
+            14px;
     }}
 
     .top {{
@@ -1873,7 +2143,27 @@ tr:last-child td {{
     .title {{
 
         font-size:
-            24px;
+            22px;
+    }}
+
+    .tabs {{
+
+        display:
+            flex;
+
+        width:
+            100%;
+    }}
+
+    .tab {{
+        flex:
+            1;
+
+        text-align:
+            center;
+
+        padding:
+            10px 12px;
     }}
 
 }}
@@ -1908,23 +2198,23 @@ tr:last-child td {{
     <div class="badges">
 
         <div class="badge">
-            Total Stocks:
-            {total_stocks}
+            <span class="dot"></span>
+            Total Stocks: <strong>{total_stocks}</strong>
         </div>
 
-        <div class="badge green">
-            MWD Matches:
-            {len(mwd)}
+        <div class="badge mwd">
+            <span class="dot"></span>
+            MWD: <strong>{len(mwd)}</strong>
         </div>
 
-        <div class="badge green">
-            SST Matches:
-            {len(sst)}
+        <div class="badge sst">
+            <span class="dot"></span>
+            SST: <strong>{len(sst)}</strong>
         </div>
 
-        <div class="badge green">
-            BLSH Matches:
-            {len(blsh)}
+        <div class="badge blsh">
+            <span class="dot"></span>
+            BLSH: <strong>{len(blsh)}</strong>
         </div>
 
     </div>
@@ -1939,7 +2229,7 @@ tr:last-child td {{
 <div class="tabs">
 
     <button
-        class="tab active"
+        class="tab active mwd"
         onclick="showTab('mwd', this)"
     >
         1. MWD
@@ -1947,7 +2237,7 @@ tr:last-child td {{
 
 
     <button
-        class="tab"
+        class="tab sst"
         onclick="showTab('sst', this)"
     >
         2. SST
@@ -1955,7 +2245,7 @@ tr:last-child td {{
 
 
     <button
-        class="tab"
+        class="tab blsh"
         onclick="showTab('blsh', this)"
     >
         3. BLSH RSI
