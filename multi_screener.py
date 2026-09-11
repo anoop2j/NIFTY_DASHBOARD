@@ -255,14 +255,6 @@ def is_new_high(df, i, lookback):
 
 # ============================================================
 # SST HISTORICAL STATISTICS
-#
-# SEQUENTIAL LIFECYCLE LOGIC:
-# 1. Wait for New 20-Day High -> Set Entry (Prev 20D High) & Target (+6%)
-# 2. Monitor Candle-by-Candle:
-#    - If High >= Target -> YES -> State changes to WAITING_FOR_RESET_LOW
-#    - Else If Low < Prev 20D Low -> NO -> State changes to SEARCHING_FOR_BREAKOUT
-# 3. After YES: Stay in WAITING_FOR_RESET_LOW until a new 20-day Low occurs.
-#    Only then can a new breakout signal be evaluated.
 # ============================================================
 
 def cycle_statistics(df, lookback, target_pct):
@@ -278,46 +270,36 @@ def cycle_statistics(df, lookback, target_pct):
 
     yes = 0
     no = 0
+    open_trades = []
 
-    state = "SEARCHING_FOR_BREAKOUT"  # States: SEARCHING_FOR_BREAKOUT, MONITORING_TRADE, WAITING_FOR_RESET_LOW
-    target_price = None
-
-    i = lookback
-    while i < len(data):
+    for i in range(lookback, len(data)):
         current_high = float(data["High"].iloc[i])
-        current_low = float(data["Low"].iloc[i])
 
-        if state == "SEARCHING_FOR_BREAKOUT":
-            if is_new_high(data, i, lookback):
-                entry_price = float(data["High"].iloc[i - lookback:i].max())
-                target_price = entry_price * (1 + target_pct / 100)
+        # Detect new breakout and register trade
+        if is_new_high(data, i, lookback):
+            entry_price = float(data["High"].iloc[i - lookback:i].max())
+            target_price = entry_price * (1 + target_pct / 100)
 
-                # Check if target is achieved on the breakout day itself
-                if current_high >= target_price:
-                    yes += 1
-                    state = "WAITING_FOR_RESET_LOW"
-                else:
-                    state = "MONITORING_TRADE"
+            open_trades.append({
+                "entry_index": i,
+                "entry_price": entry_price,
+                "target_price": target_price,
+                "status": "OPEN"
+            })
 
-        elif state == "MONITORING_TRADE":
-            target_reached = current_high >= target_price
-            low_reached = is_new_low(data, i, lookback)
+        low_occurred = is_new_low(data, i, lookback)
 
-            # Target reached first (or same day target priority)
-            if target_reached:
+        # Check all active open trades
+        for trade in open_trades:
+            if trade["status"] != "OPEN":
+                continue
+
+            if current_high >= trade["target_price"]:
+                trade["status"] = "YES"
                 yes += 1
-                state = "WAITING_FOR_RESET_LOW"
-            elif low_reached:
+            elif low_occurred and i > trade["entry_index"]:
+                trade["status"] = "NO"
                 no += 1
-                # After NO, a new breakout can immediately be evaluated on next occurrences
-                state = "SEARCHING_FOR_BREAKOUT"
-
-        elif state == "WAITING_FOR_RESET_LOW":
-            # Must wait for a new 20-day low to reset cycle after a successful YES trade
-            if is_new_low(data, i, lookback):
-                state = "SEARCHING_FOR_BREAKOUT"
-
-        i += 1
 
     completed = yes + no
     strike = (yes / completed * 100) if completed else 0.0
