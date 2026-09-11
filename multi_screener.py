@@ -257,7 +257,7 @@ def data_slice_high(df, i, lookback):
 
 
 # ============================================================
-# SST HISTORICAL STATISTICS (EXACT MATCH FOR SHEET)
+# SST HISTORICAL STATISTICS (EXACT SHEET MATCH)
 # ============================================================
 
 def cycle_statistics(df, lookback, target_pct):
@@ -275,16 +275,19 @@ def cycle_statistics(df, lookback, target_pct):
     no = 0
     open_trades = []
     
-    # Prevents triggering on consecutive streak candles of the same rally
-    last_breakout_index = -100
+    # Track index of the last entered trade
+    last_trade_index = -100
+    
+    # 15-trading-day minimum spacing between distinct strategy entries
+    MIN_ENTRY_SPACING = 15
 
     for i in range(lookback, len(data)):
         current_high = float(data["High"].iloc[i])
 
         # New 20-day high breakout check
         if is_new_high(data, i, lookback):
-            # Only trigger if it's a new setup (not a consecutive candle in an ongoing breakout)
-            if i > last_breakout_index + 1 or not any(t["status"] == "OPEN" for t in open_trades):
+            # Enforce entry spacing to filter out micro-breakouts during a single move
+            if (i - last_trade_index) >= MIN_ENTRY_SPACING:
                 entry_price = float(data["High"].iloc[i - lookback:i].max())
                 target_price = entry_price * (1 + target_pct / 100)
 
@@ -294,7 +297,7 @@ def cycle_statistics(df, lookback, target_pct):
                     "target_price": target_price,
                     "status": "OPEN"
                 })
-                last_breakout_index = i
+                last_trade_index = i
 
         low_occurred = is_new_low(data, i, lookback)
 
