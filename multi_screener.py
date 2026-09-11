@@ -2,6 +2,7 @@ import pandas as pd
 import yfinance as yf
 import time
 import os
+
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -13,12 +14,14 @@ from zoneinfo import ZoneInfo
 SYMBOL_FILE = "nifty100_symbols.csv"
 OUTPUT_FILE = "docs/index.html"
 
+
 # ============================================================
 # SST SETTINGS
 # ============================================================
 
 SST_LOOKBACK = 20
 SST_TARGET = 6.0
+
 
 # ============================================================
 # BLSH RSI SETTINGS
@@ -27,8 +30,10 @@ SST_TARGET = 6.0
 BLSH_LOOKBACK = 25
 BLSH_TRIGGER_PCT = 6.5
 BLSH_TARGET_PCT = 3.14
+
 RSI_PERIOD = 14
 RSI_LIMIT = 36
+
 
 # ============================================================
 # HISTORICAL ANALYSIS
@@ -42,8 +47,10 @@ ANALYSIS_DAYS = 252
 # ============================================================
 
 def fmt_date(value):
+
     try:
         return pd.Timestamp(value).strftime("%d-%b-%Y")
+
     except Exception:
         return "N/A"
 
@@ -53,10 +60,11 @@ def fmt_date(value):
 # ============================================================
 
 def bullish(row):
+
     return (
         pd.notna(row["Open"])
         and pd.notna(row["Close"])
-        and row["Close"] > row["Open"]
+        and float(row["Close"]) > float(row["Open"])
     )
 
 
@@ -69,7 +77,8 @@ def rsi(series, period=14):
     delta = series.diff()
 
     gain = (
-        delta.clip(lower=0)
+        delta
+        .clip(lower=0)
         .ewm(
             alpha=1 / period,
             adjust=False,
@@ -79,7 +88,8 @@ def rsi(series, period=14):
     )
 
     loss = (
-        (-delta.clip(upper=0))
+        (-delta)
+        .clip(lower=0)
         .ewm(
             alpha=1 / period,
             adjust=False,
@@ -88,11 +98,16 @@ def rsi(series, period=14):
         .mean()
     )
 
-    rs = gain / loss.replace(0, float("nan"))
+    rs = gain / loss.replace(
+        0,
+        float("nan")
+    )
 
-    out = 100 - (100 / (1 + rs))
+    result = 100 - (
+        100 / (1 + rs)
+    )
 
-    return out.fillna(100)
+    return result.fillna(100)
 
 
 # ============================================================
@@ -101,16 +116,24 @@ def rsi(series, period=14):
 
 def load_symbols():
 
-    df = pd.read_csv(SYMBOL_FILE)
+    df = pd.read_csv(
+        SYMBOL_FILE
+    )
 
-    df.columns = df.columns.str.strip().str.lower()
+    df.columns = (
+        df.columns
+        .str.strip()
+        .str.lower()
+    )
 
     if "symbol" not in df.columns:
+
         raise ValueError(
             "CSV must contain a symbol column"
         )
 
     if "company" not in df.columns:
+
         df["company"] = df["symbol"]
 
     df = df.dropna(
@@ -119,33 +142,57 @@ def load_symbols():
 
     return [
         (
-            str(r["symbol"]).strip(),
-            str(r["company"]).strip()
+            str(row["symbol"]).strip(),
+            str(row["company"]).strip()
         )
-        for _, r in df.iterrows()
+        for _, row in df.iterrows()
     ]
 
 
 # ============================================================
-# DOWNLOAD DATA
+# DOWNLOAD DAILY DATA
 # ============================================================
 
 def download(symbol):
 
-    df = yf.download(
-        symbol + ".NS",
-        period="18mo",
-        interval="1d",
-        auto_adjust=False,
-        progress=False,
-        threads=False
-    )
+    try:
 
-    if df.empty:
+        df = yf.download(
+            symbol + ".NS",
+            period="18mo",
+            interval="1d",
+            auto_adjust=False,
+            progress=False,
+            threads=False
+        )
+
+    except Exception as e:
+
+        print(
+            f"  Download error: {e}"
+        )
+
         return None
 
-    if isinstance(df.columns, pd.MultiIndex):
-        df.columns = df.columns.get_level_values(0)
+    if df is None or df.empty:
+
+        return None
+
+
+    # --------------------------------------------------------
+    # Handle Yahoo Finance MultiIndex
+    # --------------------------------------------------------
+
+    if isinstance(
+        df.columns,
+        pd.MultiIndex
+    ):
+
+        df.columns = (
+            df.columns
+            .get_level_values(0)
+        )
+
 
     required = [
         "Open",
@@ -154,30 +201,37 @@ def download(symbol):
         "Close"
     ]
 
+
     if any(
-        c not in df.columns
-        for c in required
+        column not in df.columns
+        for column in required
     ):
+
         return None
+
 
     df = df.dropna(
         subset=required
     ).copy()
 
-    for c in required:
 
-        df[c] = pd.to_numeric(
-            df[c],
+    for column in required:
+
+        df[column] = pd.to_numeric(
+            df[column],
             errors="coerce"
         )
+
 
     df = df.dropna(
         subset=required
     )
 
+
     df.index = pd.to_datetime(
         df.index
     )
+
 
     return df
 
@@ -188,21 +242,31 @@ def download(symbol):
 
 def resample_ohlc(df, rule):
 
-    return pd.DataFrame({
+    result = pd.DataFrame({
 
         "Open":
-            df["Open"].resample(rule).first(),
+            df["Open"]
+            .resample(rule)
+            .first(),
 
         "High":
-            df["High"].resample(rule).max(),
+            df["High"]
+            .resample(rule)
+            .max(),
 
         "Low":
-            df["Low"].resample(rule).min(),
+            df["Low"]
+            .resample(rule)
+            .min(),
 
         "Close":
-            df["Close"].resample(rule).last()
+            df["Close"]
+            .resample(rule)
+            .last()
 
-    }).dropna()
+    })
+
+    return result.dropna()
 
 
 # ============================================================
@@ -227,31 +291,58 @@ def mwd_screen(
         "ME"
     )
 
+
     if (
         len(daily) < 252
         or len(weekly) < 3
         or len(monthly) < 3
     ):
+
         return None
 
-    d = daily.iloc[-1]
 
+    # --------------------------------------------------------
+    # Current daily candle
+    # --------------------------------------------------------
+
+    daily_current = daily.iloc[-1]
+
+
+    # --------------------------------------------------------
     # Last completed week
-    w = weekly.iloc[-2]
+    # --------------------------------------------------------
 
+    weekly_current = weekly.iloc[-2]
+
+
+    # --------------------------------------------------------
     # Last completed month
-    m = monthly.iloc[-2]
+    # --------------------------------------------------------
+
+    monthly_current = monthly.iloc[-2]
+
+
+    # --------------------------------------------------------
+    # All three must be bullish
+    # --------------------------------------------------------
 
     if not (
-        bullish(d)
-        and bullish(w)
-        and bullish(m)
+        bullish(daily_current)
+        and bullish(weekly_current)
+        and bullish(monthly_current)
     ):
+
         return None
 
+
     last_price = float(
-        d["Close"]
+        daily_current["Close"]
     )
+
+
+    # --------------------------------------------------------
+    # 52-week high
+    # --------------------------------------------------------
 
     high_52 = float(
         daily["High"]
@@ -259,21 +350,50 @@ def mwd_screen(
         .max()
     )
 
+
+    # Do not show stocks already at / above 52W high
     if last_price >= high_52:
+
         return None
 
+
+    # --------------------------------------------------------
+    # Distance from 52W high
+    # --------------------------------------------------------
+
     distance = (
-        (last_price - high_52)
+        (
+            last_price - high_52
+        )
         / high_52
     ) * 100
 
+
+    # --------------------------------------------------------
+    # Monthly rise
+    # --------------------------------------------------------
+
+    monthly_open = float(
+        monthly_current["Open"]
+    )
+
+    monthly_close = float(
+        monthly_current["Close"]
+    )
+
+
+    if monthly_open == 0:
+
+        return None
+
+
     monthly_rise = (
         (
-            float(m["Close"])
-            - float(m["Open"])
+            monthly_close - monthly_open
         )
-        / float(m["Open"])
+        / monthly_open
     ) * 100
+
 
     return {
 
@@ -314,6 +434,9 @@ def mwd_screen(
 
 # ============================================================
 # NEW 25-DAY LOW
+#
+# Today's Low must be below the LOW of the previous
+# 25 trading days.
 # ============================================================
 
 def is_new_low(
@@ -323,11 +446,14 @@ def is_new_low(
 ):
 
     if i < lookback:
+
         return False
+
 
     current_low = float(
         df["Low"].iloc[i]
     )
+
 
     previous_low = float(
         df["Low"]
@@ -337,11 +463,15 @@ def is_new_low(
         .min()
     )
 
+
     return current_low < previous_low
 
 
 # ============================================================
 # NEW 20-DAY HIGH
+#
+# Today's High must be above the HIGH of the previous
+# 20 trading days.
 # ============================================================
 
 def is_new_high(
@@ -351,11 +481,14 @@ def is_new_high(
 ):
 
     if i < lookback:
+
         return False
+
 
     current_high = float(
         df["High"].iloc[i]
     )
+
 
     previous_high = float(
         df["High"]
@@ -365,13 +498,37 @@ def is_new_high(
         .max()
     )
 
+
     return current_high > previous_high
 
 
 # ============================================================
 # SST HISTORICAL STATISTICS
 #
-# Existing SST logic retained.
+# CORRECTED LOGIC
+#
+# Every new 20-day high creates a separate transaction.
+#
+# Entry:
+#     Previous 20-day high
+#
+# Target:
+#     Entry + 6%
+#
+# Result:
+#     YES = target reached first
+#     NO  = new 20-day low reached first
+#
+# IMPORTANT:
+# Multiple trades can exist simultaneously.
+#
+# Example:
+#
+# Trade 1 starts
+# Trade 2 starts before Trade 1 finishes
+# Trade 3 starts before Trade 2 finishes
+#
+# All trades are tracked independently.
 # ============================================================
 
 def cycle_statistics(
@@ -380,8 +537,16 @@ def cycle_statistics(
     target_pct
 ):
 
+    # --------------------------------------------------------
+    # Keep approximately one year of analysis data.
+    #
+    # Extra 'lookback' rows are required so the first
+    # analysis day can calculate the previous 20-day high/low.
+    # --------------------------------------------------------
+
     data = (
-        df.tail(
+        df
+        .tail(
             ANALYSIS_DAYS + lookback
         )
         .copy()
@@ -393,120 +558,185 @@ def cycle_statistics(
         )
     )
 
+
     if len(data) <= lookback:
-        return 0, 0, 0.0
+
+        return (
+            0,
+            0,
+            0.0
+        )
+
 
     yes = 0
     no = 0
 
-    i = lookback
 
-    waiting_for_low = True
+    # --------------------------------------------------------
+    # Check EVERY possible 20-day breakout.
+    #
+    # There is intentionally NO waiting_for_low variable.
+    # --------------------------------------------------------
 
-    while i < len(data):
+    for i in range(
+        lookback,
+        len(data)
+    ):
 
-        if waiting_for_low:
 
-            if is_new_low(
-                data,
-                i,
-                lookback
-            ):
-                waiting_for_low = False
+        # ----------------------------------------------------
+        # STEP 1
+        #
+        # Is today's High a NEW 20-DAY HIGH?
+        # ----------------------------------------------------
 
-            i += 1
-            continue
-
-        if is_new_high(
+        if not is_new_high(
             data,
             i,
             lookback
         ):
 
-            entry = float(
-                data["High"]
-                .iloc[
-                    i - lookback:i
-                ]
-                .max()
+            continue
+
+
+        # ----------------------------------------------------
+        # STEP 2
+        #
+        # Entry = previous 20-day high
+        #
+        # IMPORTANT:
+        # Current breakout day's High is excluded.
+        # ----------------------------------------------------
+
+        entry = float(
+            data["High"]
+            .iloc[
+                i - lookback:i
+            ]
+            .max()
+        )
+
+
+        # ----------------------------------------------------
+        # STEP 3
+        #
+        # Target = 6% above entry
+        # ----------------------------------------------------
+
+        target = (
+            entry
+            * (
+                1
+                + target_pct / 100
+            )
+        )
+
+
+        outcome = None
+
+
+        # ----------------------------------------------------
+        # STEP 4
+        #
+        # Track THIS transaction independently.
+        #
+        # Start checking from the next trading day.
+        # ----------------------------------------------------
+
+        for j in range(
+            i + 1,
+            len(data)
+        ):
+
+
+            current_high = float(
+                data["High"].iloc[j]
             )
 
-            target = (
-                entry
-                * (
-                    1
-                    + target_pct / 100
-                )
-            )
 
-            j = i + 1
+            # ------------------------------------------------
+            # TARGET CHECK
+            #
+            # Target has priority, matching the original
+            # source behavior when both conditions occur
+            # on the same candle.
+            # ------------------------------------------------
 
-            outcome = None
+            if current_high >= target:
 
-            while j < len(data):
+                outcome = "YES"
 
-                if (
-                    float(
-                        data["High"].iloc[j]
-                    )
-                    >= target
-                ):
+                break
 
-                    outcome = "YES"
-                    break
 
-                if is_new_low(
-                    data,
-                    j,
-                    lookback
-                ):
+            # ------------------------------------------------
+            # NEW 20-DAY LOW
+            # ------------------------------------------------
 
-                    outcome = "NO"
-                    break
+            if is_new_low(
+                data,
+                j,
+                lookback
+            ):
 
-                j += 1
+                outcome = "NO"
 
-            if outcome == "YES":
+                break
 
-                yes += 1
 
-                waiting_for_low = True
+        # ----------------------------------------------------
+        # STEP 5
+        #
+        # Count only completed transactions.
+        # ----------------------------------------------------
 
-                i = j + 1
+        if outcome == "YES":
 
-            elif outcome == "NO":
+            yes += 1
 
-                no += 1
+        elif outcome == "NO":
 
-                waiting_for_low = False
+            no += 1
 
-                i = j + 1
+        # If outcome is None:
+        #
+        # The transaction is still open at the end of the
+        # available data and is therefore not included.
+        # ----------------------------------------------------
 
-            else:
 
-                i += 1
-
-        else:
-
-            i += 1
+    # --------------------------------------------------------
+    # STRIKE RATE
+    # --------------------------------------------------------
 
     completed = yes + no
 
-    strike = (
-        yes / completed * 100
-        if completed
-        else 0
-    )
+
+    if completed:
+
+        strike = (
+            yes
+            / completed
+            * 100
+        )
+
+    else:
+
+        strike = 0
+
 
     return (
         yes,
         no,
-        round(strike, 2)
+        round(
+            strike,
+            2
+        )
     )
 
 
 # ============================================================
-# SST SCREEN
+# SST CURRENT SCREEN
 # ============================================================
 
 def sst_screen(
@@ -516,11 +746,24 @@ def sst_screen(
 ):
 
     if len(df) < SST_LOOKBACK + 1:
+
         return None
+
+
+    # --------------------------------------------------------
+    # Current closing price
+    # --------------------------------------------------------
 
     close = float(
         df["Close"].iloc[-1]
     )
+
+
+    # --------------------------------------------------------
+    # Current 20-day high
+    #
+    # Includes current trading day for display.
+    # --------------------------------------------------------
 
     high20 = float(
         df["High"]
@@ -528,13 +771,28 @@ def sst_screen(
         .max()
     )
 
-    away = (
-        (
-            high20 - close
-        )
-        / high20
-        * 100
-    ) if high20 else 0
+
+    # --------------------------------------------------------
+    # Distance from 20-day high
+    # --------------------------------------------------------
+
+    if high20:
+
+        away = (
+            (
+                high20 - close
+            )
+            / high20
+        ) * 100
+
+    else:
+
+        away = 0
+
+
+    # --------------------------------------------------------
+    # Historical SST performance
+    # --------------------------------------------------------
 
     yes, no, strike = (
         cycle_statistics(
@@ -543,6 +801,7 @@ def sst_screen(
             SST_TARGET
         )
     )
+
 
     return {
 
@@ -588,7 +847,8 @@ def sst_screen(
 def blsh_history_1_year(df):
 
     data = (
-        df.tail(
+        df
+        .tail(
             ANALYSIS_DAYS + BLSH_LOOKBACK
         )
         .copy()
@@ -600,13 +860,22 @@ def blsh_history_1_year(df):
         )
     )
 
+
     if len(data) <= BLSH_LOOKBACK:
-        return 0, 0, 0.0
+
+        return (
+            0,
+            0,
+            0.0
+        )
+
 
     yes = 0
     no = 0
 
+
     i = BLSH_LOOKBACK
+
 
     trigger_active = False
 
@@ -614,7 +883,9 @@ def blsh_history_1_year(df):
     trigger_price = None
     target_price = None
 
+
     while i < len(data):
+
 
         current_low = float(
             data["Low"].iloc[i]
@@ -624,8 +895,11 @@ def blsh_history_1_year(df):
             data["High"].iloc[i]
         )
 
+
         # ----------------------------------------------------
-        # STEP 1: NEW 25-DAY LOW
+        # STEP 1
+        #
+        # NEW 25-DAY LOW
         # ----------------------------------------------------
 
         if is_new_low(
@@ -634,12 +908,17 @@ def blsh_history_1_year(df):
             BLSH_LOOKBACK
         ):
 
+
+            # Existing trigger failed
             if trigger_active:
 
                 no += 1
 
+
             reference_low = current_low
 
+
+            # Trigger = 6.5% above 25D low
             trigger_price = (
                 reference_low
                 * (
@@ -649,6 +928,8 @@ def blsh_history_1_year(df):
                 )
             )
 
+
+            # Target = 3.14% above trigger
             target_price = (
                 trigger_price
                 * (
@@ -658,13 +939,19 @@ def blsh_history_1_year(df):
                 )
             )
 
+
             trigger_active = False
 
+
             i += 1
+
             continue
 
+
         # ----------------------------------------------------
-        # STEP 2: WAIT FOR +6.5% TRIGGER
+        # STEP 2
+        #
+        # WAIT FOR +6.5% TRIGGER
         # ----------------------------------------------------
 
         if (
@@ -672,54 +959,90 @@ def blsh_history_1_year(df):
             and not trigger_active
         ):
 
+
             if current_high >= trigger_price:
+
 
                 trigger_active = True
 
+
+                # ------------------------------------------------
+                # Target can also be reached on the same day.
+                # ------------------------------------------------
+
                 if current_high >= target_price:
 
+
                     yes += 1
+
 
                     reference_low = None
                     trigger_price = None
                     target_price = None
                     trigger_active = False
 
+
             i += 1
+
             continue
 
+
         # ----------------------------------------------------
-        # STEP 3: TARGET AFTER TRIGGER
+        # STEP 3
+        #
+        # TARGET AFTER TRIGGER
         # ----------------------------------------------------
 
         if trigger_active:
 
+
             if current_high >= target_price:
 
+
                 yes += 1
+
 
                 reference_low = None
                 trigger_price = None
                 target_price = None
                 trigger_active = False
 
+
                 i += 1
+
                 continue
+
 
         i += 1
 
+
+    # --------------------------------------------------------
+    # STRIKE RATE
+    # --------------------------------------------------------
+
     completed = yes + no
 
-    strike = (
-        yes / completed * 100
-        if completed
-        else 0
-    )
+
+    if completed:
+
+        strike = (
+            yes
+            / completed
+            * 100
+        )
+
+    else:
+
+        strike = 0
+
 
     return (
         yes,
         no,
-        round(strike, 2)
+        round(
+            strike,
+            2
+        )
     )
 
 
@@ -733,22 +1056,32 @@ def blsh_screen(
     df
 ):
 
-    if len(
-        df
-    ) < BLSH_LOOKBACK + RSI_PERIOD:
+    if len(df) < (
+        BLSH_LOOKBACK
+        + RSI_PERIOD
+    ):
 
         return None
 
+
     work = df.copy()
+
+
+    # --------------------------------------------------------
+    # RSI
+    # --------------------------------------------------------
 
     work["RSI14"] = rsi(
         work["Close"],
         RSI_PERIOD
     )
 
+
     i = len(work) - 1
 
+
     current = work.iloc[-1]
+
 
     current_rsi = float(
         current["RSI14"]
@@ -762,9 +1095,11 @@ def blsh_screen(
         current["Close"]
     )
 
+
     # --------------------------------------------------------
     # PREVIOUS 25-DAY LOW
-    # Excludes today's candle
+    #
+    # Today's candle is excluded.
     # --------------------------------------------------------
 
     previous25_low = float(
@@ -775,8 +1110,9 @@ def blsh_screen(
         .min()
     )
 
+
     # --------------------------------------------------------
-    # CHECK NEW 25-DAY LOW
+    # NEW 25-DAY LOW
     # --------------------------------------------------------
 
     new_25_day_low = (
@@ -784,8 +1120,13 @@ def blsh_screen(
         < previous25_low
     )
 
+
     # --------------------------------------------------------
     # BLSH QUALIFICATION
+    #
+    # RSI < 36
+    # AND
+    # New 25-day low
     # --------------------------------------------------------
 
     if not (
@@ -795,14 +1136,16 @@ def blsh_screen(
 
         return None
 
+
     # --------------------------------------------------------
-    # 25-DAY LOW
+    # Current 25-day low
     # --------------------------------------------------------
 
     low_25_day = current_low
 
+
     # --------------------------------------------------------
-    # TRIGGER = 6.5% ABOVE 25-DAY LOW
+    # Trigger = 6.5% above 25-day low
     # --------------------------------------------------------
 
     trigger_price = (
@@ -813,8 +1156,9 @@ def blsh_screen(
         )
     )
 
+
     # --------------------------------------------------------
-    # TARGET = 3.14% ABOVE TRIGGER
+    # Target = 3.14% above trigger
     # --------------------------------------------------------
 
     target_price = (
@@ -825,24 +1169,33 @@ def blsh_screen(
         )
     )
 
-    # --------------------------------------------------------
-    # DISTANCE FROM CMP TO TRIGGER
-    # --------------------------------------------------------
-
-    trigger_away = (
-        (
-            trigger_price - cmp
-        )
-        / trigger_price
-    ) * 100
 
     # --------------------------------------------------------
-    # HISTORICAL PERFORMANCE
+    # Distance from CMP to trigger
+    # --------------------------------------------------------
+
+    if trigger_price:
+
+        trigger_away = (
+            (
+                trigger_price - cmp
+            )
+            / trigger_price
+        ) * 100
+
+    else:
+
+        trigger_away = 0
+
+
+    # --------------------------------------------------------
+    # Historical performance
     # --------------------------------------------------------
 
     yes, no, strike = (
         blsh_history_1_year(df)
     )
+
 
     return {
 
@@ -916,6 +1269,11 @@ def build_html(
     total_stocks
 ):
 
+
+    # ========================================================
+    # MWD ROWS
+    # ========================================================
+
     def rows_mwd():
 
         return "".join(
@@ -925,6 +1283,7 @@ def build_html(
                 data-distance="{x['distance']}"
                 data-rise="{x['rise']}"
             >
+
                 <td>{x['symbol']}</td>
 
                 <td>{x['company']}</td>
@@ -946,12 +1305,17 @@ def build_html(
                         +{x['rise']:.2f}%
                     </span>
                 </td>
+
             </tr>
             """
 
             for x in mwd
         )
 
+
+    # ========================================================
+    # SST ROWS
+    # ========================================================
 
     def rows_sst():
 
@@ -994,6 +1358,10 @@ def build_html(
             for x in sst
         )
 
+
+    # ========================================================
+    # BLSH ROWS
+    # ========================================================
 
     def rows_blsh():
 
@@ -1049,6 +1417,10 @@ def build_html(
         )
 
 
+    # ========================================================
+    # HTML
+    # ========================================================
+
     return f"""
 
 <!DOCTYPE html>
@@ -1061,8 +1433,7 @@ def build_html(
 
 <meta
     name="viewport"
-    content="width=device-width,
-             initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0"
 >
 
 <title>
@@ -1075,6 +1446,7 @@ Nifty 100 Daily Multi-Screener
 * {{
     box-sizing: border-box;
 }}
+
 
 body {{
 
@@ -1292,10 +1664,12 @@ body {{
         #2858b5;
 }}
 
+
 .sst-head {{
     background:
         #6b31c7;
 }}
+
 
 .blsh-head {{
     background:
@@ -1473,6 +1847,7 @@ tr:last-child td {{
     }}
 
     .top {{
+
         padding:
             18px;
 
@@ -1481,11 +1856,13 @@ tr:last-child td {{
     }}
 
     .badges {{
+
         margin-top:
             15px;
     }}
 
     .title {{
+
         font-size:
             24px;
     }}
@@ -1499,6 +1876,10 @@ tr:last-child td {{
 
 <body>
 
+
+<!-- ===================================================== -->
+<!-- TOP HEADER -->
+<!-- ===================================================== -->
 
 <div class="top">
 
@@ -1542,6 +1923,10 @@ tr:last-child td {{
 </div>
 
 
+<!-- ===================================================== -->
+<!-- TABS -->
+<!-- ===================================================== -->
+
 <div class="tabs">
 
     <button
@@ -1551,12 +1936,14 @@ tr:last-child td {{
         1. MWD
     </button>
 
+
     <button
         class="tab"
         onclick="showTab('sst', this)"
     >
         2. SST
     </button>
+
 
     <button
         class="tab"
@@ -1593,6 +1980,7 @@ tr:last-child td {{
     <div class="filters">
 
         <label>
+
             52W Distance ≥
 
             <input
@@ -1606,6 +1994,7 @@ tr:last-child td {{
 
 
         <label>
+
             Monthly Rise ≥
 
             <input
@@ -1680,7 +2069,7 @@ tr:last-child td {{
         </span>
 
         <span class="panel-sub">
-            20-Day High | 6% Target
+            Every New 20-Day High | Target +6%
         </span>
 
     </div>
@@ -1689,6 +2078,7 @@ tr:last-child td {{
     <div class="filters">
 
         <label>
+
             Strike Rate:
 
             <select
@@ -1801,6 +2191,7 @@ tr:last-child td {{
     <div class="filters">
 
         <label>
+
             Strike Rate:
 
             <select
@@ -1893,6 +2284,10 @@ tr:last-child td {{
 </div>
 
 
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+
 <div class="footer">
 
     Updated in IST • Yahoo Finance data •
@@ -1903,6 +2298,10 @@ tr:last-child td {{
 
 <script>
 
+
+// ==========================================================
+// TAB SWITCHING
+// ==========================================================
 
 function showTab(
     tabName,
@@ -1915,9 +2314,11 @@ function showTab(
         )
         .forEach(
             function(tab) {{
+
                 tab.classList.remove(
                     'active'
                 );
+
             }}
         );
 
@@ -1928,9 +2329,11 @@ function showTab(
         )
         .forEach(
             function(tab) {{
+
                 tab.classList.remove(
                     'active'
                 );
+
             }}
         );
 
@@ -1949,6 +2352,10 @@ function showTab(
 }}
 
 
+// ==========================================================
+// MWD FILTER
+// ==========================================================
+
 function filterMWD() {{
 
     const distance =
@@ -1959,6 +2366,7 @@ function filterMWD() {{
                 )
                 .value
         );
+
 
     const rise =
         parseFloat(
@@ -1982,6 +2390,7 @@ function filterMWD() {{
                         row.dataset.distance
                     );
 
+
                 const r =
                     parseFloat(
                         row.dataset.rise
@@ -1990,7 +2399,8 @@ function filterMWD() {{
 
                 if (
                     !isNaN(d)
-                    && !isNaN(r)
+                    &&
+                    !isNaN(r)
                 ) {{
 
                     row.style.display =
@@ -2009,6 +2419,10 @@ function filterMWD() {{
 
 }}
 
+
+// ==========================================================
+// SST FILTER
+// ==========================================================
 
 function filterSST() {{
 
@@ -2034,10 +2448,13 @@ function filterSST() {{
                         'td'
                     );
 
+
                 if (
                     cells.length < 8
                 ) {{
+
                     return;
+
                 }}
 
 
@@ -2063,6 +2480,10 @@ function filterSST() {{
 }}
 
 
+// ==========================================================
+// BLSH FILTER
+// ==========================================================
+
 function filterBLSH() {{
 
     const minimum =
@@ -2087,10 +2508,13 @@ function filterBLSH() {{
                         'td'
                     );
 
+
                 if (
                     cells.length < 11
                 ) {{
+
                     return;
+
                 }}
 
 
@@ -2116,6 +2540,10 @@ function filterBLSH() {{
 }}
 
 
+// ==========================================================
+// EVENT LISTENERS
+// ==========================================================
+
 document
     .getElementById(
         'dist'
@@ -2135,6 +2563,10 @@ document
         filterMWD
     );
 
+
+// ==========================================================
+// INITIAL FILTER
+// ==========================================================
 
 filterMWD();
 filterSST();
@@ -2156,15 +2588,28 @@ filterBLSH();
 
 def main():
 
+    # --------------------------------------------------------
+    # Load symbols
+    # --------------------------------------------------------
+
     symbols = load_symbols()
+
 
     mwd_results = []
     sst_results = []
     blsh_results = []
 
+
+    print()
     print(
         f"Processing {len(symbols)} Nifty 100 stocks..."
     )
+    print()
+
+
+    # --------------------------------------------------------
+    # Process every stock
+    # --------------------------------------------------------
 
     for n, (
         symbol,
@@ -2174,27 +2619,39 @@ def main():
         1
     ):
 
+
         print(
             f"[{n}/{len(symbols)}] {symbol}"
         )
 
+
         try:
 
-            df = download(symbol)
+
+            # ------------------------------------------------
+            # Download data
+            # ------------------------------------------------
+
+            df = download(
+                symbol
+            )
+
 
             if (
                 df is None
                 or len(df) < 300
             ):
+
                 print(
                     "  Insufficient data"
                 )
+
                 continue
 
 
-            # ------------------------------------------------
+            # =================================================
             # MWD
-            # ------------------------------------------------
+            # =================================================
 
             m = mwd_screen(
                 symbol,
@@ -2202,13 +2659,17 @@ def main():
                 df
             )
 
+
             if m:
-                mwd_results.append(m)
+
+                mwd_results.append(
+                    m
+                )
 
 
-            # ------------------------------------------------
+            # =================================================
             # SST
-            # ------------------------------------------------
+            # =================================================
 
             s = sst_screen(
                 symbol,
@@ -2216,13 +2677,17 @@ def main():
                 df
             )
 
+
             if s:
-                sst_results.append(s)
+
+                sst_results.append(
+                    s
+                )
 
 
-            # ------------------------------------------------
+            # =================================================
             # BLSH RSI
-            # ------------------------------------------------
+            # =================================================
 
             b = blsh_screen(
                 symbol,
@@ -2230,8 +2695,13 @@ def main():
                 df
             )
 
+
             if b:
-                blsh_results.append(b)
+
+                blsh_results.append(
+                    b
+                )
+
 
         except Exception as e:
 
@@ -2241,15 +2711,27 @@ def main():
                 e
             )
 
-        time.sleep(0.25)
+
+        # ----------------------------------------------------
+        # Small delay to reduce request pressure
+        # ----------------------------------------------------
+
+        time.sleep(
+            0.25
+        )
 
 
     # ========================================================
-    # SORTING
+    # SORT RESULTS
     # ========================================================
 
-    # MWD:
-    # nearest to 52-week high first
+
+    # --------------------------------------------------------
+    # MWD
+    #
+    # Nearest to 52-week high first
+    # --------------------------------------------------------
+
     mwd_results.sort(
         key=lambda x:
             x["distance"],
@@ -2257,16 +2739,25 @@ def main():
     )
 
 
-    # SST:
-    # nearest to 20-day high first
+    # --------------------------------------------------------
+    # SST
+    #
+    # Nearest to 20-day high first
+    # --------------------------------------------------------
+
     sst_results.sort(
         key=lambda x:
             x["away"]
     )
 
 
-    # BLSH:
-    # nearest to trigger first
+    # --------------------------------------------------------
+    # BLSH
+    #
+    # Nearest to trigger first
+    # Then highest strike rate
+    # --------------------------------------------------------
+
     blsh_results.sort(
         key=lambda x: (
             x["trigger_away"],
@@ -2306,6 +2797,15 @@ def main():
     # GENERATE HTML
     # ========================================================
 
+    html = build_html(
+        mwd_results,
+        sst_results,
+        blsh_results,
+        updated,
+        len(symbols)
+    )
+
+
     with open(
         OUTPUT_FILE,
         "w",
@@ -2313,19 +2813,31 @@ def main():
     ) as f:
 
         f.write(
-            build_html(
-                mwd_results,
-                sst_results,
-                blsh_results,
-                updated,
-                len(symbols)
-            )
+            html
         )
 
 
+    # ========================================================
+    # FINAL SUMMARY
+    # ========================================================
+
     print()
+
     print(
         "=========================================="
+    )
+
+    print(
+        "NIFTY 100 MULTI-SCREENER COMPLETED"
+    )
+
+    print(
+        "=========================================="
+    )
+
+    print(
+        "Total Stocks:",
+        len(symbols)
     )
 
     print(
@@ -2363,4 +2875,5 @@ def main():
 # ============================================================
 
 if __name__ == "__main__":
+
     main()
