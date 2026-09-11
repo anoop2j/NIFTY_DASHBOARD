@@ -253,7 +253,7 @@ def is_new_high(df, i, lookback):
 
 
 # ============================================================
-# SST HISTORICAL STATISTICS (SINGLE ACTIVE TRADE MODEL)
+# SST HISTORICAL STATISTICS (EXACT MATCH FOR SHEET LOGIC)
 # ============================================================
 
 def cycle_statistics(df, lookback, target_pct):
@@ -269,34 +269,43 @@ def cycle_statistics(df, lookback, target_pct):
 
     yes = 0
     no = 0
-    active_trade = None
+
+    open_trades = []
+    last_entry_index = -100
+    ENTRY_COOLDOWN = 18  # Trading-day gap required between distinct cycle entries
 
     for i in range(lookback, len(data)):
         current_high = float(data["High"].iloc[i])
+        current_low = float(data["Low"].iloc[i])
 
-        # 1. Check active trade resolution first
-        if active_trade is not None:
-            if current_high >= active_trade["target_price"]:
+        # Evaluate all active open trades
+        for trade in open_trades:
+            if trade["status"] != "OPEN":
+                continue
+
+            if current_high >= trade["target_price"]:
+                trade["status"] = "YES"
                 yes += 1
-                active_trade = None
-            elif is_new_low(data, i, lookback) and i > active_trade["entry_index"]:
+            elif is_new_low(data, i, lookback) and i > trade["entry_index"]:
+                trade["status"] = "NO"
                 no += 1
-                active_trade = None
 
-        # 2. Open new trade ONLY if no active trade is currently running
-        if active_trade is None:
-            if is_new_high(data, i, lookback):
+        # Check for new breakout entry with cooldown filter
+        if is_new_high(data, i, lookback):
+            if (i - last_entry_index) >= ENTRY_COOLDOWN:
                 entry_price = float(data["High"].iloc[i - lookback:i].max())
                 target_price = entry_price * (1 + target_pct / 100)
-                
-                # Check if target hit on exact entry bar
+
                 if current_high >= target_price:
                     yes += 1
                 else:
-                    active_trade = {
+                    open_trades.append({
                         "entry_index": i,
-                        "target_price": target_price
-                    }
+                        "entry_price": entry_price,
+                        "target_price": target_price,
+                        "status": "OPEN"
+                    })
+                last_entry_index = i
 
     completed = yes + no
     strike = (yes / completed * 100) if completed else 0.0
