@@ -248,16 +248,12 @@ def is_new_low(df, i, lookback):
 def is_new_high(df, i, lookback):
     if i < lookback:
         return False
-    current_high = float(data_slice_high(df, i, lookback))
+    current_high = float(df["High"].iloc[i - lookback:i].max())
     return float(df["High"].iloc[i]) > current_high
 
 
-def data_slice_high(df, i, lookback):
-    return df["High"].iloc[i - lookback:i].max()
-
-
 # ============================================================
-# SST HISTORICAL STATISTICS (EXACT SHEET MATCH)
+# SST HISTORICAL STATISTICS (SINGLE ACTIVE TRADE MODEL)
 # ============================================================
 
 def cycle_statistics(df, lookback, target_pct):
@@ -273,45 +269,34 @@ def cycle_statistics(df, lookback, target_pct):
 
     yes = 0
     no = 0
-    open_trades = []
-    
-    # Track index of the last entered trade
-    last_trade_index = -100
-    
-    # 15-trading-day minimum spacing between distinct strategy entries
-    MIN_ENTRY_SPACING = 15
+    active_trade = None
 
     for i in range(lookback, len(data)):
         current_high = float(data["High"].iloc[i])
 
-        # New 20-day high breakout check
-        if is_new_high(data, i, lookback):
-            # Enforce entry spacing to filter out micro-breakouts during a single move
-            if (i - last_trade_index) >= MIN_ENTRY_SPACING:
+        # 1. Check active trade resolution first
+        if active_trade is not None:
+            if current_high >= active_trade["target_price"]:
+                yes += 1
+                active_trade = None
+            elif is_new_low(data, i, lookback) and i > active_trade["entry_index"]:
+                no += 1
+                active_trade = None
+
+        # 2. Open new trade ONLY if no active trade is currently running
+        if active_trade is None:
+            if is_new_high(data, i, lookback):
                 entry_price = float(data["High"].iloc[i - lookback:i].max())
                 target_price = entry_price * (1 + target_pct / 100)
-
-                open_trades.append({
-                    "entry_index": i,
-                    "entry_price": entry_price,
-                    "target_price": target_price,
-                    "status": "OPEN"
-                })
-                last_trade_index = i
-
-        low_occurred = is_new_low(data, i, lookback)
-
-        # Update status of open trades
-        for trade in open_trades:
-            if trade["status"] != "OPEN":
-                continue
-
-            if current_high >= trade["target_price"]:
-                trade["status"] = "YES"
-                yes += 1
-            elif low_occurred and i > trade["entry_index"]:
-                trade["status"] = "NO"
-                no += 1
+                
+                # Check if target hit on exact entry bar
+                if current_high >= target_price:
+                    yes += 1
+                else:
+                    active_trade = {
+                        "entry_index": i,
+                        "target_price": target_price
+                    }
 
     completed = yes + no
     strike = (yes / completed * 100) if completed else 0.0
