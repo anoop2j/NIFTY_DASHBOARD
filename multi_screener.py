@@ -309,6 +309,13 @@ def mwd_screen(
 
 
     # --------------------------------------------------------
+    # Current (still forming) week
+    # --------------------------------------------------------
+
+    weekly_this = weekly.iloc[-1]
+
+
+    # --------------------------------------------------------
     # Last completed week
     # --------------------------------------------------------
 
@@ -323,11 +330,13 @@ def mwd_screen(
 
 
     # --------------------------------------------------------
-    # All three must be bullish
+    # Daily, monthly, last completed week, AND current
+    # (still forming) week must all be bullish.
     # --------------------------------------------------------
 
     if not (
         bullish(daily_current)
+        and bullish(weekly_this)
         and bullish(weekly_current)
         and bullish(monthly_current)
     ):
