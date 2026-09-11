@@ -1293,25 +1293,25 @@ def build_html(
                 data-rise="{x['rise']}"
             >
 
-                <td><strong>{x['symbol']}</strong></td>
+                <td data-label="Symbol"><strong>{x['symbol']}</strong></td>
 
-                <td class="company">{x['company']}</td>
+                <td class="company" data-label="Company">{x['company']}</td>
 
-                <td class="num">
+                <td class="num" data-label="CMP">
                     ₹{x['price']:,.2f}
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="52W High">
                     ₹{x['high52']:,.2f}
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="52W Distance">
                     <span class="chip {'negative' if x['distance'] < 0 else 'positive'}">
                         {x['distance']:.2f}%
                     </span>
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="Monthly Rise">
                     <span class="chip positive">
                         +{x['rise']:.2f}%
                     </span>
@@ -1335,35 +1335,35 @@ def build_html(
             f"""
             <tr>
 
-                <td><strong>{x['symbol']}</strong></td>
+                <td data-label="Symbol"><strong>{x['symbol']}</strong></td>
 
-                <td class="company">{x['company']}</td>
+                <td class="company" data-label="Company">{x['company']}</td>
 
-                <td class="num">
+                <td class="num" data-label="CMP">
                     ₹{x['price']:,.2f}
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="20-Day High">
                     ₹{x['high20']:,.2f}
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="20D Away %">
                     {x['away']:.2f}%
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="6% Target YES">
                     <span class="chip positive">
                         {x['yes']}
                     </span>
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="6% Target NO">
                     <span class="chip negative">
                         {x['no']}
                     </span>
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="Strike Rate">
                     <span class="chip {'positive' if x['strike'] >= 50 else 'neutral'}">
                         {x['strike']:.2f}%
                     </span>
@@ -1387,47 +1387,38 @@ def build_html(
             f"""
             <tr>
 
-                <td><strong>{x['symbol']}</strong></td>
+                <td data-label="Symbol"><strong>{x['symbol']}</strong></td>
 
-                <td class="company">{x['company']}</td>
+                <td class="company" data-label="Company">{x['company']}</td>
 
-                <td class="num">
+                <td class="num" data-label="CMP">
                     ₹{x['cmp']:,.2f}
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="25D Low">
                     ₹{x['low_25_day']:,.2f}
                 </td>
 
-                <td class="num">
-                    ₹{x['trigger_price']:,.2f}
+                <td class="num" data-label="Trigger → Target">
+                    ₹{x['trigger_price']:,.2f} → ₹{x['target_price']:,.2f}
                 </td>
 
-                <td class="num">
-                    ₹{x['target_price']:,.2f}
-                </td>
-
-                <td class="num">
+                <td class="num" data-label="Away %">
                     {x['trigger_away']:.2f}%
                 </td>
 
-                <td class="num">
+                <td class="num" data-label="RSI(14)">
                     {x['rsi']:.2f}
                 </td>
 
-                <td class="num">
-                    <span class="chip positive">
-                        {x['yes']}
+                <td class="num" data-label="Win / Loss (1Y)">
+                    <span class="chip-group">
+                        <span class="chip positive">{x['yes']}</span>
+                        <span class="chip negative">{x['no']}</span>
                     </span>
                 </td>
 
-                <td class="num">
-                    <span class="chip negative">
-                        {x['no']}
-                    </span>
-                </td>
-
-                <td class="num">
+                <td class="num" data-label="Strike Rate">
                     <span class="chip {'positive' if x['strike'] >= 50 else 'neutral'}">
                         {x['strike']:.2f}%
                     </span>
@@ -1968,7 +1959,7 @@ table {{
         collapse;
 
     min-width:
-        900px;
+        760px;
 }}
 
 
@@ -2080,6 +2071,19 @@ tr:last-child td {{
 }}
 
 
+.chip-group {{
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+}}
+
+
 .chip.positive {{
     background: var(--green-soft);
     color: var(--green);
@@ -2118,7 +2122,7 @@ tr:last-child td {{
 }}
 
 
-@media(max-width:700px) {{
+@media(max-width:860px) {{
 
     body {{
         padding:
@@ -2143,7 +2147,7 @@ tr:last-child td {{
     .title {{
 
         font-size:
-            22px;
+            21px;
     }}
 
     .tabs {{
@@ -2163,7 +2167,171 @@ tr:last-child td {{
             center;
 
         padding:
-            10px 12px;
+            10px 10px;
+
+        font-size:
+            13px;
+    }}
+
+    .panel-head {{
+        padding:
+            16px 18px;
+
+        font-size:
+            18px;
+    }}
+
+    .filters {{
+        padding:
+            12px 16px;
+    }}
+
+
+    /* -------------------------------------------------- */
+    /* TABLE -> STACKED CARDS                              */
+    /*                                                      */
+    /* Below this width the table never scrolls           */
+    /* sideways. Each row becomes its own card; the        */
+    /* Symbol is the card title, Company sits under it     */
+    /* as a subtitle, and every other cell becomes a       */
+    /* label / value line using its data-label attribute.  */
+    /* -------------------------------------------------- */
+
+    .table-wrap {{
+        overflow-x:
+            visible;
+
+        padding:
+            12px;
+    }}
+
+    table {{
+        min-width:
+            0;
+
+        width:
+            100%;
+    }}
+
+    thead {{
+        display:
+            none;
+    }}
+
+    tbody,
+    tr,
+    td {{
+        display:
+            block;
+
+        width:
+            100%;
+    }}
+
+    tbody tr {{
+        background:
+            var(--surface);
+
+        border:
+            1px solid var(--border);
+
+        border-radius:
+            var(--radius-sm);
+
+        margin-bottom:
+            12px;
+
+        box-shadow:
+            var(--shadow);
+
+        overflow:
+            hidden;
+    }}
+
+    tbody tr:last-child {{
+        margin-bottom:
+            0;
+    }}
+
+    td {{
+        padding:
+            10px 16px;
+
+        border-bottom:
+            1px solid var(--border);
+
+        white-space:
+            normal;
+
+        font-size:
+            13.5px;
+    }}
+
+    tr td:last-child {{
+        border-bottom:
+            none;
+    }}
+
+    td[data-label="Symbol"] {{
+        font-family:
+            'Space Grotesk',
+            sans-serif;
+
+        font-size:
+            16px;
+
+        font-weight:
+            700;
+
+        padding:
+            14px 16px 2px;
+
+        border-bottom:
+            none;
+    }}
+
+    td.company {{
+        padding:
+            0 16px 12px;
+
+        font-size:
+            13px;
+
+        border-bottom:
+            1px solid var(--border);
+    }}
+
+    td.num,
+    td:not([data-label="Symbol"]):not(.company) {{
+        display:
+            flex;
+
+        justify-content:
+            space-between;
+
+        align-items:
+            center;
+
+        gap:
+            12px;
+    }}
+
+    td.num::before,
+    td:not([data-label="Symbol"]):not(.company)::before {{
+        content:
+            attr(data-label);
+
+        font-size:
+            11.5px;
+
+        font-weight:
+            700;
+
+        color:
+            var(--ink-faint);
+
+        letter-spacing:
+            0.02em;
     }}
 
 }}
@@ -2543,19 +2711,15 @@ tr:last-child td {{
 
                     <th>CMP</th>
 
-                    <th>25-Day Low</th>
+                    <th>25D Low</th>
 
-                    <th>Trigger +6.5%</th>
+                    <th>Trigger → Target</th>
 
-                    <th>Target +3.14%</th>
-
-                    <th>Trigger Away %</th>
+                    <th>Away %</th>
 
                     <th>RSI(14)</th>
 
-                    <th>3.14% YES (1Y)</th>
-
-                    <th>3.14% NO (1Y)</th>
+                    <th>Win / Loss (1Y)</th>
 
                     <th>Strike Rate</th>
 
@@ -2569,7 +2733,7 @@ tr:last-child td {{
                 {
                     rows_blsh()
                     or
-                    '''<tr><td colspan="11">
+                    '''<tr><td colspan="9">
                     No current matching stocks
                     </td></tr>'''
                 }
@@ -2821,7 +2985,7 @@ function filterBLSH() {{
 
 
                 if (
-                    cells.length < 11
+                    cells.length < 9
                 ) {{
 
                     return;
@@ -2831,7 +2995,7 @@ function filterBLSH() {{
 
                 const strike =
                     parseFloat(
-                        cells[10]
+                        cells[8]
                             .innerText
                             .replace(
                                 '%',
