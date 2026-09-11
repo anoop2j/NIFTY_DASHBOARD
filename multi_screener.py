@@ -2204,17 +2204,17 @@ tr:last-child td {{
 
         <div class="badge mwd">
             <span class="dot"></span>
-            MWD: <strong>{len(mwd)}</strong>
+            MWD: <strong id="mwdCount">{len(mwd)}</strong>
         </div>
 
         <div class="badge sst">
             <span class="dot"></span>
-            SST: <strong>{len(sst)}</strong>
+            SST: <strong id="sstCount">{len(sst)}</strong>
         </div>
 
         <div class="badge blsh">
             <span class="dot"></span>
-            BLSH: <strong>{len(blsh)}</strong>
+            BLSH: <strong id="blshCount">{len(blsh)}</strong>
         </div>
 
     </div>
@@ -2716,6 +2716,12 @@ function filterMWD() {{
             }}
         );
 
+
+    updateBadgeCount(
+        'mwdTable',
+        'mwdCount'
+    );
+
 }}
 
 
@@ -2776,6 +2782,12 @@ function filterSST() {{
             }}
         );
 
+
+    updateBadgeCount(
+        'sstTable',
+        'sstCount'
+    );
+
 }}
 
 
@@ -2835,6 +2847,66 @@ function filterBLSH() {{
 
             }}
         );
+
+
+    updateBadgeCount(
+        'blshTable',
+        'blshCount'
+    );
+
+}}
+
+
+// ==========================================================
+// BADGE COUNT HELPER
+//
+// Keeps the header badge in sync with the number of rows
+// actually visible in a table after filtering, instead of
+// the raw (unfiltered) screen match count.
+// ==========================================================
+
+function updateBadgeCount(
+    tableId,
+    badgeId
+) {{
+
+    const rows =
+        document.querySelectorAll(
+            '#' + tableId + ' tbody tr'
+        );
+
+
+    let visible = 0;
+
+
+    rows.forEach(
+        function(row) {{
+
+            if (
+                row.style.display !== 'none'
+                &&
+                row.querySelectorAll('td').length > 1
+            ) {{
+
+                visible += 1;
+
+            }}
+
+        }}
+    );
+
+
+    const badge =
+        document.getElementById(
+            badgeId
+        );
+
+
+    if (badge) {{
+
+        badge.textContent = visible;
+
+    }}
 
 }}
 
