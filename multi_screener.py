@@ -539,18 +539,42 @@ def is_new_high(
 # still open or while waiting for the post-YES reset low.
 # ============================================================
 
-def cycle_statistics(
+# ============================================================
+# SST TRANSACTION LOG
+#
+# Reverse-engineered directly against a real backtest
+# (MAXHEALTH) and confirmed to reproduce it exactly.
+#
+# Two mechanisms run independently:
+#
+# 1. A single ARMED / DISARMED switch controls when a NEW buy
+#    can fire, regardless of whether an earlier buy has
+#    resolved yet:
+#      - ARMED turns ON the day a new 20-day LOW occurs, and
+#        stays ON across further new lows.
+#      - The FIRST new 20-day HIGH while ARMED fires a BUY.
+#        Entry = previous day's 20-day high.
+#        Target = entry * (1 + target_pct%).
+#      - The moment a buy fires, ARMED turns OFF immediately.
+#      - It stays OFF until the NEXT new 20-day low — this can
+#        happen before OR after that buy's own outcome is known,
+#        so trades CAN legitimately overlap.
+#
+# 2. Each individual buy is tracked forward on its own, from
+#    the day after its buy date:
+#      - High >= target before a new 20-day low  -> YES
+#      - a new 20-day low before the target       -> NO
+#
+# "Days Taken" matches the reference backtest format: it is
+# CALENDAR days between the buy date and the target-met date,
+# not a trading-day count.
+# ============================================================
+
+def get_sst_transactions(
     df,
     lookback,
     target_pct
 ):
-
-    # --------------------------------------------------------
-    # Keep approximately one year of analysis data.
-    #
-    # Extra 'lookback' rows are required so the first
-    # analysis day can calculate the previous 20-day high/low.
-    # --------------------------------------------------------
 
     data = (
         df
@@ -566,157 +590,195 @@ def cycle_statistics(
         )
     )
 
-
     if len(data) <= lookback:
 
-        return (
-            0,
-            0,
-            0.0
-        )
+        return []
 
 
-    yes = 0
-    no = 0
+    armed = False
 
+    open_trades = []
+    transactions = []
 
-    # --------------------------------------------------------
-    # STATE MACHINE
-    #
-    #   "SEARCH"          -> looking for a fresh breakout
-    #   "IN_TRADE"        -> monitoring an active trade
-    #   "WAIT_FOR_RESET"  -> just had a YES, waiting for a new
-    #                        20-day low before searching again
-    # --------------------------------------------------------
+    for i in range(
+        lookback,
+        len(data)
+    ):
 
-    state = "SEARCH"
+        # ----------------------------------------------------
+        # 1. ARM on a new 20-day low.
+        # ----------------------------------------------------
 
-    entry = None
-    target = None
+        if is_new_low(
+            data,
+            i,
+            lookback
+        ):
 
-    i = lookback
-
-    while i < len(data):
+            armed = True
 
 
         # ----------------------------------------------------
-        # WAIT_FOR_RESET
-        #
-        # A YES just happened. No new signal can be generated
-        # until a new 20-day low actually occurs.
+        # 2. First new 20-day high while ARMED -> new buy.
         # ----------------------------------------------------
 
-        if state == "WAIT_FOR_RESET":
-
-            if is_new_low(
+        if (
+            armed
+            and
+            is_new_high(
                 data,
                 i,
                 lookback
-            ):
+            )
+        ):
 
-                state = "SEARCH"
-
-            i += 1
-
-            continue
-
-
-        # ----------------------------------------------------
-        # SEARCH
-        #
-        # Look for a NEW 20-DAY HIGH breakout.
-        # ----------------------------------------------------
-
-        if state == "SEARCH":
-
-            if is_new_high(
-                data,
-                i,
-                lookback
-            ):
-
-                # Entry = previous 20-day high.
-                # Current breakout day's High is excluded.
-
-                entry = float(
-                    data["High"]
-                    .iloc[
-                        i - lookback:i
-                    ]
-                    .max()
-                )
-
-                target = (
-                    entry
-                    * (
-                        1
-                        + target_pct / 100
-                    )
-                )
-
-                state = "IN_TRADE"
-
-            i += 1
-
-            continue
-
-
-        # ----------------------------------------------------
-        # IN_TRADE
-        #
-        # Monitor this single active trade for target vs. a
-        # new 20-day low, starting the day after the breakout.
-        # ----------------------------------------------------
-
-        if state == "IN_TRADE":
-
-            current_high = float(
-                data["High"].iloc[i]
+            entry = float(
+                data["High"]
+                .iloc[
+                    i - lookback:i
+                ]
+                .max()
             )
 
-            # TARGET CHECK (priority on the same candle,
-            # matching original source behavior).
+            target = (
+                entry
+                * (
+                    1
+                    + target_pct / 100
+                )
+            )
 
-            if current_high >= target:
+            open_trades.append({
+                "date": data["Date"].iloc[i],
+                "buy_index": i,
+                "buy_price": entry,
+                "sell_target": target,
+            })
 
-                yes += 1
+            armed = False
 
-                state = "WAIT_FOR_RESET"
 
-                i += 1
+        # ----------------------------------------------------
+        # 3. Advance every still-open trade by one day,
+        #    starting the day AFTER its own buy date.
+        # ----------------------------------------------------
+
+        current_high = float(
+            data["High"].iloc[i]
+        )
+
+        new_low_today = is_new_low(
+            data,
+            i,
+            lookback
+        )
+
+        still_open = []
+
+        for t in open_trades:
+
+            if i <= t["buy_index"]:
+
+                still_open.append(t)
 
                 continue
 
 
-            # NEW 20-DAY LOW
+            if current_high >= t["sell_target"]:
 
-            if is_new_low(
-                data,
-                i,
-                lookback
-            ):
+                met_date = data["Date"].iloc[i]
 
-                no += 1
-
-                state = "SEARCH"
-
-                i += 1
+                transactions.append({
+                    "date": t["date"],
+                    "buy_price": t["buy_price"],
+                    "sell_target": t["sell_target"],
+                    "achieved": "Yes",
+                    "target_met_date": met_date,
+                    "days_taken": (
+                        pd.Timestamp(met_date)
+                        - pd.Timestamp(t["date"])
+                    ).days,
+                })
 
                 continue
 
 
-            i += 1
+            if new_low_today:
 
-            continue
+                transactions.append({
+                    "date": t["date"],
+                    "buy_price": t["buy_price"],
+                    "sell_target": t["sell_target"],
+                    "achieved": "No",
+                    "target_met_date": None,
+                    "days_taken": None,
+                })
+
+                continue
 
 
-    # --------------------------------------------------------
-    # STRIKE RATE
-    #
-    # Any trade still open (IN_TRADE) or any pending reset
-    # (WAIT_FOR_RESET) at the end of available data is NOT
-    # counted, since it hasn't completed yet.
-    # --------------------------------------------------------
+            still_open.append(t)
+
+
+        open_trades = still_open
+
+
+    # ----------------------------------------------------------
+    # Any trade still open at the end of available data is
+    # shown for visibility only — excluded from yes/no/strike.
+    # ----------------------------------------------------------
+
+    for t in open_trades:
+
+        transactions.append({
+            "date": t["date"],
+            "buy_price": t["buy_price"],
+            "sell_target": t["sell_target"],
+            "achieved": "Open",
+            "target_met_date": None,
+            "days_taken": None,
+        })
+
+
+    transactions.sort(
+        key=lambda t: t["date"]
+    )
+
+
+    return transactions
+
+
+# ============================================================
+# SST HISTORICAL STATISTICS
+#
+# See get_sst_transactions() above for the actual rule and
+# state machine. This is just a thin wrapper that summarizes
+# its output into yes/no/strike counts.
+# ============================================================
+
+def cycle_statistics(
+    df,
+    lookback,
+    target_pct
+):
+
+    transactions = get_sst_transactions(
+        df,
+        lookback,
+        target_pct
+    )
+
+    yes = sum(
+        1
+        for t in transactions
+        if t["achieved"] == "Yes"
+    )
+
+    no = sum(
+        1
+        for t in transactions
+        if t["achieved"] == "No"
+    )
 
     completed = yes + no
 
@@ -3406,9 +3468,137 @@ def main():
 
 
 # ============================================================
+# SST DEBUG: PRINT FULL TRANSACTION LOG FOR ONE SYMBOL
+#
+# Prints every SST transaction in the same layout as a manual
+# Excel/Google-Finance backtest ("Summary of all transactions"),
+# so you can compare row by row and see exactly where the
+# python logic and a spreadsheet disagree.
+#
+# Usage:
+#     python3 multi_screener.py --sst-debug MAXHEALTH
+# ============================================================
+
+def debug_sst_transactions(symbol):
+
+    print(
+        f"\nDownloading {symbol} ..."
+    )
+
+    df = download(symbol)
+
+    if df is None:
+
+        print(
+            f"No data found for {symbol}"
+        )
+
+        return
+
+    transactions = get_sst_transactions(
+        df,
+        SST_LOOKBACK,
+        SST_TARGET
+    )
+
+    print(
+        f"\nSST Transaction Log — {symbol}"
+    )
+
+    print(
+        f"(lookback={SST_LOOKBACK} days, "
+        f"target=+{SST_TARGET}%)\n"
+    )
+
+    header = (
+        f"{'Date':<12}"
+        f"{'Buy Price':>12}"
+        f"{'Sell Target':>13}   "
+        f"{'Achieved?':<10}"
+        f"{'Target Met Date':<18}"
+        f"{'Days Taken'}"
+    )
+
+    print(header)
+    print("-" * len(header))
+
+    for t in transactions:
+
+        date_str = fmt_date(t["date"])
+
+        met_str = (
+            fmt_date(t["target_met_date"])
+            if t["target_met_date"] is not None
+            else ""
+        )
+
+        days_str = (
+            str(t["days_taken"])
+            if t["days_taken"] is not None
+            else ""
+        )
+
+        print(
+            f"{date_str:<12}"
+            f"{t['buy_price']:>12,.2f}"
+            f"{t['sell_target']:>13,.2f}   "
+            f"{t['achieved']:<10}"
+            f"{met_str:<18}"
+            f"{days_str}"
+        )
+
+    yes = sum(
+        1
+        for t in transactions
+        if t["achieved"] == "Yes"
+    )
+
+    no = sum(
+        1
+        for t in transactions
+        if t["achieved"] == "No"
+    )
+
+    open_trades = sum(
+        1
+        for t in transactions
+        if t["achieved"] == "Open"
+    )
+
+    completed = yes + no
+
+    strike = (
+        yes / completed * 100
+        if completed
+        else 0
+    )
+
+    print("-" * len(header))
+
+    print(
+        f"YES: {yes}   NO: {no}   "
+        f"Open (unresolved): {open_trades}   "
+        f"Strike Rate: {strike:.2f}%\n"
+    )
+
+
+# ============================================================
 # RUN
 # ============================================================
 
 if __name__ == "__main__":
 
-    main()
+    import sys
+
+    if (
+        len(sys.argv) >= 3
+        and sys.argv[1] == "--sst-debug"
+    ):
+
+        debug_sst_transactions(
+            sys.argv[2].strip().upper()
+        )
+
+    else:
+
+        main()
