@@ -917,208 +917,306 @@ def sst_screen(
 
 def blsh_history_1_year(df):
 
-    data = (
-        df
-        .tail(
-            ANALYSIS_DAYS + BLSH_LOOKBACK
-        )
-        .copy()
-        .reset_index()
-        .rename(
-            columns={
-                "index": "Date"
-            }
-        )
+    """
+    BLSH RSI historical back-test.
+
+    RULES
+    -----
+    1. Setup starts only when:
+         - today's LOW is a fresh NEW 25-day low
+           (current low < previous 25 trading-day lows)
+         - RSI(14) < 36
+
+    2. Reference low = actual LOW on the new-25D-low day.
+
+    3. Trigger = reference low + 6.5%.
+
+    4. Target = trigger + 3.14%.
+
+    5. Trigger and target are checked using DAILY HIGH.
+       Therefore an intraday target hit counts even when
+       the closing price is below the target.
+
+    6. Before trigger:
+         - another fresh 25-day low replaces the old setup.
+         - it is NOT counted as a loss because no trade was
+           triggered.
+
+    7. After trigger:
+         - High >= target -> YES.
+         - If a fresh 25-day low occurs before target -> NO.
+           That same new-low day becomes the next setup if
+           RSI(14) < 36.
+
+    8. After YES:
+         - wait for a fresh 25-day low before starting another
+           setup. This prevents overlapping trades.
+
+    9. If target and a fresh 25-day low occur on the same
+       daily candle, target is checked first. Daily OHLC data
+       cannot establish the exact intraday order.
+    """
+
+    required_bars = (
+        BLSH_LOOKBACK
+        + RSI_PERIOD
+        + ANALYSIS_DAYS
     )
 
+    # Calculate RSI on the full downloaded history first so the
+    # first bars of the 1-year test are not affected by a fresh
+    # RSI warm-up window.
+    data = df.copy()
 
-    if len(data) <= BLSH_LOOKBACK:
+    data["RSI14"] = rsi(
+        data["Close"],
+        RSI_PERIOD
+    )
 
-        return (
-            0,
-            0,
-            0.0
-        )
+    data = data.tail(required_bars).copy()
 
+    if len(data) <= BLSH_LOOKBACK + RSI_PERIOD:
+        return 0, 0, 0.0
 
-    yes = 0
-    no = 0
+    # --------------------------------------------------------
+    # Work in chronological order.
+    # --------------------------------------------------------
 
+    data = (
+        data
+        .reset_index()
+        .rename(columns={"index": "Date"})
+    )
 
-    i = BLSH_LOOKBACK
+    # --------------------------------------------------------
+    # State
+    #
+    # WAIT_SETUP:
+    #     Looking for a fresh 25D low.
+    #
+    # WAIT_TRIGGER:
+    #     Setup exists, but +6.5% trigger has not been reached.
+    #
+    # IN_TRADE:
+    #     Trigger has been reached; waiting for +3.14% target
+    #     or a fresh 25D low.
+    #
+    # WAIT_RESET:
+    #     Target was achieved; wait for a fresh 25D low before
+    #     allowing the next setup.
+    # --------------------------------------------------------
 
-
-    trigger_active = False
+    state = "WAIT_SETUP"
 
     reference_low = None
     trigger_price = None
     target_price = None
 
+    yes = 0
+    no = 0
 
-    while i < len(data):
+    # Keep enough history for the first 25-day-low calculation.
+    start_i = BLSH_LOOKBACK
 
+    for i in range(start_i, len(data)):
 
-        current_low = float(
-            data["Low"].iloc[i]
-        )
+        current_low = float(data["Low"].iloc[i])
+        current_high = float(data["High"].iloc[i])
+        current_rsi = float(data["RSI14"].iloc[i])
 
-        current_high = float(
-            data["High"].iloc[i]
-        )
-
-
-        # ----------------------------------------------------
-        # STEP 1
-        #
-        # NEW 25-DAY LOW
-        # ----------------------------------------------------
-
-        if is_new_low(
+        fresh_new_low = is_new_low(
             data,
             i,
             BLSH_LOOKBACK
-        ):
+        )
 
-
-            # Existing trigger failed
-            if trigger_active:
-
-                no += 1
-
-
-            reference_low = current_low
-
-
-            # Trigger = 6.5% above 25D low
-            trigger_price = (
-                reference_low
-                * (
-                    1
-                    + BLSH_TRIGGER_PCT
-                    / 100
-                )
-            )
-
-
-            # Target = 3.14% above trigger
-            target_price = (
-                trigger_price
-                * (
-                    1
-                    + BLSH_TARGET_PCT
-                    / 100
-                )
-            )
-
-
-            trigger_active = False
-
-
-            i += 1
-
-            continue
-
-
-        # ----------------------------------------------------
-        # STEP 2
+        # ====================================================
+        # ACTIVE TRADE
         #
-        # WAIT FOR +6.5% TRIGGER
-        # ----------------------------------------------------
+        # IMPORTANT:
+        # Target is checked with HIGH first because the target
+        # can be reached at any time during the trading day.
+        # ====================================================
 
-        if (
-            reference_low is not None
-            and not trigger_active
-        ):
-
-
-            if current_high >= trigger_price:
-
-
-                trigger_active = True
-
-
-                # ------------------------------------------------
-                # Target can also be reached on the same day.
-                # ------------------------------------------------
-
-                if current_high >= target_price:
-
-
-                    yes += 1
-
-
-                    reference_low = None
-                    trigger_price = None
-                    target_price = None
-                    trigger_active = False
-
-
-            i += 1
-
-            continue
-
-
-        # ----------------------------------------------------
-        # STEP 3
-        #
-        # TARGET AFTER TRIGGER
-        # ----------------------------------------------------
-
-        if trigger_active:
-
+        if state == "IN_TRADE":
 
             if current_high >= target_price:
 
-
                 yes += 1
-
 
                 reference_low = None
                 trigger_price = None
                 target_price = None
-                trigger_active = False
 
-
-                i += 1
+                state = "WAIT_RESET"
 
                 continue
 
+            # No target. A fresh 25D low invalidates the trade.
+            if fresh_new_low:
 
-        i += 1
+                no += 1
 
+                # The new low can immediately become the next
+                # setup, but only if RSI < 36.
+                if current_rsi < RSI_LIMIT:
+
+                    reference_low = current_low
+
+                    trigger_price = (
+                        reference_low
+                        * (
+                            1
+                            + BLSH_TRIGGER_PCT / 100
+                        )
+                    )
+
+                    target_price = (
+                        trigger_price
+                        * (
+                            1
+                            + BLSH_TARGET_PCT / 100
+                        )
+                    )
+
+                    state = "WAIT_TRIGGER"
+
+                else:
+
+                    reference_low = None
+                    trigger_price = None
+                    target_price = None
+                    state = "WAIT_SETUP"
+
+            continue
+
+        # ====================================================
+        # AFTER A WIN
+        #
+        # Must wait for a fresh 25D low before starting again.
+        # ====================================================
+
+        if state == "WAIT_RESET":
+
+            if fresh_new_low:
+
+                if current_rsi < RSI_LIMIT:
+
+                    reference_low = current_low
+
+                    trigger_price = (
+                        reference_low
+                        * (
+                            1
+                            + BLSH_TRIGGER_PCT / 100
+                        )
+                    )
+
+                    target_price = (
+                        trigger_price
+                        * (
+                            1
+                            + BLSH_TARGET_PCT / 100
+                        )
+                    )
+
+                    state = "WAIT_TRIGGER"
+
+                else:
+
+                    reference_low = None
+                    trigger_price = None
+                    target_price = None
+                    state = "WAIT_SETUP"
+
+            continue
+
+        # ====================================================
+        # WAITING FOR / REPLACING SETUP
+        # ====================================================
+
+        if fresh_new_low:
+
+            # A new low before the trigger does NOT create a loss.
+            # It simply replaces the previous untriggered setup.
+            if current_rsi < RSI_LIMIT:
+
+                reference_low = current_low
+
+                trigger_price = (
+                    reference_low
+                    * (
+                        1
+                        + BLSH_TRIGGER_PCT / 100
+                    )
+                )
+
+                target_price = (
+                    trigger_price
+                    * (
+                        1
+                        + BLSH_TARGET_PCT / 100
+                    )
+                )
+
+                state = "WAIT_TRIGGER"
+
+            else:
+
+                reference_low = None
+                trigger_price = None
+                target_price = None
+                state = "WAIT_SETUP"
+
+            continue
+
+        # ====================================================
+        # WAITING FOR +6.5% TRIGGER
+        #
+        # Trigger uses HIGH, not Close.
+        # ====================================================
+
+        if state == "WAIT_TRIGGER":
+
+            if current_high >= trigger_price:
+
+                # Trigger happened intraday.
+                # Target can also be hit on this same candle.
+                if current_high >= target_price:
+
+                    yes += 1
+
+                    reference_low = None
+                    trigger_price = None
+                    target_price = None
+                    state = "WAIT_RESET"
+
+                else:
+
+                    state = "IN_TRADE"
 
     # --------------------------------------------------------
-    # STRIKE RATE
+    # Strike rate
     # --------------------------------------------------------
 
     completed = yes + no
 
-
-    if completed:
-
-        strike = (
-            yes
-            / completed
-            * 100
-        )
-
-    else:
-
-        strike = 0
-
+    strike = (
+        yes / completed * 100
+        if completed
+        else 0.0
+    )
 
     return (
         yes,
         no,
-        round(
-            strike,
-            2
-        )
+        round(strike, 2)
     )
 
 
 # ============================================================
 # BLSH CURRENT SCREEN
+# ============================================================
 # ============================================================
 
 def blsh_screen(
