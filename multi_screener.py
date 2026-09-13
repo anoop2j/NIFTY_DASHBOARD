@@ -403,6 +403,7 @@ def blsh_history_1_year(df):
         fresh_new_low = is_new_low(data, i, BLSH_LOOKBACK)
 
         if state == "IN_TRADE":
+            # Check target hit prior to evaluating new low resets
             if current_high >= target_price:
                 yes += 1
                 reference_low, trigger_price, target_price = None, None, None
