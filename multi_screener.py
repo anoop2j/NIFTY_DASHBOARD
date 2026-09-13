@@ -28,8 +28,8 @@ SST_TARGET = 6.0
 # ============================================================
 
 BLSH_LOOKBACK = 25
-BLSH_TRIGGER_PCT = 6.5
-BLSH_TARGET_PCT = 3.14
+BLSH_TRIGGER_PCT = 6.5  # Buy Trigger: +6.5% from new 25D low
+BLSH_TARGET_PCT = 3.14  # Sell Price: +3.14% from Buy Trigger
 
 RSI_PERIOD = 14
 RSI_LIMIT = 36
@@ -693,7 +693,7 @@ def get_sst_transactions(
                     "buy_price": t["buy_price"],
                     "sell_target": t["sell_target"],
                     "achieved": "Yes",
-                    "target_met_date": met_date,
+                    "sell_hit_date": met_date,
                     "days_taken": (
                         pd.Timestamp(met_date)
                         - pd.Timestamp(t["date"])
@@ -710,7 +710,7 @@ def get_sst_transactions(
                     "buy_price": t["buy_price"],
                     "sell_target": t["sell_target"],
                     "achieved": "No",
-                    "target_met_date": None,
+                    "sell_hit_date": None,
                     "days_taken": None,
                 })
 
@@ -735,7 +735,7 @@ def get_sst_transactions(
             "buy_price": t["buy_price"],
             "sell_target": t["sell_target"],
             "achieved": "Open",
-            "target_met_date": None,
+            "sell_hit_date": None,
             "days_taken": None,
         })
 
@@ -918,7 +918,7 @@ def sst_screen(
 def blsh_history_1_year(df):
 
     """
-    BLSH RSI historical back-test.
+    BLSH RSI BUY TRIGGER / SELL PRICE historical back-test.
 
     RULES
     -----
@@ -931,7 +931,7 @@ def blsh_history_1_year(df):
 
     3. Trigger = reference low + 6.5%.
 
-    4. Target = trigger + 3.14%.
+    4. Sell Price = trigger + 3.14%.
 
     5. Trigger and target are checked using DAILY HIGH.
        Therefore an intraday target hit counts even when
@@ -943,8 +943,8 @@ def blsh_history_1_year(df):
            triggered.
 
     7. After trigger:
-         - High >= target -> YES.
-         - If a fresh 25-day low occurs before target -> NO.
+         - High >= Sell Price -> SELL YES.
+         - If a fresh 25-day low occurs before Sell Price -> SELL NO.
            That same new-low day becomes the next setup if
            RSI(14) < 36.
 
@@ -995,14 +995,14 @@ def blsh_history_1_year(df):
     #     Looking for a fresh 25D low.
     #
     # WAIT_TRIGGER:
-    #     Setup exists, but +6.5% trigger has not been reached.
+    #     Setup exists, but +6.5% BUY TRIGGER has not been reached.
     #
     # IN_TRADE:
-    #     Trigger has been reached; waiting for +3.14% target
+    #     BUY TRIGGER has been reached; waiting for +3.14% SELL PRICE
     #     or a fresh 25D low.
     #
     # WAIT_RESET:
-    #     Target was achieved; wait for a fresh 25D low before
+    #     SELL PRICE was achieved; wait for a fresh 25D low before
     #     allowing the next setup.
     # --------------------------------------------------------
 
@@ -1031,10 +1031,10 @@ def blsh_history_1_year(df):
         )
 
         # ====================================================
-        # ACTIVE TRADE
+        # ACTIVE BUY TRADE
         #
         # IMPORTANT:
-        # Target is checked with HIGH first because the target
+        # Sell Price is checked with HIGH first because the sell price
         # can be reached at any time during the trading day.
         # ====================================================
 
@@ -1052,7 +1052,7 @@ def blsh_history_1_year(df):
 
                 continue
 
-            # No target. A fresh 25D low invalidates the trade.
+            # Sell Price not reached. A fresh 25D low invalidates the trade.
             if fresh_new_low:
 
                 no += 1
@@ -1171,17 +1171,17 @@ def blsh_history_1_year(df):
             continue
 
         # ====================================================
-        # WAITING FOR +6.5% TRIGGER
+        # WAITING FOR +6.5% BUY TRIGGER
         #
-        # Trigger uses HIGH, not Close.
+        # Buy Trigger uses HIGH, not Close.
         # ====================================================
 
         if state == "WAIT_TRIGGER":
 
             if current_high >= trigger_price:
 
-                # Trigger happened intraday.
-                # Target can also be hit on this same candle.
+                # Buy Trigger happened intraday.
+                # Sell Price can also be hit on this same candle.
                 if current_high >= target_price:
 
                     yes += 1
@@ -1327,7 +1327,7 @@ def blsh_screen(
 
 
     # --------------------------------------------------------
-    # Target = 3.14% above trigger
+    # Sell Price = 3.14% above Buy Trigger
     # --------------------------------------------------------
 
     target_price = (
@@ -1559,7 +1559,7 @@ def build_html(
                     ₹{x['low_25_day']:,.2f}
                 </td>
 
-                <td class="num" data-label="Trigger → Target">
+                <td class="num" data-label="Buy Trigger → Sell Price">
                     ₹{x['trigger_price']:,.2f} → ₹{x['target_price']:,.2f}
                 </td>
 
@@ -1571,7 +1571,7 @@ def build_html(
                     {x['rsi']:.2f}
                 </td>
 
-                <td class="num" data-label="Win / Loss (1Y)">
+                <td class="num" data-label="Sell Result (1Y)">
                     <span class="chip-group">
                         <span class="chip positive">{x['yes']}</span>
                         <span class="chip negative">{x['no']}</span>
@@ -2809,7 +2809,7 @@ tr:last-child td {{
 
         <span class="panel-sub">
             RSI &lt; 36 | New 25-Day Low |
-            Trigger +6.5% | Target +3.14%
+            Buy Trigger +6.5% | Sell Price +3.14%
         </span>
 
     </div>
@@ -2873,13 +2873,13 @@ tr:last-child td {{
 
                     <th>25D Low</th>
 
-                    <th>Trigger → Target</th>
+                    <th>Buy Trigger → Sell Price</th>
 
                     <th>Away %</th>
 
                     <th>RSI(14)</th>
 
-                    <th>Win / Loss (1Y)</th>
+                    <th>Sell Result (1Y)</th>
 
                     <th>Strike Rate</th>
 
@@ -3610,10 +3610,10 @@ def debug_sst_transactions(symbol):
 
     header = (
         f"{'Date':<12}"
-        f"{'Buy Price':>12}"
-        f"{'Sell Target':>13}   "
-        f"{'Achieved?':<10}"
-        f"{'Target Met Date':<18}"
+        f"{'Buy Trigger':>12}"
+        f"{'Sell Price':>13}   "
+        f"{'Sell Hit?':<10}"
+        f"{'Sell Hit Date':<18}"
         f"{'Days Taken'}"
     )
 
@@ -3625,8 +3625,8 @@ def debug_sst_transactions(symbol):
         date_str = fmt_date(t["date"])
 
         met_str = (
-            fmt_date(t["target_met_date"])
-            if t["target_met_date"] is not None
+            fmt_date(t["sell_hit_date"])
+            if t["sell_hit_date"] is not None
             else ""
         )
 
