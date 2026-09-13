@@ -477,6 +477,48 @@ def is_new_low(
 
 
 # ============================================================
+# NEW 20-DAY LOW (SST ONLY)
+#
+# SST's "20 day low" is a rolling window that INCLUDES today
+# (20 cells total, today being the most recent one) — verified
+# directly against the INDHOTEL/GRASIM Excel backtests, which
+# flag a new low whenever today's low is <= the min of the
+# preceding lookback-1 days (non-strict). This differs from the
+# generic is_new_low() above (used by BLSH), which compares
+# against the preceding `lookback` days, excluding today, and
+# is strict. Do NOT reuse that one for SST — the off-by-one
+# there causes missed re-arm signals and dropped trades.
+# ============================================================
+
+def is_new_low_sst(
+    df,
+    i,
+    lookback
+):
+
+    if i < lookback - 1:
+
+        return False
+
+
+    current_low = float(
+        df["Low"].iloc[i]
+    )
+
+
+    previous_low = float(
+        df["Low"]
+        .iloc[
+            i - (lookback - 1):i
+        ]
+        .min()
+    )
+
+
+    return current_low <= previous_low
+
+
+# ============================================================
 # NEW 20-DAY HIGH
 #
 # Today's High must be above the HIGH of the previous
@@ -542,18 +584,22 @@ def is_new_high(
 # ============================================================
 # SST TRANSACTION LOG
 #
-# Reverse-engineered directly against a real backtest
-# (MAXHEALTH) and confirmed to reproduce it exactly.
+# Reverse-engineered directly against real backtests
+# (INDHOTEL, GRASIM) and confirmed to reproduce them exactly —
+# every buy price, sell target, achieved Yes/No, target-met
+# date, and days-taken matches row for row.
 #
 # Two mechanisms run independently:
 #
 # 1. A single ARMED / DISARMED switch controls when a NEW buy
 #    can fire, regardless of whether an earlier buy has
 #    resolved yet:
-#      - ARMED turns ON the day a new 20-day LOW occurs, and
-#        stays ON across further new lows.
+#      - ARMED turns ON the day a new 20-day LOW occurs (see
+#        is_new_low_sst() — this window INCLUDES today, unlike
+#        the generic is_new_low() used by BLSH), and stays ON
+#        across further new lows.
 #      - The FIRST new 20-day HIGH while ARMED fires a BUY.
-#        Entry = previous day's 20-day high.
+#        Entry = previous 20 days' high (excludes today).
 #        Target = entry * (1 + target_pct%).
 #      - The moment a buy fires, ARMED turns OFF immediately.
 #      - It stays OFF until the NEXT new 20-day low — this can
@@ -561,9 +607,14 @@ def is_new_high(
 #        so trades CAN legitimately overlap.
 #
 # 2. Each individual buy is tracked forward on its own, from
-#    the day after its buy date:
-#      - High >= target before a new 20-day low  -> YES
-#      - a new 20-day low before the target       -> NO
+#    the day after its buy date, with NO stop-loss / no new-low
+#    failure condition (same as BLSH):
+#      - High >= target on any later day -> YES, however long
+#        that takes.
+#      - If the target has not been hit by the end of the
+#        available price history -> "No" (i.e. "not yet
+#        achieved"). A later new 20-day low does NOT cancel an
+#        open trade — it can still resolve Yes much later.
 #
 # "Days Taken" matches the reference backtest format: it is
 # CALENDAR days between the buy date and the target-met date,
@@ -606,10 +657,11 @@ def get_sst_transactions(
     ):
 
         # ----------------------------------------------------
-        # 1. ARM on a new 20-day low.
+        # 1. ARM on a new 20-day low (SST's inclusive-of-today
+        #    window — see is_new_low_sst()).
         # ----------------------------------------------------
 
-        if is_new_low(
+        if is_new_low_sst(
             data,
             i,
             lookback
@@ -661,16 +713,17 @@ def get_sst_transactions(
         # ----------------------------------------------------
         # 3. Advance every still-open trade by one day,
         #    starting the day AFTER its own buy date.
+        #
+        #    NOTE: unlike an earlier version of this function,
+        #    a later new 20-day low does NOT cancel an open
+        #    trade. Verified directly against the INDHOTEL and
+        #    GRASIM backtests: trades ride through intervening
+        #    lows and only resolve when the target is actually
+        #    hit (same no-stop-loss convention as BLSH below).
         # ----------------------------------------------------
 
         current_high = float(
             data["High"].iloc[i]
-        )
-
-        new_low_today = is_new_low(
-            data,
-            i,
-            lookback
         )
 
         still_open = []
@@ -703,20 +756,6 @@ def get_sst_transactions(
                 continue
 
 
-            if new_low_today:
-
-                transactions.append({
-                    "date": t["date"],
-                    "buy_price": t["buy_price"],
-                    "sell_target": t["sell_target"],
-                    "achieved": "No",
-                    "target_met_date": None,
-                    "days_taken": None,
-                })
-
-                continue
-
-
             still_open.append(t)
 
 
@@ -724,8 +763,9 @@ def get_sst_transactions(
 
 
     # ----------------------------------------------------------
-    # Any trade still open at the end of available data is
-    # shown for visibility only — excluded from yes/no/strike.
+    # Any trade still open (target not yet hit) at the end of
+    # available data is counted as "No" — i.e. "not yet
+    # achieved" — same convention as get_blsh_transactions().
     # ----------------------------------------------------------
 
     for t in open_trades:
@@ -734,7 +774,7 @@ def get_sst_transactions(
             "date": t["date"],
             "buy_price": t["buy_price"],
             "sell_target": t["sell_target"],
-            "achieved": "Open",
+            "achieved": "No",
             "target_met_date": None,
             "days_taken": None,
         })
@@ -3597,12 +3637,6 @@ def debug_sst_transactions(symbol):
         if t["achieved"] == "No"
     )
 
-    open_trades = sum(
-        1
-        for t in transactions
-        if t["achieved"] == "Open"
-    )
-
     completed = yes + no
 
     strike = (
@@ -3615,7 +3649,6 @@ def debug_sst_transactions(symbol):
 
     print(
         f"YES: {yes}   NO: {no}   "
-        f"Open (unresolved): {open_trades}   "
         f"Strike Rate: {strike:.2f}%\n"
     )
 
