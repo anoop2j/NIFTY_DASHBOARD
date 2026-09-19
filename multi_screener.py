@@ -1,5 +1,6 @@
 import pandas as pd
 import yfinance as yf
+import requests
 import time
 import os
 
@@ -13,6 +14,38 @@ from zoneinfo import ZoneInfo
 
 SYMBOL_FILE = "nifty100_symbols.csv"
 OUTPUT_FILE = "docs/index.html"
+
+
+# ============================================================
+# ETF 28 SMA SETTINGS
+# ============================================================
+
+ETF_SYMBOL_FILE = "etf_symbols.csv"
+
+NSE_ETF_PAGE = "https://www.nseindia.com/market-data/exchange-traded-funds-etf"
+NSE_ETF_API = "https://www.nseindia.com/api/etf"
+
+NSE_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": NSE_ETF_PAGE,
+}
+
+# SMA length used for the ETF entry/exit screen
+ETF_SMA_PERIOD = 28
+
+# Window used to compute "average daily traded value" / "average
+# daily volume" for the liquidity filter below
+ETF_ADV_LOOKBACK = 20
+
+# Only ETFs whose average daily traded value exceeds this many
+# crores (1 cr = 1,00,00,000) are shown
+ETF_MIN_ADV_CR = 1.0
 
 
 # ============================================================
@@ -144,6 +177,168 @@ def load_symbols():
         (
             str(row["symbol"]).strip(),
             str(row["company"]).strip()
+        )
+        for _, row in df.iterrows()
+    ]
+
+
+# ============================================================
+# LOAD NSE ETF LIST (LIVE)
+#
+# Pulls the current list of NSE-listed ETFs straight from NSE's
+# own ETF page API. NSE requires a warmed-up, browser-like
+# session (cookies picked up from the HTML pages) before the
+# JSON API will respond, and it will reject requests from most
+# cloud / CI IP ranges (GitHub Actions included) with a 401/403
+# even with the right headers. If that happens here, it falls
+# back to the local ETF_SYMBOL_FILE list below instead of
+# failing the whole run.
+# ============================================================
+
+def fetch_nse_etf_list():
+
+    session = requests.Session()
+    session.headers.update(NSE_HEADERS)
+
+    try:
+
+        # Visiting the homepage + the ETF page first is what
+        # sets the cookies the API call needs.
+        session.get(
+            "https://www.nseindia.com",
+            timeout=10
+        )
+
+        session.get(
+            NSE_ETF_PAGE,
+            timeout=10
+        )
+
+        response = session.get(
+            NSE_ETF_API,
+            timeout=10
+        )
+
+        response.raise_for_status()
+
+        payload = response.json()
+
+    except Exception as e:
+
+        print(
+            f"  NSE ETF list fetch failed: {e}"
+        )
+
+        return []
+
+
+    rows = (
+        payload.get("data", [])
+        if isinstance(payload, dict)
+        else []
+    )
+
+    results = []
+
+    for row in rows:
+
+        if not isinstance(row, dict):
+
+            continue
+
+
+        symbol = str(
+            row.get("symbol")
+            or row.get("SYMBOL")
+            or ""
+        ).strip()
+
+        if not symbol:
+
+            continue
+
+
+        meta = row.get("meta")
+
+        if isinstance(meta, dict) and meta.get("companyName"):
+
+            name = meta.get("companyName")
+
+        else:
+
+            name = (
+                row.get("assets")
+                or row.get("companyName")
+                or symbol
+            )
+
+        results.append(
+            (
+                symbol,
+                str(name).strip()
+            )
+        )
+
+    return results
+
+
+# ============================================================
+# LOAD ETF SYMBOLS (LIVE, WITH LOCAL FALLBACK)
+# ============================================================
+
+def load_etf_symbols():
+
+    live = fetch_nse_etf_list()
+
+    if live:
+
+        print(
+            f"  Loaded {len(live)} ETFs from NSE"
+        )
+
+        return live
+
+
+    print(
+        "  Falling back to local ETF symbol list "
+        f"({ETF_SYMBOL_FILE})"
+    )
+
+    if not os.path.exists(ETF_SYMBOL_FILE):
+
+        print(
+            f"  {ETF_SYMBOL_FILE} not found — no ETFs to screen"
+        )
+
+        return []
+
+
+    df = pd.read_csv(
+        ETF_SYMBOL_FILE
+    )
+
+    df.columns = (
+        df.columns
+        .str.strip()
+        .str.lower()
+    )
+
+    if "symbol" not in df.columns:
+
+        return []
+
+    if "name" not in df.columns:
+
+        df["name"] = df["symbol"]
+
+    df = df.dropna(
+        subset=["symbol"]
+    ).copy()
+
+    return [
+        (
+            str(row["symbol"]).strip(),
+            str(row["name"]).strip()
         )
         for _, row in df.iterrows()
     ]
@@ -1407,6 +1602,183 @@ def blsh_screen(
 
 
 # ============================================================
+# ETF 28 SMA SCREEN
+#
+# Entry signal : 2 continuous daily closes ABOVE the 28 SMA
+# Exit signal  : 2 continuous daily closes BELOW the 28 SMA
+# Streak       : how many days in a row (up to today) the
+#                close has stayed on the same side of the
+#                28 SMA — shown Green while above, Red while
+#                below.
+# Liquidity    : ETF is dropped unless its average daily
+#                traded value over the last ETF_ADV_LOOKBACK
+#                days exceeds ETF_MIN_ADV_CR crores.
+# ============================================================
+
+def etf_screen(
+    symbol,
+    company,
+    df
+):
+
+    daily = df.copy()
+
+    if "Volume" not in daily.columns:
+
+        return None
+
+
+    daily["Volume"] = pd.to_numeric(
+        daily["Volume"],
+        errors="coerce"
+    )
+
+    daily = daily.dropna(
+        subset=["Close", "Volume"]
+    )
+
+    if len(daily) < ETF_SMA_PERIOD + 3:
+
+        return None
+
+
+    # --------------------------------------------------------
+    # 28-day SMA
+    # --------------------------------------------------------
+
+    daily["SMA28"] = (
+        daily["Close"]
+        .rolling(ETF_SMA_PERIOD)
+        .mean()
+    )
+
+    valid = daily.dropna(
+        subset=["SMA28"]
+    )
+
+    if len(valid) < 3:
+
+        return None
+
+
+    closes = valid["Close"].tolist()
+    smas = valid["SMA28"].tolist()
+
+    last_price = float(closes[-1])
+    last_sma = float(smas[-1])
+
+
+    # --------------------------------------------------------
+    # Entry / Exit: 2 continuous closes above / below the SMA
+    # --------------------------------------------------------
+
+    above_today = closes[-1] > smas[-1]
+    above_yday = closes[-2] > smas[-2]
+
+    entry_signal = bool(
+        above_today
+        and above_yday
+    )
+
+    exit_signal = bool(
+        (not above_today)
+        and (not above_yday)
+    )
+
+
+    # --------------------------------------------------------
+    # Streak: consecutive days (ending today) on the same
+    # side of the 28 SMA
+    # --------------------------------------------------------
+
+    streak_side = "above" if above_today else "below"
+    streak_days = 0
+
+    for c, s in zip(
+        reversed(closes),
+        reversed(smas)
+    ):
+
+        side = "above" if c > s else "below"
+
+        if side == streak_side:
+
+            streak_days += 1
+
+        else:
+
+            break
+
+
+    # --------------------------------------------------------
+    # Average daily traded value / volume (liquidity filter)
+    # --------------------------------------------------------
+
+    trade_value = (
+        daily["Close"]
+        * daily["Volume"]
+    )
+
+    adv = (
+        trade_value
+        .tail(ETF_ADV_LOOKBACK)
+        .mean()
+    )
+
+    avg_volume = (
+        daily["Volume"]
+        .tail(ETF_ADV_LOOKBACK)
+        .mean()
+    )
+
+    if pd.isna(adv):
+
+        return None
+
+
+    adv_cr = float(adv) / 1e7
+
+    if adv_cr <= ETF_MIN_ADV_CR:
+
+        return None
+
+
+    return {
+
+        "symbol": symbol,
+
+        "company": company,
+
+        "date":
+            fmt_date(
+                daily.index[-1]
+            ),
+
+        "price":
+            round(last_price, 2),
+
+        "sma28":
+            round(last_sma, 2),
+
+        "adv_cr":
+            round(adv_cr, 2),
+
+        "avg_volume":
+            int(round(float(avg_volume)))
+            if not pd.isna(avg_volume)
+            else 0,
+
+        "entry": entry_signal,
+
+        "exit": exit_signal,
+
+        "streak_days": int(streak_days),
+
+        "streak_side": streak_side,
+    }
+
+
+# ============================================================
 # HTML
 # ============================================================
 
@@ -1414,6 +1786,7 @@ def build_html(
     mwd,
     sst,
     blsh,
+    etf,
     updated,
     total_stocks
 ):
@@ -1572,6 +1945,66 @@ def build_html(
 
 
     # ========================================================
+    # ETF 28 SMA ROWS
+    # ========================================================
+
+    def rows_etf():
+
+        return "".join(
+
+            f"""
+            <tr
+                data-adv="{x['adv_cr']}"
+                data-entry="{'1' if x['entry'] else '0'}"
+                data-exit="{'1' if x['exit'] else '0'}"
+            >
+
+                <td data-label="Symbol"><strong>{x['symbol']}</strong></td>
+
+                <td class="company" data-label="ETF Name">{x['company']}</td>
+
+                <td class="num" data-label="CMP">
+                    ₹{x['price']:,.2f}
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹{x['sma28']:,.2f}
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip {'positive' if x['entry'] else 'neutral'}">
+                        {'ENTRY ▲' if x['entry'] else '—'}
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip {'negative' if x['exit'] else 'neutral'}">
+                        {'EXIT ▼' if x['exit'] else '—'}
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip {'positive' if x['streak_side'] == 'above' else 'negative'}">
+                        {x['streak_days']}D {'▲ Above' if x['streak_side'] == 'above' else '▼ Below'}
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    {x['avg_volume']:,}
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹{x['adv_cr']:,.2f} Cr
+                </td>
+
+            </tr>
+            """
+
+            for x in etf
+        )
+
+
+    # ========================================================
     # HTML
     # ========================================================
 
@@ -1630,6 +2063,8 @@ Nifty 100 Daily Multi-Screener
     --plum-soft:     #f0e6f6;
     --teal:          #0e6e63;
     --teal-soft:     #e0f2ef;
+    --amber:         #b5541f;
+    --amber-soft:    #fbe9dc;
 
     --radius-lg:     16px;
     --radius-sm:     10px;
@@ -1814,6 +2249,7 @@ body {{
 .badge.mwd .dot {{ background: var(--indigo); }}
 .badge.sst .dot {{ background: var(--plum); }}
 .badge.blsh .dot {{ background: var(--teal); }}
+.badge.etf .dot {{ background: var(--amber); }}
 
 
 /* ============================================================ */
@@ -1889,6 +2325,7 @@ body {{
 .tab.active.mwd {{ background: var(--indigo); color: #fff; }}
 .tab.active.sst {{ background: var(--plum);   color: #fff; }}
 .tab.active.blsh {{ background: var(--teal);   color: #fff; }}
+.tab.active.etf {{ background: var(--amber);   color: #fff; }}
 
 
 /* ============================================================ */
@@ -1971,6 +2408,11 @@ body {{
 
 .blsh-head {{
     background: var(--teal);
+}}
+
+
+.etf-head {{
+    background: var(--amber);
 }}
 
 
@@ -2525,6 +2967,11 @@ tr:last-child td {{
             BLSH: <strong id="blshCount">{len(blsh)}</strong>
         </div>
 
+        <div class="badge etf">
+            <span class="dot"></span>
+            ETF 28 SMA: <strong id="etfCount">{len(etf)}</strong>
+        </div>
+
     </div>
 
 </div>
@@ -2557,6 +3004,14 @@ tr:last-child td {{
         onclick="showTab('blsh', this)"
     >
         3. BLSH RSI
+    </button>
+
+
+    <button
+        class="tab etf"
+        onclick="showTab('etf', this)"
+    >
+        4. ETF 28 SMA
     </button>
 
 </div>
@@ -2888,6 +3343,122 @@ tr:last-child td {{
 
 
 <!-- ===================================================== -->
+<!-- ETF 28 SMA -->
+<!-- ===================================================== -->
+
+<div
+    id="etf"
+    class="tab-content"
+>
+
+    <div class="panel-head etf-head">
+
+        <span>
+            ETF 28 SMA
+        </span>
+
+        <span class="panel-sub">
+            NSE ETFs | Avg Daily Value &gt; ₹1 Cr | 28-Day SMA Crossover
+        </span>
+
+    </div>
+
+
+    <div class="filters">
+
+        <label>
+
+            Avg Daily Value (₹Cr) ≥
+
+            <input
+                id="etfAdv"
+                type="number"
+                value="1"
+                step="0.1"
+            >
+
+        </label>
+
+
+        <label>
+
+            Signal:
+
+            <select
+                id="etfSignal"
+                onchange="filterETF()"
+            >
+
+                <option value="all">
+                    All
+                </option>
+
+                <option value="entry">
+                    Entry Only
+                </option>
+
+                <option value="exit">
+                    Exit Only
+                </option>
+
+            </select>
+
+        </label>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table id="etfTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Symbol</th>
+
+                    <th>ETF Name</th>
+
+                    <th>CMP</th>
+
+                    <th>28 SMA</th>
+
+                    <th>Entry Signal</th>
+
+                    <th>Exit Signal</th>
+
+                    <th>Streak (Days)</th>
+
+                    <th>Avg Daily Volume</th>
+
+                    <th>Avg Daily Value</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {
+                    rows_etf()
+                    or
+                    '''<tr><td colspan="9">
+                    No matching ETFs
+                    </td></tr>'''
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
 <!-- FOOTER -->
 <!-- ===================================================== -->
 
@@ -3162,6 +3733,89 @@ function filterBLSH() {{
 
 
 // ==========================================================
+// ETF 28 SMA FILTER
+// ==========================================================
+
+function filterETF() {{
+
+    const minAdv =
+        parseFloat(
+            document
+                .getElementById(
+                    'etfAdv'
+                )
+                .value
+        );
+
+
+    const signal =
+        document
+            .getElementById(
+                'etfSignal'
+            )
+            .value;
+
+
+    document
+        .querySelectorAll(
+            '#etfTable tbody tr'
+        )
+        .forEach(
+            function(row) {{
+
+                const adv =
+                    parseFloat(
+                        row.dataset.adv
+                    );
+
+
+                if (isNaN(adv)) {{
+
+                    return;
+
+                }}
+
+
+                let show =
+                    adv >= minAdv;
+
+
+                if (signal === 'entry') {{
+
+                    show =
+                        show
+                        && row.dataset.entry === '1';
+
+                }}
+
+
+                if (signal === 'exit') {{
+
+                    show =
+                        show
+                        && row.dataset.exit === '1';
+
+                }}
+
+
+                row.style.display =
+                    show
+                    ? ''
+                    : 'none';
+
+            }}
+        );
+
+
+    updateBadgeCount(
+        'etfTable',
+        'etfCount'
+    );
+
+}}
+
+
+// ==========================================================
 // BADGE COUNT HELPER
 //
 // Keeps the header badge in sync with the number of rows
@@ -3239,6 +3893,16 @@ document
     );
 
 
+document
+    .getElementById(
+        'etfAdv'
+    )
+    .addEventListener(
+        'input',
+        filterETF
+    );
+
+
 // ==========================================================
 // INITIAL FILTER
 // ==========================================================
@@ -3246,6 +3910,7 @@ document
 filterMWD();
 filterSST();
 filterBLSH();
+filterETF();
 
 </script>
 
@@ -3397,6 +4062,84 @@ def main():
 
 
     # ========================================================
+    # LOAD & PROCESS NSE ETFs
+    # ========================================================
+
+    etf_symbols = load_etf_symbols()
+
+    etf_results = []
+
+
+    print()
+    print(
+        f"Processing {len(etf_symbols)} NSE ETFs..."
+    )
+    print()
+
+
+    for n, (
+        symbol,
+        company
+    ) in enumerate(
+        etf_symbols,
+        1
+    ):
+
+
+        print(
+            f"[{n}/{len(etf_symbols)}] {symbol}"
+        )
+
+
+        try:
+
+
+            df = download(
+                symbol
+            )
+
+
+            if (
+                df is None
+                or len(df) < ETF_SMA_PERIOD + 5
+            ):
+
+                print(
+                    "  Insufficient data"
+                )
+
+                continue
+
+
+            e = etf_screen(
+                symbol,
+                company,
+                df
+            )
+
+
+            if e:
+
+                etf_results.append(
+                    e
+                )
+
+
+        except Exception as ex:
+
+            print(
+                "ERROR:",
+                symbol,
+                ex
+            )
+
+
+        time.sleep(
+            0.25
+        )
+
+
+    # ========================================================
     # SORT RESULTS
     # ========================================================
 
@@ -3441,6 +4184,19 @@ def main():
     )
 
 
+    # --------------------------------------------------------
+    # ETF 28 SMA
+    #
+    # Most liquid (highest avg daily traded value) first
+    # --------------------------------------------------------
+
+    etf_results.sort(
+        key=lambda x:
+            x["adv_cr"],
+        reverse=True
+    )
+
+
     # ========================================================
     # IST UPDATE TIME
     # ========================================================
@@ -3476,6 +4232,7 @@ def main():
         mwd_results,
         sst_results,
         blsh_results,
+        etf_results,
         updated,
         len(symbols)
     )
@@ -3528,6 +4285,16 @@ def main():
     print(
         "BLSH Matches:",
         len(blsh_results)
+    )
+
+    print(
+        "ETF Universe:",
+        len(etf_symbols)
+    )
+
+    print(
+        "ETF 28 SMA Matches:",
+        len(etf_results)
     )
 
     print(
