@@ -283,6 +283,26 @@ def fetch_nse_etf_list():
 
 
 # ============================================================
+# EXCLUDE LIQUID / OVERNIGHT ETFs
+#
+# Liquid / overnight ETFs (symbol contains "LIQ" — LIQUIDBEES,
+# LIQUIDCASE, HDFCLIQUID, SBILIQETF, etc.) trade essentially
+# flat around a fixed NAV and are not relevant to a 28 SMA
+# trend screen, so they're dropped regardless of which source
+# (live NSE or the local fallback file) the symbol list came
+# from.
+# ============================================================
+
+def exclude_liquid_etfs(symbols):
+
+    return [
+        (symbol, name)
+        for symbol, name in symbols
+        if "LIQ" not in symbol.upper()
+    ]
+
+
+# ============================================================
 # LOAD ETF SYMBOLS (LIVE, WITH LOCAL FALLBACK)
 # ============================================================
 
@@ -292,8 +312,13 @@ def load_etf_symbols():
 
     if live:
 
+        live = exclude_liquid_etfs(
+            live
+        )
+
         print(
-            f"  Loaded {len(live)} ETFs from NSE"
+            f"  Loaded {len(live)} ETFs from NSE "
+            "(liquid/overnight ETFs excluded)"
         )
 
         return live
@@ -335,13 +360,17 @@ def load_etf_symbols():
         subset=["symbol"]
     ).copy()
 
-    return [
+    fallback = [
         (
             str(row["symbol"]).strip(),
             str(row["name"]).strip()
         )
         for _, row in df.iterrows()
     ]
+
+    return exclude_liquid_etfs(
+        fallback
+    )
 
 
 # ============================================================
