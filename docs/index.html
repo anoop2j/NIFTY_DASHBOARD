@@ -55,6 +55,8 @@ Nifty 100 Daily Multi-Screener
     --teal-soft:     #e0f2ef;
     --amber:         #b5541f;
     --amber-soft:    #fbe9dc;
+    --rose:          #a13d63;
+    --rose-soft:     #f7e3ec;
 
     --radius-lg:     16px;
     --radius-sm:     10px;
@@ -240,6 +242,7 @@ body {
 .badge.sst .dot { background: var(--plum); }
 .badge.blsh .dot { background: var(--teal); }
 .badge.etf .dot { background: var(--amber); }
+.badge.upload .dot { background: var(--rose); }
 
 
 /* ============================================================ */
@@ -316,6 +319,7 @@ body {
 .tab.active.sst { background: var(--plum);   color: #fff; }
 .tab.active.blsh { background: var(--teal);   color: #fff; }
 .tab.active.etf { background: var(--amber);   color: #fff; }
+.tab.active.upload { background: var(--rose);  color: #fff; }
 
 
 /* ============================================================ */
@@ -403,6 +407,271 @@ body {
 
 .etf-head {
     background: var(--amber);
+}
+
+
+.upload-head {
+    background: var(--rose);
+}
+
+
+/* ============================================================ */
+/* UPLOAD SYMBOLS                                                */
+/* ============================================================ */
+
+.upload-note {
+
+    padding:
+        16px 26px;
+
+    background:
+        var(--surface-alt);
+
+    border-bottom:
+        1px solid var(--border);
+
+    font-size:
+        13px;
+
+    color:
+        var(--ink-soft);
+
+    line-height:
+        1.55;
+}
+
+
+.upload-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        20px;
+
+    padding:
+        22px 26px;
+}
+
+
+.upload-card {
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius-sm);
+
+    padding:
+        18px;
+
+    background:
+        var(--surface-alt);
+}
+
+
+.upload-card h3 {
+
+    margin:
+        0 0 4px;
+
+    font-family:
+        'IBM Plex Mono',
+        monospace;
+
+    font-size:
+        14.5px;
+
+    color:
+        var(--ink);
+}
+
+
+.upload-sub {
+
+    margin:
+        0 0 14px;
+
+    font-size:
+        12.5px;
+
+    color:
+        var(--ink-faint);
+}
+
+
+.dropzone {
+
+    border:
+        2px dashed var(--border);
+
+    border-radius:
+        var(--radius-sm);
+
+    padding:
+        24px 16px;
+
+    text-align:
+        center;
+
+    cursor:
+        pointer;
+
+    background:
+        var(--surface);
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+}
+
+
+.dropzone:hover,
+.dropzone.dragover {
+
+    border-color:
+        var(--rose);
+
+    background:
+        var(--rose-soft);
+}
+
+
+.dropzone label {
+
+    display:
+        block;
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+    color:
+        var(--ink-soft);
+
+    cursor:
+        pointer;
+}
+
+
+.upload-meta {
+
+    margin-top:
+        12px;
+
+    font-size:
+        12.5px;
+
+    color:
+        var(--ink-soft);
+
+    line-height:
+        1.5;
+}
+
+
+.upload-preview {
+
+    margin-top:
+        10px;
+
+    max-height:
+        120px;
+
+    overflow:
+        auto;
+
+    background:
+        var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        7px;
+
+    padding:
+        8px 10px;
+
+    font-family:
+        'IBM Plex Mono',
+        monospace;
+
+    font-size:
+        11.5px;
+
+    color:
+        var(--ink-soft);
+
+    white-space:
+        pre-wrap;
+}
+
+
+.btn-download {
+
+    margin-top:
+        14px;
+
+    padding:
+        9px 16px;
+
+    border-radius:
+        7px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--surface);
+
+    cursor:
+        pointer;
+
+    font-family:
+        'Inter',
+        sans-serif;
+
+    font-weight:
+        600;
+
+    font-size:
+        13px;
+
+    color:
+        var(--ink);
+}
+
+
+.btn-download:hover:not(:disabled) {
+    border-color: var(--rose);
+    color: var(--rose);
+}
+
+
+.btn-download:disabled {
+
+    opacity:
+        0.5;
+
+    cursor:
+        not-allowed;
+}
+
+
+@media(max-width:860px) {
+
+    .upload-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
 }
 
 
@@ -929,7 +1198,7 @@ tr:last-child td {
         </div>
 
         <div class="subtitle">
-            Live Data Sync | 19-Sep-2026 09:56 AM IST
+            Live Data Sync | 19-Sep-2026 04:16 PM IST
         </div>
 
     </div>
@@ -954,12 +1223,17 @@ tr:last-child td {
 
         <div class="badge blsh">
             <span class="dot"></span>
-            BLSH: <strong id="blshCount">8</strong>
+            BLSH: <strong id="blshCount">7</strong>
         </div>
 
         <div class="badge etf">
             <span class="dot"></span>
             ETF 28 SMA: <strong id="etfCount">121</strong>
+        </div>
+
+        <div class="badge upload">
+            <span class="dot"></span>
+            Symbol Files: <strong id="uploadStatus">—</strong>
         </div>
 
     </div>
@@ -1002,6 +1276,14 @@ tr:last-child td {
         onclick="showTab('etf', this)"
     >
         4. ETF 28 SMA
+    </button>
+
+
+    <button
+        class="tab upload"
+        onclick="showTab('upload', this)"
+    >
+        5. Upload Symbols
     </button>
 
 </div>
@@ -1090,7 +1372,7 @@ tr:last-child td {
 
                 
             <tr
-                data-distance="-3.04"
+                data-distance="-2.5"
                 data-rise="12.97"
             >
 
@@ -1099,7 +1381,7 @@ tr:last-child td {
                 <td class="company" data-label="Company">Divi's Laboratories</td>
 
                 <td class="num" data-label="CMP">
-                    ₹9,323.00
+                    ₹9,375.00
                 </td>
 
                 <td class="num" data-label="52W High">
@@ -1108,7 +1390,7 @@ tr:last-child td {
 
                 <td class="num" data-label="52W Distance">
                     <span class="chip negative">
-                        -3.04%
+                        -2.50%
                     </span>
                 </td>
 
@@ -1321,6 +1603,82 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         75.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>TATAPOWER</strong></td>
+
+                <td class="company" data-label="Company">Tata Power</td>
+
+                <td class="num" data-label="CMP">
+                    ₹374.80
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹378.05
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    0.86%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        4
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        80.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>APOLLOHOSP</strong></td>
+
+                <td class="company" data-label="Company">Apollo Hospitals Enterprise</td>
+
+                <td class="num" data-label="CMP">
+                    ₹8,944.50
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹9,024.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    0.88%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        4
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        80.00%
                     </span>
                 </td>
 
@@ -1594,44 +1952,6 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>SBILIFE</strong></td>
-
-                <td class="company" data-label="Company">SBI Life Insurance Company</td>
-
-                <td class="num" data-label="CMP">
-                    ₹1,766.90
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹1,801.70
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    1.93%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        1
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip neutral">
-                        25.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>GAIL</strong></td>
 
                 <td class="company" data-label="Company">GAIL (India)</td>
@@ -1701,44 +2021,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         60.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>TATAPOWER</strong></td>
-
-                <td class="company" data-label="Company">Tata Power</td>
-
-                <td class="num" data-label="CMP">
-                    ₹369.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹378.05
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    2.39%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        4
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        1
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        80.00%
                     </span>
                 </td>
 
@@ -1822,37 +2104,37 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>APOLLOHOSP</strong></td>
+                <td data-label="Symbol"><strong>DIVISLAB</strong></td>
 
-                <td class="company" data-label="Company">Apollo Hospitals Enterprise</td>
+                <td class="company" data-label="Company">Divi's Laboratories</td>
 
                 <td class="num" data-label="CMP">
-                    ₹8,768.50
+                    ₹9,375.00
                 </td>
 
                 <td class="num" data-label="20-Day High">
-                    ₹9,024.00
+                    ₹9,615.00
                 </td>
 
                 <td class="num" data-label="20D Away %">
-                    2.83%
+                    2.50%
                 </td>
 
                 <td class="num" data-label="6% Target YES">
                     <span class="chip positive">
-                        4
+                        5
                     </span>
                 </td>
 
                 <td class="num" data-label="6% Target NO">
                     <span class="chip negative">
-                        1
+                        0
                     </span>
                 </td>
 
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
-                        80.00%
+                        100.00%
                     </span>
                 </td>
 
@@ -1898,44 +2180,6 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>KOTAKBANK</strong></td>
-
-                <td class="company" data-label="Company">Kotak Mahindra Bank</td>
-
-                <td class="num" data-label="CMP">
-                    ₹416.50
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹429.10
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    2.94%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        2
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        2
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        50.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>BHARTIARTL</strong></td>
 
                 <td class="company" data-label="Company">Bharti Airtel</td>
@@ -1974,44 +2218,6 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>DIVISLAB</strong></td>
-
-                <td class="company" data-label="Company">Divi's Laboratories</td>
-
-                <td class="num" data-label="CMP">
-                    ₹9,323.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹9,615.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    3.04%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        5
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        100.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>BAJAJHLDNG</strong></td>
 
                 <td class="company" data-label="Company">Bajaj Holdings & Investment</td>
@@ -2043,6 +2249,82 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip neutral">
                         42.86%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>HYUNDAI</strong></td>
+
+                <td class="company" data-label="Company">Hyundai Motor India</td>
+
+                <td class="num" data-label="CMP">
+                    ₹2,208.80
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹2,281.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    3.17%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        2
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        2
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        50.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>CUMMINSIND</strong></td>
+
+                <td class="company" data-label="Company">Cummins India</td>
+
+                <td class="num" data-label="CMP">
+                    ₹5,099.50
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹5,270.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    3.24%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        0
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        100.00%
                     </span>
                 </td>
 
@@ -2202,6 +2484,82 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>KOTAKBANK</strong></td>
+
+                <td class="company" data-label="Company">Kotak Mahindra Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹412.50
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹429.10
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    3.87%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        2
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        2
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        50.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>SBILIFE</strong></td>
+
+                <td class="company" data-label="Company">SBI Life Insurance Company</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,731.00
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹1,801.70
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    3.92%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip neutral">
+                        25.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>CGPOWER</strong></td>
 
                 <td class="company" data-label="Company">CG Power and Industrial Solutions</td>
@@ -2233,44 +2591,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         66.67%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>COALINDIA</strong></td>
-
-                <td class="company" data-label="Company">Coal India</td>
-
-                <td class="num" data-label="CMP">
-                    ₹418.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹436.30
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    4.19%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        50.00%
                     </span>
                 </td>
 
@@ -2354,37 +2674,37 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>TATACONSUM</strong></td>
+                <td data-label="Symbol"><strong>TRENT</strong></td>
 
-                <td class="company" data-label="Company">Tata Consumer Products</td>
+                <td class="company" data-label="Company">Trent</td>
 
                 <td class="num" data-label="CMP">
-                    ₹1,013.70
+                    ₹2,824.00
                 </td>
 
                 <td class="num" data-label="20-Day High">
-                    ₹1,063.50
+                    ₹2,954.80
                 </td>
 
                 <td class="num" data-label="20D Away %">
-                    4.68%
+                    4.43%
                 </td>
 
                 <td class="num" data-label="6% Target YES">
                     <span class="chip positive">
-                        2
+                        3
                     </span>
                 </td>
 
                 <td class="num" data-label="6% Target NO">
                     <span class="chip negative">
-                        0
+                        2
                     </span>
                 </td>
 
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
-                        100.00%
+                        60.00%
                     </span>
                 </td>
 
@@ -2392,25 +2712,25 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>CUMMINSIND</strong></td>
+                <td data-label="Symbol"><strong>TORNTPHARM</strong></td>
 
-                <td class="company" data-label="Company">Cummins India</td>
+                <td class="company" data-label="Company">Torrent Pharmaceuticals</td>
 
                 <td class="num" data-label="CMP">
-                    ₹5,020.00
+                    ₹4,840.00
                 </td>
 
                 <td class="num" data-label="20-Day High">
-                    ₹5,270.00
+                    ₹5,066.00
                 </td>
 
                 <td class="num" data-label="20D Away %">
-                    4.74%
+                    4.46%
                 </td>
 
                 <td class="num" data-label="6% Target YES">
                     <span class="chip positive">
-                        3
+                        4
                     </span>
                 </td>
 
@@ -2468,6 +2788,82 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>GRASIM</strong></td>
+
+                <td class="company" data-label="Company">Grasim Industries</td>
+
+                <td class="num" data-label="CMP">
+                    ₹3,209.20
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹3,371.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    4.80%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        4
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        80.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>ADANIENT</strong></td>
+
+                <td class="company" data-label="Company">Adani Enterprises</td>
+
+                <td class="num" data-label="CMP">
+                    ₹3,020.00
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹3,173.70
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    4.84%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        75.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>BANKBARODA</strong></td>
 
                 <td class="company" data-label="Company">Bank of Baroda</td>
@@ -2499,44 +2895,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip neutral">
                         33.33%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>BOSCHLTD</strong></td>
-
-                <td class="company" data-label="Company">Bosch</td>
-
-                <td class="num" data-label="CMP">
-                    ₹47,555.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹50,000.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    4.89%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        4
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        100.00%
                     </span>
                 </td>
 
@@ -2582,44 +2940,6 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>TORNTPHARM</strong></td>
-
-                <td class="company" data-label="Company">Torrent Pharmaceuticals</td>
-
-                <td class="num" data-label="CMP">
-                    ₹4,812.50
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹5,066.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    5.00%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        4
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        100.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>TMPV</strong></td>
 
                 <td class="company" data-label="Company">Tata Motors Passenger Vehicles</td>
@@ -2651,44 +2971,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         66.67%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>HYUNDAI</strong></td>
-
-                <td class="company" data-label="Company">Hyundai Motor India</td>
-
-                <td class="num" data-label="CMP">
-                    ₹2,160.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹2,281.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    5.30%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        2
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        2
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        50.00%
                     </span>
                 </td>
 
@@ -2734,44 +3016,6 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>HINDUNILVR</strong></td>
-
-                <td class="company" data-label="Company">Hindustan Unilever</td>
-
-                <td class="num" data-label="CMP">
-                    ₹1,942.20
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹2,051.90
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    5.35%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        1
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        5
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip neutral">
-                        16.67%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>BEL</strong></td>
 
                 <td class="company" data-label="Company">Bharat Electronics</td>
@@ -2803,44 +3047,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip neutral">
                         25.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>GRASIM</strong></td>
-
-                <td class="company" data-label="Company">Grasim Industries</td>
-
-                <td class="num" data-label="CMP">
-                    ₹3,187.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹3,371.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    5.46%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        4
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        1
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        80.00%
                     </span>
                 </td>
 
@@ -3190,20 +3396,58 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>SUNPHARMA</strong></td>
+                <td data-label="Symbol"><strong>HINDUNILVR</strong></td>
 
-                <td class="company" data-label="Company">Sun Pharmaceutical Industries</td>
+                <td class="company" data-label="Company">Hindustan Unilever</td>
 
                 <td class="num" data-label="CMP">
-                    ₹1,867.30
+                    ₹1,932.00
                 </td>
 
                 <td class="num" data-label="20-Day High">
-                    ₹1,984.80
+                    ₹2,051.90
                 </td>
 
                 <td class="num" data-label="20D Away %">
-                    5.92%
+                    5.84%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        5
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip neutral">
+                        16.67%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>BOSCHLTD</strong></td>
+
+                <td class="company" data-label="Company">Bosch</td>
+
+                <td class="num" data-label="CMP">
+                    ₹47,000.00
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹50,000.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    6.00%
                 </td>
 
                 <td class="num" data-label="6% Target YES">
@@ -3304,6 +3548,44 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>COALINDIA</strong></td>
+
+                <td class="company" data-label="Company">Coal India</td>
+
+                <td class="num" data-label="CMP">
+                    ₹409.90
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹436.30
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    6.05%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        50.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>SBIN</strong></td>
 
                 <td class="company" data-label="Company">State Bank of India</td>
@@ -3380,37 +3662,113 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>TRENT</strong></td>
+                <td data-label="Symbol"><strong>TATACONSUM</strong></td>
 
-                <td class="company" data-label="Company">Trent</td>
+                <td class="company" data-label="Company">Tata Consumer Products</td>
 
                 <td class="num" data-label="CMP">
-                    ₹2,789.00
+                    ₹996.00
                 </td>
 
                 <td class="num" data-label="20-Day High">
-                    ₹2,976.60
+                    ₹1,063.50
                 </td>
 
                 <td class="num" data-label="20D Away %">
-                    6.30%
+                    6.35%
                 </td>
 
                 <td class="num" data-label="6% Target YES">
                     <span class="chip positive">
-                        3
+                        2
                     </span>
                 </td>
 
                 <td class="num" data-label="6% Target NO">
                     <span class="chip negative">
-                        2
+                        0
                     </span>
                 </td>
 
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
-                        60.00%
+                        100.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>JINDALSTEL</strong></td>
+
+                <td class="company" data-label="Company">Jindal Steel</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,119.50
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹1,196.40
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    6.43%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        4
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        0
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        100.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>CHOLAFIN</strong></td>
+
+                <td class="company" data-label="Company">Cholamandalam Investment and Finance Company</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,800.00
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹1,925.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    6.49%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        4
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        80.00%
                     </span>
                 </td>
 
@@ -3532,6 +3890,44 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>INDIGO</strong></td>
+
+                <td class="company" data-label="Company">InterGlobe Aviation</td>
+
+                <td class="num" data-label="CMP">
+                    ₹4,920.00
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹5,280.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    6.82%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        50.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>ULTRACEMCO</strong></td>
 
                 <td class="company" data-label="Company">UltraTech Cement</td>
@@ -3570,6 +3966,44 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>PIDILITIND</strong></td>
+
+                <td class="company" data-label="Company">Pidilite Industries</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,572.10
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹1,687.70
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    6.85%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        5
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        83.33%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>GODREJCP</strong></td>
 
                 <td class="company" data-label="Company">Godrej Consumer Products</td>
@@ -3601,6 +4035,82 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         50.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>TVSMOTOR</strong></td>
+
+                <td class="company" data-label="Company">TVS Motor Company</td>
+
+                <td class="num" data-label="CMP">
+                    ₹4,171.30
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹4,484.50
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    6.98%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        5
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        0
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        100.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>HINDALCO</strong></td>
+
+                <td class="company" data-label="Company">Hindalco Industries</td>
+
+                <td class="num" data-label="CMP">
+                    ₹986.50
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹1,061.80
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    7.09%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        0
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        100.00%
                     </span>
                 </td>
 
@@ -3684,6 +4194,44 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>SUNPHARMA</strong></td>
+
+                <td class="company" data-label="Company">Sun Pharmaceutical Industries</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,837.30
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹1,984.80
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    7.43%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        4
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        0
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        100.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>TITAN</strong></td>
 
                 <td class="company" data-label="Company">Titan Company</td>
@@ -3753,82 +4301,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         80.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>JINDALSTEL</strong></td>
-
-                <td class="company" data-label="Company">Jindal Steel</td>
-
-                <td class="num" data-label="CMP">
-                    ₹1,103.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹1,196.40
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    7.81%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        4
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        100.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>ADANIENT</strong></td>
-
-                <td class="company" data-label="Company">Adani Enterprises</td>
-
-                <td class="num" data-label="CMP">
-                    ₹2,923.20
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹3,173.70
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    7.89%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        1
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        75.00%
                     </span>
                 </td>
 
@@ -3950,37 +4422,37 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>PIDILITIND</strong></td>
+                <td data-label="Symbol"><strong>AMBUJACEM</strong></td>
 
-                <td class="company" data-label="Company">Pidilite Industries</td>
+                <td class="company" data-label="Company">Ambuja Cements</td>
 
                 <td class="num" data-label="CMP">
-                    ₹1,551.50
+                    ₹388.30
                 </td>
 
                 <td class="num" data-label="20-Day High">
-                    ₹1,687.70
+                    ₹422.80
                 </td>
 
                 <td class="num" data-label="20D Away %">
-                    8.07%
+                    8.16%
                 </td>
 
                 <td class="num" data-label="6% Target YES">
                     <span class="chip positive">
-                        5
+                        0
                     </span>
                 </td>
 
                 <td class="num" data-label="6% Target NO">
                     <span class="chip negative">
-                        1
+                        5
                     </span>
                 </td>
 
                 <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        83.33%
+                    <span class="chip neutral">
+                        0.00%
                     </span>
                 </td>
 
@@ -4019,120 +4491,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         75.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>INDIGO</strong></td>
-
-                <td class="company" data-label="Company">InterGlobe Aviation</td>
-
-                <td class="num" data-label="CMP">
-                    ₹4,845.00
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹5,280.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    8.24%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        50.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>CHOLAFIN</strong></td>
-
-                <td class="company" data-label="Company">Cholamandalam Investment and Finance Company</td>
-
-                <td class="num" data-label="CMP">
-                    ₹1,765.60
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹1,925.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    8.28%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        4
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        1
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        80.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>HINDALCO</strong></td>
-
-                <td class="company" data-label="Company">Hindalco Industries</td>
-
-                <td class="num" data-label="CMP">
-                    ₹972.70
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹1,061.80
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    8.39%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        100.00%
                     </span>
                 </td>
 
@@ -4254,44 +4612,6 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>TVSMOTOR</strong></td>
-
-                <td class="company" data-label="Company">TVS Motor Company</td>
-
-                <td class="num" data-label="CMP">
-                    ₹4,101.70
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹4,484.50
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    8.54%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        5
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        100.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>HCLTECH</strong></td>
 
                 <td class="company" data-label="Company">HCL Technologies</td>
@@ -4368,6 +4688,44 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>LTM</strong></td>
+
+                <td class="company" data-label="Company">LTM</td>
+
+                <td class="num" data-label="CMP">
+                    ₹4,275.10
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹4,700.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    9.04%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        1
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        75.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>INFY</strong></td>
 
                 <td class="company" data-label="Company">Infosys</td>
@@ -4399,82 +4757,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip neutral">
                         40.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>LTM</strong></td>
-
-                <td class="company" data-label="Company">LTM</td>
-
-                <td class="num" data-label="CMP">
-                    ₹4,265.30
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹4,700.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    9.25%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        1
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        75.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>AMBUJACEM</strong></td>
-
-                <td class="company" data-label="Company">Ambuja Cements</td>
-
-                <td class="num" data-label="CMP">
-                    ₹383.25
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹422.80
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    9.35%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        5
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip neutral">
-                        0.00%
                     </span>
                 </td>
 
@@ -4545,6 +4827,44 @@ tr:last-child td {
                 <td class="num" data-label="6% Target NO">
                     <span class="chip negative">
                         2
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        50.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>HDFCAMC</strong></td>
+
+                <td class="company" data-label="Company">HDFC Asset Management Company</td>
+
+                <td class="num" data-label="CMP">
+                    ₹2,425.00
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹2,698.00
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    10.12%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        3
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        3
                     </span>
                 </td>
 
@@ -4748,44 +5068,6 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>HDFCAMC</strong></td>
-
-                <td class="company" data-label="Company">HDFC Asset Management Company</td>
-
-                <td class="num" data-label="CMP">
-                    ₹2,373.10
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹2,698.00
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    12.04%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        3
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        50.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>ADANIENSOL</strong></td>
 
                 <td class="company" data-label="Company">Adani Energy Solutions</td>
@@ -4862,6 +5144,82 @@ tr:last-child td {
             
             <tr>
 
+                <td data-label="Symbol"><strong>LODHA</strong></td>
+
+                <td class="company" data-label="Company">Lodha Developers</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,144.70
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹1,306.90
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    12.41%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        5
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        0
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip positive">
+                        100.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
+                <td data-label="Symbol"><strong>MUTHOOTFIN</strong></td>
+
+                <td class="company" data-label="Company">Muthoot Finance</td>
+
+                <td class="num" data-label="CMP">
+                    ₹2,841.10
+                </td>
+
+                <td class="num" data-label="20-Day High">
+                    ₹3,246.50
+                </td>
+
+                <td class="num" data-label="20D Away %">
+                    12.49%
+                </td>
+
+                <td class="num" data-label="6% Target YES">
+                    <span class="chip positive">
+                        0
+                    </span>
+                </td>
+
+                <td class="num" data-label="6% Target NO">
+                    <span class="chip negative">
+                        2
+                    </span>
+                </td>
+
+                <td class="num" data-label="Strike Rate">
+                    <span class="chip neutral">
+                        0.00%
+                    </span>
+                </td>
+
+            </tr>
+            
+            <tr>
+
                 <td data-label="Symbol"><strong>MAZDOCK</strong></td>
 
                 <td class="company" data-label="Company">Mazagoan Dock Shipbuilders</td>
@@ -4900,88 +5258,12 @@ tr:last-child td {
             
             <tr>
 
-                <td data-label="Symbol"><strong>MUTHOOTFIN</strong></td>
-
-                <td class="company" data-label="Company">Muthoot Finance</td>
-
-                <td class="num" data-label="CMP">
-                    ₹2,771.40
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹3,246.50
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    14.63%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        2
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip neutral">
-                        0.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>LODHA</strong></td>
-
-                <td class="company" data-label="Company">Lodha Developers</td>
-
-                <td class="num" data-label="CMP">
-                    ₹1,103.10
-                </td>
-
-                <td class="num" data-label="20-Day High">
-                    ₹1,306.90
-                </td>
-
-                <td class="num" data-label="20D Away %">
-                    15.59%
-                </td>
-
-                <td class="num" data-label="6% Target YES">
-                    <span class="chip positive">
-                        5
-                    </span>
-                </td>
-
-                <td class="num" data-label="6% Target NO">
-                    <span class="chip negative">
-                        0
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        100.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
                 <td data-label="Symbol"><strong>SOLARINDS</strong></td>
 
                 <td class="company" data-label="Company">Solar Industries India</td>
 
                 <td class="num" data-label="CMP">
-                    ₹18,815.00
+                    ₹18,555.00
                 </td>
 
                 <td class="num" data-label="20-Day High">
@@ -4989,7 +5271,7 @@ tr:last-child td {
                 </td>
 
                 <td class="num" data-label="20D Away %">
-                    17.11%
+                    18.26%
                 </td>
 
                 <td class="num" data-label="6% Target YES">
@@ -5239,47 +5521,6 @@ tr:last-child td {
                 <td class="num" data-label="Strike Rate">
                     <span class="chip positive">
                         100.00%
-                    </span>
-                </td>
-
-            </tr>
-            
-            <tr>
-
-                <td data-label="Symbol"><strong>HDFCAMC</strong></td>
-
-                <td class="company" data-label="Company">HDFC Asset Management Company</td>
-
-                <td class="num" data-label="CMP">
-                    ₹2,373.10
-                </td>
-
-                <td class="num" data-label="25D Low">
-                    ₹2,360.00
-                </td>
-
-                <td class="num" data-label="Trigger → Target">
-                    ₹2,513.40 → ₹2,592.32
-                </td>
-
-                <td class="num" data-label="Away %">
-                    5.58%
-                </td>
-
-                <td class="num" data-label="RSI(14)">
-                    32.36
-                </td>
-
-                <td class="num" data-label="Win / Loss (1Y)">
-                    <span class="chip-group">
-                        <span class="chip positive">7</span>
-                        <span class="chip negative">2</span>
-                    </span>
-                </td>
-
-                <td class="num" data-label="Strike Rate">
-                    <span class="chip positive">
-                        77.78%
                     </span>
                 </td>
 
@@ -11136,6 +11377,127 @@ tr:last-child td {
 
 
 <!-- ===================================================== -->
+<!-- UPLOAD SYMBOLS -->
+<!-- ===================================================== -->
+
+<div
+    id="upload"
+    class="tab-content"
+>
+
+    <div class="panel-head upload-head">
+
+        <span>
+            Upload Symbol Lists
+        </span>
+
+        <span class="panel-sub">
+            nifty100_symbols.csv &amp; etf_symbols.csv
+        </span>
+
+    </div>
+
+
+    <div class="upload-note">
+        This page is a static file, so a browser upload here can't
+        write straight into the GitHub repo. Choosing a file below
+        reads it in your browser, remembers the upload date/time
+        and a preview on this device, and gives you a
+        <strong>Download</strong> button that saves it back out
+        under the exact filename the script expects. Save that
+        download into the same folder as multi_screener.py
+        (replacing the old file) and commit it — the next run will
+        pick it up.
+    </div>
+
+
+    <div class="upload-grid">
+
+        <div class="upload-card">
+
+            <h3>nifty100_symbols.csv</h3>
+
+            <p class="upload-sub">
+                Stock universe for MWD / SST / BLSH RSI
+            </p>
+
+            <div class="dropzone" id="dropNifty">
+
+                <input
+                    type="file"
+                    id="fileNifty"
+                    accept=".csv"
+                    hidden
+                >
+
+                <label for="fileNifty">
+                    Choose file or drag &amp; drop here
+                </label>
+
+            </div>
+
+            <div class="upload-preview" id="previewNifty"></div>
+
+            <div class="upload-meta" id="metaNifty">
+                No file uploaded yet on this browser
+            </div>
+
+            <button
+                class="btn-download"
+                id="downloadNifty"
+                disabled
+            >
+                Download nifty100_symbols.csv
+            </button>
+
+        </div>
+
+
+        <div class="upload-card">
+
+            <h3>etf_symbols.csv</h3>
+
+            <p class="upload-sub">
+                ETF universe for the 28 SMA screen
+            </p>
+
+            <div class="dropzone" id="dropEtf">
+
+                <input
+                    type="file"
+                    id="fileEtf"
+                    accept=".csv"
+                    hidden
+                >
+
+                <label for="fileEtf">
+                    Choose file or drag &amp; drop here
+                </label>
+
+            </div>
+
+            <div class="upload-preview" id="previewEtf"></div>
+
+            <div class="upload-meta" id="metaEtf">
+                No file uploaded yet on this browser
+            </div>
+
+            <button
+                class="btn-download"
+                id="downloadEtf"
+                disabled
+            >
+                Download etf_symbols.csv
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
 <!-- FOOTER -->
 <!-- ===================================================== -->
 
@@ -11148,6 +11510,399 @@ tr:last-child td {
 
 
 <script>
+
+
+// ==========================================================
+// UPLOAD SYMBOLS
+//
+// This is a static page — a browser upload here cannot write
+// straight into the GitHub repo. What it CAN do:
+//   1. Read the chosen CSV in-browser (FileReader)
+//   2. Remember the upload date/time + a preview in this
+//      browser's localStorage, so "last uploaded" persists
+//      across visits on this device
+//   3. Offer a Download button that saves the content back
+//      out under the exact filename the script expects, so
+//      it can be committed to replace the old file
+// ==========================================================
+
+function readFileAsText(file) {
+
+    return new Promise(
+        function(resolve, reject) {
+
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                resolve(reader.result);
+            };
+
+            reader.onerror = function() {
+                reject(reader.error);
+            };
+
+            reader.readAsText(file);
+
+        }
+    );
+
+}
+
+
+function formatUploadTime() {
+
+    return new Date().toLocaleString(
+        'en-IN',
+        {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        }
+    );
+
+}
+
+
+function countCsvRows(text) {
+
+    const lines = text
+        .split(/\r?\n/)
+        .filter(
+            function(line) {
+                return line.trim().length > 0;
+            }
+        );
+
+    return Math.max(0, lines.length - 1);
+
+}
+
+
+function storeUpload(
+    storageKey,
+    originalName,
+    text
+) {
+
+    const record = {
+        originalName: originalName,
+        uploadedAt: formatUploadTime(),
+        rowCount: countCsvRows(text),
+        content: text
+    };
+
+    try {
+
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(record)
+        );
+
+    } catch (e) {
+
+        console.warn(
+            'Could not save upload to this browser:',
+            e
+        );
+
+    }
+
+    return record;
+
+}
+
+
+function loadUpload(storageKey) {
+
+    try {
+
+        const raw = localStorage.getItem(storageKey);
+
+        return raw ? JSON.parse(raw) : null;
+
+    } catch (e) {
+
+        return null;
+
+    }
+
+}
+
+
+function renderUploadCard(
+    prefix,
+    targetFileName
+) {
+
+    const record =
+        loadUpload('upload_' + targetFileName);
+
+    const meta =
+        document.getElementById('meta' + prefix);
+
+    const preview =
+        document.getElementById('preview' + prefix);
+
+    const downloadBtn =
+        document.getElementById('download' + prefix);
+
+    if (record) {
+
+        meta.textContent =
+            'Last uploaded: ' + record.originalName +
+            '  •  ' + record.uploadedAt +
+            '  •  ' + record.rowCount + ' rows';
+
+        preview.textContent =
+            record.content
+                .split(/\r?\n/)
+                .slice(0, 6)
+                .join('\n');
+
+        downloadBtn.disabled = false;
+
+    } else {
+
+        meta.textContent =
+            'No file uploaded yet on this browser';
+
+        preview.textContent = '';
+
+        downloadBtn.disabled = true;
+
+    }
+
+    updateHeaderUploadBadge();
+
+}
+
+
+function handleUploadedFile(
+    prefix,
+    targetFileName,
+    file
+) {
+
+    if (!file) {
+
+        return;
+
+    }
+
+
+    if (!/\.csv$/i.test(file.name)) {
+
+        alert('Please choose a .csv file.');
+
+        return;
+
+    }
+
+
+    if (
+        file.name.toLowerCase()
+        !== targetFileName.toLowerCase()
+    ) {
+
+        const proceed = confirm(
+            'This file is named "' + file.name +
+            '", not "' + targetFileName + '". ' +
+            'It will still be read, but rename it to "' +
+            targetFileName +
+            '" before committing it to your repo. Continue?'
+        );
+
+        if (!proceed) {
+
+            return;
+
+        }
+
+    }
+
+
+    readFileAsText(file)
+        .then(
+            function(text) {
+
+                storeUpload(
+                    'upload_' + targetFileName,
+                    file.name,
+                    text
+                );
+
+                renderUploadCard(
+                    prefix,
+                    targetFileName
+                );
+
+            }
+        )
+        .catch(
+            function(e) {
+                alert('Could not read that file: ' + e);
+            }
+        );
+
+}
+
+
+function downloadStoredUpload(targetFileName) {
+
+    const record =
+        loadUpload('upload_' + targetFileName);
+
+    if (!record) {
+
+        return;
+
+    }
+
+
+    const blob = new Blob(
+        [record.content],
+        { type: 'text/csv' }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+
+    a.href = url;
+    a.download = targetFileName;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+function setupUploadCard(
+    prefix,
+    targetFileName
+) {
+
+    const input =
+        document.getElementById('file' + prefix);
+
+    const drop =
+        document.getElementById('drop' + prefix);
+
+    const downloadBtn =
+        document.getElementById('download' + prefix);
+
+    input.addEventListener(
+        'change',
+        function(e) {
+            handleUploadedFile(
+                prefix,
+                targetFileName,
+                e.target.files[0]
+            );
+        }
+    );
+
+    drop.addEventListener(
+        'dragover',
+        function(e) {
+            e.preventDefault();
+            drop.classList.add('dragover');
+        }
+    );
+
+    drop.addEventListener(
+        'dragleave',
+        function() {
+            drop.classList.remove('dragover');
+        }
+    );
+
+    drop.addEventListener(
+        'drop',
+        function(e) {
+
+            e.preventDefault();
+
+            drop.classList.remove('dragover');
+
+            const file =
+                e.dataTransfer.files
+                && e.dataTransfer.files[0];
+
+            handleUploadedFile(
+                prefix,
+                targetFileName,
+                file
+            );
+
+        }
+    );
+
+    downloadBtn.addEventListener(
+        'click',
+        function() {
+            downloadStoredUpload(targetFileName);
+        }
+    );
+
+    renderUploadCard(
+        prefix,
+        targetFileName
+    );
+
+}
+
+
+function updateHeaderUploadBadge() {
+
+    const badge =
+        document.getElementById('uploadStatus');
+
+    if (!badge) {
+
+        return;
+
+    }
+
+
+    const nifty =
+        loadUpload('upload_nifty100_symbols.csv');
+
+    const etf =
+        loadUpload('upload_etf_symbols.csv');
+
+    if (!nifty && !etf) {
+
+        badge.textContent = 'Not uploaded yet';
+
+        return;
+
+    }
+
+
+    const parts = [];
+
+    if (nifty) {
+        parts.push('Nifty100 ' + nifty.uploadedAt);
+    }
+
+    if (etf) {
+        parts.push('ETF ' + etf.uploadedAt);
+    }
+
+    badge.textContent = parts.join('  •  ');
+
+}
+
+
+setupUploadCard('Nifty', 'nifty100_symbols.csv');
+setupUploadCard('Etf', 'etf_symbols.csv');
 
 
 // ==========================================================
