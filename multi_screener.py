@@ -2094,6 +2094,8 @@ Nifty 100 Daily Multi-Screener
     --teal-soft:     #e0f2ef;
     --amber:         #b5541f;
     --amber-soft:    #fbe9dc;
+    --rose:          #a13d63;
+    --rose-soft:     #f7e3ec;
 
     --radius-lg:     16px;
     --radius-sm:     10px;
@@ -2279,6 +2281,7 @@ body {{
 .badge.sst .dot {{ background: var(--plum); }}
 .badge.blsh .dot {{ background: var(--teal); }}
 .badge.etf .dot {{ background: var(--amber); }}
+.badge.upload .dot {{ background: var(--rose); }}
 
 
 /* ============================================================ */
@@ -2355,6 +2358,7 @@ body {{
 .tab.active.sst {{ background: var(--plum);   color: #fff; }}
 .tab.active.blsh {{ background: var(--teal);   color: #fff; }}
 .tab.active.etf {{ background: var(--amber);   color: #fff; }}
+.tab.active.upload {{ background: var(--rose);  color: #fff; }}
 
 
 /* ============================================================ */
@@ -2442,6 +2446,271 @@ body {{
 
 .etf-head {{
     background: var(--amber);
+}}
+
+
+.upload-head {{
+    background: var(--rose);
+}}
+
+
+/* ============================================================ */
+/* UPLOAD SYMBOLS                                                */
+/* ============================================================ */
+
+.upload-note {{
+
+    padding:
+        16px 26px;
+
+    background:
+        var(--surface-alt);
+
+    border-bottom:
+        1px solid var(--border);
+
+    font-size:
+        13px;
+
+    color:
+        var(--ink-soft);
+
+    line-height:
+        1.55;
+}}
+
+
+.upload-grid {{
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        20px;
+
+    padding:
+        22px 26px;
+}}
+
+
+.upload-card {{
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius-sm);
+
+    padding:
+        18px;
+
+    background:
+        var(--surface-alt);
+}}
+
+
+.upload-card h3 {{
+
+    margin:
+        0 0 4px;
+
+    font-family:
+        'IBM Plex Mono',
+        monospace;
+
+    font-size:
+        14.5px;
+
+    color:
+        var(--ink);
+}}
+
+
+.upload-sub {{
+
+    margin:
+        0 0 14px;
+
+    font-size:
+        12.5px;
+
+    color:
+        var(--ink-faint);
+}}
+
+
+.dropzone {{
+
+    border:
+        2px dashed var(--border);
+
+    border-radius:
+        var(--radius-sm);
+
+    padding:
+        24px 16px;
+
+    text-align:
+        center;
+
+    cursor:
+        pointer;
+
+    background:
+        var(--surface);
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+}}
+
+
+.dropzone:hover,
+.dropzone.dragover {{
+
+    border-color:
+        var(--rose);
+
+    background:
+        var(--rose-soft);
+}}
+
+
+.dropzone label {{
+
+    display:
+        block;
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+    color:
+        var(--ink-soft);
+
+    cursor:
+        pointer;
+}}
+
+
+.upload-meta {{
+
+    margin-top:
+        12px;
+
+    font-size:
+        12.5px;
+
+    color:
+        var(--ink-soft);
+
+    line-height:
+        1.5;
+}}
+
+
+.upload-preview {{
+
+    margin-top:
+        10px;
+
+    max-height:
+        120px;
+
+    overflow:
+        auto;
+
+    background:
+        var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        7px;
+
+    padding:
+        8px 10px;
+
+    font-family:
+        'IBM Plex Mono',
+        monospace;
+
+    font-size:
+        11.5px;
+
+    color:
+        var(--ink-soft);
+
+    white-space:
+        pre-wrap;
+}}
+
+
+.btn-download {{
+
+    margin-top:
+        14px;
+
+    padding:
+        9px 16px;
+
+    border-radius:
+        7px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--surface);
+
+    cursor:
+        pointer;
+
+    font-family:
+        'Inter',
+        sans-serif;
+
+    font-weight:
+        600;
+
+    font-size:
+        13px;
+
+    color:
+        var(--ink);
+}}
+
+
+.btn-download:hover:not(:disabled) {{
+    border-color: var(--rose);
+    color: var(--rose);
+}}
+
+
+.btn-download:disabled {{
+
+    opacity:
+        0.5;
+
+    cursor:
+        not-allowed;
+}}
+
+
+@media(max-width:860px) {{
+
+    .upload-grid {{
+
+        grid-template-columns:
+            1fr;
+    }}
+
 }}
 
 
@@ -3001,6 +3270,11 @@ tr:last-child td {{
             ETF 28 SMA: <strong id="etfCount">{len(etf)}</strong>
         </div>
 
+        <div class="badge upload">
+            <span class="dot"></span>
+            Symbol Files: <strong id="uploadStatus">—</strong>
+        </div>
+
     </div>
 
 </div>
@@ -3041,6 +3315,14 @@ tr:last-child td {{
         onclick="showTab('etf', this)"
     >
         4. ETF 28 SMA
+    </button>
+
+
+    <button
+        class="tab upload"
+        onclick="showTab('upload', this)"
+    >
+        5. Upload Symbols
     </button>
 
 </div>
@@ -3488,6 +3770,127 @@ tr:last-child td {{
 
 
 <!-- ===================================================== -->
+<!-- UPLOAD SYMBOLS -->
+<!-- ===================================================== -->
+
+<div
+    id="upload"
+    class="tab-content"
+>
+
+    <div class="panel-head upload-head">
+
+        <span>
+            Upload Symbol Lists
+        </span>
+
+        <span class="panel-sub">
+            nifty100_symbols.csv &amp; etf_symbols.csv
+        </span>
+
+    </div>
+
+
+    <div class="upload-note">
+        This page is a static file, so a browser upload here can't
+        write straight into the GitHub repo. Choosing a file below
+        reads it in your browser, remembers the upload date/time
+        and a preview on this device, and gives you a
+        <strong>Download</strong> button that saves it back out
+        under the exact filename the script expects. Save that
+        download into the same folder as multi_screener.py
+        (replacing the old file) and commit it — the next run will
+        pick it up.
+    </div>
+
+
+    <div class="upload-grid">
+
+        <div class="upload-card">
+
+            <h3>nifty100_symbols.csv</h3>
+
+            <p class="upload-sub">
+                Stock universe for MWD / SST / BLSH RSI
+            </p>
+
+            <div class="dropzone" id="dropNifty">
+
+                <input
+                    type="file"
+                    id="fileNifty"
+                    accept=".csv"
+                    hidden
+                >
+
+                <label for="fileNifty">
+                    Choose file or drag &amp; drop here
+                </label>
+
+            </div>
+
+            <div class="upload-preview" id="previewNifty"></div>
+
+            <div class="upload-meta" id="metaNifty">
+                No file uploaded yet on this browser
+            </div>
+
+            <button
+                class="btn-download"
+                id="downloadNifty"
+                disabled
+            >
+                Download nifty100_symbols.csv
+            </button>
+
+        </div>
+
+
+        <div class="upload-card">
+
+            <h3>etf_symbols.csv</h3>
+
+            <p class="upload-sub">
+                ETF universe for the 28 SMA screen
+            </p>
+
+            <div class="dropzone" id="dropEtf">
+
+                <input
+                    type="file"
+                    id="fileEtf"
+                    accept=".csv"
+                    hidden
+                >
+
+                <label for="fileEtf">
+                    Choose file or drag &amp; drop here
+                </label>
+
+            </div>
+
+            <div class="upload-preview" id="previewEtf"></div>
+
+            <div class="upload-meta" id="metaEtf">
+                No file uploaded yet on this browser
+            </div>
+
+            <button
+                class="btn-download"
+                id="downloadEtf"
+                disabled
+            >
+                Download etf_symbols.csv
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
 <!-- FOOTER -->
 <!-- ===================================================== -->
 
@@ -3500,6 +3903,399 @@ tr:last-child td {{
 
 
 <script>
+
+
+// ==========================================================
+// UPLOAD SYMBOLS
+//
+// This is a static page — a browser upload here cannot write
+// straight into the GitHub repo. What it CAN do:
+//   1. Read the chosen CSV in-browser (FileReader)
+//   2. Remember the upload date/time + a preview in this
+//      browser's localStorage, so "last uploaded" persists
+//      across visits on this device
+//   3. Offer a Download button that saves the content back
+//      out under the exact filename the script expects, so
+//      it can be committed to replace the old file
+// ==========================================================
+
+function readFileAsText(file) {{
+
+    return new Promise(
+        function(resolve, reject) {{
+
+            const reader = new FileReader();
+
+            reader.onload = function() {{
+                resolve(reader.result);
+            }};
+
+            reader.onerror = function() {{
+                reject(reader.error);
+            }};
+
+            reader.readAsText(file);
+
+        }}
+    );
+
+}}
+
+
+function formatUploadTime() {{
+
+    return new Date().toLocaleString(
+        'en-IN',
+        {{
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        }}
+    );
+
+}}
+
+
+function countCsvRows(text) {{
+
+    const lines = text
+        .split(/\\r?\\n/)
+        .filter(
+            function(line) {{
+                return line.trim().length > 0;
+            }}
+        );
+
+    return Math.max(0, lines.length - 1);
+
+}}
+
+
+function storeUpload(
+    storageKey,
+    originalName,
+    text
+) {{
+
+    const record = {{
+        originalName: originalName,
+        uploadedAt: formatUploadTime(),
+        rowCount: countCsvRows(text),
+        content: text
+    }};
+
+    try {{
+
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(record)
+        );
+
+    }} catch (e) {{
+
+        console.warn(
+            'Could not save upload to this browser:',
+            e
+        );
+
+    }}
+
+    return record;
+
+}}
+
+
+function loadUpload(storageKey) {{
+
+    try {{
+
+        const raw = localStorage.getItem(storageKey);
+
+        return raw ? JSON.parse(raw) : null;
+
+    }} catch (e) {{
+
+        return null;
+
+    }}
+
+}}
+
+
+function renderUploadCard(
+    prefix,
+    targetFileName
+) {{
+
+    const record =
+        loadUpload('upload_' + targetFileName);
+
+    const meta =
+        document.getElementById('meta' + prefix);
+
+    const preview =
+        document.getElementById('preview' + prefix);
+
+    const downloadBtn =
+        document.getElementById('download' + prefix);
+
+    if (record) {{
+
+        meta.textContent =
+            'Last uploaded: ' + record.originalName +
+            '  •  ' + record.uploadedAt +
+            '  •  ' + record.rowCount + ' rows';
+
+        preview.textContent =
+            record.content
+                .split(/\\r?\\n/)
+                .slice(0, 6)
+                .join('\\n');
+
+        downloadBtn.disabled = false;
+
+    }} else {{
+
+        meta.textContent =
+            'No file uploaded yet on this browser';
+
+        preview.textContent = '';
+
+        downloadBtn.disabled = true;
+
+    }}
+
+    updateHeaderUploadBadge();
+
+}}
+
+
+function handleUploadedFile(
+    prefix,
+    targetFileName,
+    file
+) {{
+
+    if (!file) {{
+
+        return;
+
+    }}
+
+
+    if (!/\\.csv$/i.test(file.name)) {{
+
+        alert('Please choose a .csv file.');
+
+        return;
+
+    }}
+
+
+    if (
+        file.name.toLowerCase()
+        !== targetFileName.toLowerCase()
+    ) {{
+
+        const proceed = confirm(
+            'This file is named "' + file.name +
+            '", not "' + targetFileName + '". ' +
+            'It will still be read, but rename it to "' +
+            targetFileName +
+            '" before committing it to your repo. Continue?'
+        );
+
+        if (!proceed) {{
+
+            return;
+
+        }}
+
+    }}
+
+
+    readFileAsText(file)
+        .then(
+            function(text) {{
+
+                storeUpload(
+                    'upload_' + targetFileName,
+                    file.name,
+                    text
+                );
+
+                renderUploadCard(
+                    prefix,
+                    targetFileName
+                );
+
+            }}
+        )
+        .catch(
+            function(e) {{
+                alert('Could not read that file: ' + e);
+            }}
+        );
+
+}}
+
+
+function downloadStoredUpload(targetFileName) {{
+
+    const record =
+        loadUpload('upload_' + targetFileName);
+
+    if (!record) {{
+
+        return;
+
+    }}
+
+
+    const blob = new Blob(
+        [record.content],
+        {{ type: 'text/csv' }}
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+
+    a.href = url;
+    a.download = targetFileName;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+}}
+
+
+function setupUploadCard(
+    prefix,
+    targetFileName
+) {{
+
+    const input =
+        document.getElementById('file' + prefix);
+
+    const drop =
+        document.getElementById('drop' + prefix);
+
+    const downloadBtn =
+        document.getElementById('download' + prefix);
+
+    input.addEventListener(
+        'change',
+        function(e) {{
+            handleUploadedFile(
+                prefix,
+                targetFileName,
+                e.target.files[0]
+            );
+        }}
+    );
+
+    drop.addEventListener(
+        'dragover',
+        function(e) {{
+            e.preventDefault();
+            drop.classList.add('dragover');
+        }}
+    );
+
+    drop.addEventListener(
+        'dragleave',
+        function() {{
+            drop.classList.remove('dragover');
+        }}
+    );
+
+    drop.addEventListener(
+        'drop',
+        function(e) {{
+
+            e.preventDefault();
+
+            drop.classList.remove('dragover');
+
+            const file =
+                e.dataTransfer.files
+                && e.dataTransfer.files[0];
+
+            handleUploadedFile(
+                prefix,
+                targetFileName,
+                file
+            );
+
+        }}
+    );
+
+    downloadBtn.addEventListener(
+        'click',
+        function() {{
+            downloadStoredUpload(targetFileName);
+        }}
+    );
+
+    renderUploadCard(
+        prefix,
+        targetFileName
+    );
+
+}}
+
+
+function updateHeaderUploadBadge() {{
+
+    const badge =
+        document.getElementById('uploadStatus');
+
+    if (!badge) {{
+
+        return;
+
+    }}
+
+
+    const nifty =
+        loadUpload('upload_nifty100_symbols.csv');
+
+    const etf =
+        loadUpload('upload_etf_symbols.csv');
+
+    if (!nifty && !etf) {{
+
+        badge.textContent = 'Not uploaded yet';
+
+        return;
+
+    }}
+
+
+    const parts = [];
+
+    if (nifty) {{
+        parts.push('Nifty100 ' + nifty.uploadedAt);
+    }}
+
+    if (etf) {{
+        parts.push('ETF ' + etf.uploadedAt);
+    }}
+
+    badge.textContent = parts.join('  •  ');
+
+}}
+
+
+setupUploadCard('Nifty', 'nifty100_symbols.csv');
+setupUploadCard('Etf', 'etf_symbols.csv');
 
 
 // ==========================================================
