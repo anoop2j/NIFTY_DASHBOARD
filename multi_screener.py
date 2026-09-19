@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 
 # ============================================================
 # FILE / OUTPUT SETTINGS
+# https://www.niftyindices.com/IndexConstituent/ind_nifty100list.csv
 # ============================================================
 
 SYMBOL_FILE = "nifty100_symbols.csv"
