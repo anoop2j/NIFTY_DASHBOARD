@@ -53,6 +53,8 @@ Nifty 100 Daily Multi-Screener
     --plum-soft:     #f0e6f6;
     --teal:          #0e6e63;
     --teal-soft:     #e0f2ef;
+    --amber:         #b5541f;
+    --amber-soft:    #fbe9dc;
 
     --radius-lg:     16px;
     --radius-sm:     10px;
@@ -237,6 +239,7 @@ body {
 .badge.mwd .dot { background: var(--indigo); }
 .badge.sst .dot { background: var(--plum); }
 .badge.blsh .dot { background: var(--teal); }
+.badge.etf .dot { background: var(--amber); }
 
 
 /* ============================================================ */
@@ -312,6 +315,7 @@ body {
 .tab.active.mwd { background: var(--indigo); color: #fff; }
 .tab.active.sst { background: var(--plum);   color: #fff; }
 .tab.active.blsh { background: var(--teal);   color: #fff; }
+.tab.active.etf { background: var(--amber);   color: #fff; }
 
 
 /* ============================================================ */
@@ -394,6 +398,11 @@ body {
 
 .blsh-head {
     background: var(--teal);
+}
+
+
+.etf-head {
+    background: var(--amber);
 }
 
 
@@ -920,7 +929,7 @@ tr:last-child td {
         </div>
 
         <div class="subtitle">
-            Live Data Sync | 19-Sep-2026 07:41 AM IST
+            Live Data Sync | 19-Sep-2026 09:46 AM IST
         </div>
 
     </div>
@@ -946,6 +955,11 @@ tr:last-child td {
         <div class="badge blsh">
             <span class="dot"></span>
             BLSH: <strong id="blshCount">8</strong>
+        </div>
+
+        <div class="badge etf">
+            <span class="dot"></span>
+            ETF 28 SMA: <strong id="etfCount">138</strong>
         </div>
 
     </div>
@@ -980,6 +994,14 @@ tr:last-child td {
         onclick="showTab('blsh', this)"
     >
         3. BLSH RSI
+    </button>
+
+
+    <button
+        class="tab etf"
+        onclick="showTab('etf', this)"
+    >
+        4. ETF 28 SMA
     </button>
 
 </div>
@@ -5438,6 +5460,6464 @@ tr:last-child td {
 
 
 <!-- ===================================================== -->
+<!-- ETF 28 SMA -->
+<!-- ===================================================== -->
+
+<div
+    id="etf"
+    class="tab-content"
+>
+
+    <div class="panel-head etf-head">
+
+        <span>
+            ETF 28 SMA
+        </span>
+
+        <span class="panel-sub">
+            NSE ETFs | Avg Daily Value &gt; ₹1 Cr | 28-Day SMA Crossover
+        </span>
+
+    </div>
+
+
+    <div class="filters">
+
+        <label>
+
+            Avg Daily Value (₹Cr) ≥
+
+            <input
+                id="etfAdv"
+                type="number"
+                value="1"
+                step="0.1"
+            >
+
+        </label>
+
+
+        <label>
+
+            Signal:
+
+            <select
+                id="etfSignal"
+                onchange="filterETF()"
+            >
+
+                <option value="all">
+                    All
+                </option>
+
+                <option value="entry">
+                    Entry Only
+                </option>
+
+                <option value="exit">
+                    Exit Only
+                </option>
+
+            </select>
+
+        </label>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table id="etfTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Symbol</th>
+
+                    <th>ETF Name</th>
+
+                    <th>CMP</th>
+
+                    <th>28 SMA</th>
+
+                    <th>Entry Signal</th>
+
+                    <th>Exit Signal</th>
+
+                    <th>Streak (Days)</th>
+
+                    <th>Avg Daily Volume</th>
+
+                    <th>Avg Daily Value</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                
+            <tr
+                data-adv="453.23"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SILVERBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Domestic price of Silver- based on LBMA Silver daily spot fixing price</td>
+
+                <td class="num" data-label="CMP">
+                    ₹216.64
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹222.41
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    20,274,190
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹453.23 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="352.71"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLDBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹124.43
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹127.02
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    27,539,576
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹352.71 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="308.75"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Government Securities</td>
+
+                <td class="num" data-label="CMP">
+                    ₹999.99
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,000.00
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        3D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    3,087,476
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹308.75 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="199.18"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDCASE</strong></td>
+
+                <td class="company" data-label="ETF Name">Zerodha Nifty 1D Rate Liquid ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹115.95
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹115.69
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        348D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    17,204,547
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹199.18 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="140.96"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIFTYBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹266.08
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹273.22
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    5,200,773
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹140.96 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="123.75"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUID1</strong></td>
+
+                <td class="company" data-label="ETF Name">Kotak Nifty 1D Rate Liquid ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,123.38
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,120.42
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        345D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,103,808
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹123.75 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="107.78"
+                data-entry="0"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>TATSILV</strong></td>
+
+                <td class="company" data-label="ETF Name">Tata Silver Exchange Traded Fund</td>
+
+                <td class="num" data-label="CMP">
+                    ₹22.74
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹22.60
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        1D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    47,491,828
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹107.78 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="100.1"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLDIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹131.16
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹131.63
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    7,523,418
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹100.10 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="75.71"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>TATAGOLD</strong></td>
+
+                <td class="company" data-label="ETF Name">Tata Gold Exchange Traded Fund</td>
+
+                <td class="num" data-label="CMP">
+                    ₹14.62
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹14.92
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    50,310,791
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹75.71 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="71.51"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SILVERIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Domestic Price of Silver</td>
+
+                <td class="num" data-label="CMP">
+                    ₹226.19
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹232.25
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    3,065,951
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹71.51 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="70.68"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>HDFCSILVER</strong></td>
+
+                <td class="company" data-label="ETF Name">HDFC Silver ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹216.47
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹222.36
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    3,172,620
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹70.68 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="68.08"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SETFGOLD</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹128.39
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹131.07
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        8D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    5,189,860
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹68.08 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="64.76"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDADD</strong></td>
+
+                <td class="company" data-label="ETF Name">DSP S&P BSE Liquid Rate ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,145.02
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,142.49
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        348D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    566,427
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹64.76 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="53.98"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>HDFCGOLD</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹130.64
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹131.36
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    4,088,253
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹53.98 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="46.63"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">S&P BSE Liquid Rate Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹999.99
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹999.95
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        24D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    466,324
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹46.63 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="41.79"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDPLUS</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 1D Rate Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,103.47
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,101.01
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        348D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    379,276
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹41.79 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="37.08"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLDAXIS</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹125.24
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹127.91
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    2,884,540
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹37.08 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="32.27"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANKBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹581.64
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹592.55
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    545,411
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹32.27 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="31.13"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ITBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty IT TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹32.39
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹33.70
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        11D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    9,320,168
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹31.13 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="30.32"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>HDFCSML250</strong></td>
+
+                <td class="company" data-label="ETF Name">HDFC NIFTY Smallcap 250 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹181.90
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹185.00
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,643,440
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹30.32 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="30.3"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDBETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Bajaj Finserv Nifty 1D Rate Liquid ETF - Growth</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,099.06
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,096.68
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        348D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    276,145
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹30.30 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="27.9"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SILVER1</strong></td>
+
+                <td class="company" data-label="ETF Name">Kotak Silver ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹21.98
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹22.57
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    12,421,114
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹27.90 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="27.52"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLD1</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹127.68
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹128.34
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    2,138,151
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹27.52 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="26.31"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SBISILVER</strong></td>
+
+                <td class="company" data-label="ETF Name">SBI SILVER ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹222.10
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹227.88
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,148,165
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹26.31 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="25.49"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLDCASE</strong></td>
+
+                <td class="company" data-label="ETF Name">Zerodha Gold ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹23.69
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹24.18
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    10,495,738
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹25.49 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="25.14"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLDETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Gold ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹146.44
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹149.39
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        8D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,671,995
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹25.14 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="24.51"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>JUNIORBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nippon India ETF Nifty Next 50 Junior BeES</td>
+
+                <td class="num" data-label="CMP">
+                    ₹771.94
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹793.84
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    311,034
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹24.51 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="21.88"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SETFNIF50</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹251.29
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹258.20
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    852,949
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹21.88 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="21.43"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SILVERCASE</strong></td>
+
+                <td class="company" data-label="ETF Name">Commodity-Silver</td>
+
+                <td class="num" data-label="CMP">
+                    ₹22.95
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹23.58
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    9,039,269
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹21.43 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="21.16"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SILVER</strong></td>
+
+                <td class="company" data-label="ETF Name">Physical price of Silver</td>
+
+                <td class="num" data-label="CMP">
+                    ₹226.36
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹232.28
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    905,231
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹21.16 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="20.09"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MON100</strong></td>
+
+                <td class="company" data-label="ETF Name">Nasdaq100</td>
+
+                <td class="num" data-label="CMP">
+                    ₹322.43
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹331.20
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        3D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    604,172
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹20.09 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="17.4"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MODEFENCE</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty India Defence Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹101.87
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹106.56
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,648,734
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹17.40 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="16.6"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>LIQUID</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Nifty 1D Rate Liquid ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹999.99
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹999.99
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        110D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    166,037
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹16.60 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="15.81"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>SBILIQETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 1D Rate Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,056.20
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,053.84
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        8D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    149,875
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹15.81 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="15.73"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>HDFCNIFTY</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹263.56
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹270.23
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    593,261
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹15.73 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="15.7"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MID150BEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Midcap 150 TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹236.52
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹240.16
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    659,076
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹15.70 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="15.16"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIFTYIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹265.13
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹269.09
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    562,018
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹15.16 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="15.09"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANKNIFTY1</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹58.29
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹59.37
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        10D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    2,538,406
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹15.09 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="14.81"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SILVERAXIS</strong></td>
+
+                <td class="company" data-label="ETF Name">Axis Silver ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹225.27
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹231.17
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    641,251
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹14.81 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="14.73"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLDADD</strong></td>
+
+                <td class="company" data-label="ETF Name">DSP Gold ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹14.86
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹14.94
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    9,738,132
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹14.73 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="13.96"
+                data-entry="0"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>SILVERBETA</strong></td>
+
+                <td class="company" data-label="ETF Name">UTI Silver Exchange Traded Fund (UTI Silver ETF)</td>
+
+                <td class="num" data-label="CMP">
+                    ₹226.15
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹224.80
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        1D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    621,039
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹13.96 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="13.45"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>PSUBNKBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty PSU Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹92.38
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹95.22
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,420,060
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹13.45 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="12.44"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty1D rate index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹999.99
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹999.99
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        3D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    124,413
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹12.44 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="12.4"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>METALIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Metal Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹12.97
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹13.22
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    9,307,937
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹12.40 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="12.09"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>MAFANG</strong></td>
+
+                <td class="company" data-label="ETF Name">NYSE FANG+ Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹237.77
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹215.56
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        33D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    534,518
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹12.09 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="12.04"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>MONQ50</strong></td>
+
+                <td class="company" data-label="ETF Name">Nasdaq Q-50 Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹330.25
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹172.96
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        9D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    503,876
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹12.04 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="11.08"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQGRWBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Liquid</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,055.78
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,053.57
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        8D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    105,095
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹11.08 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="10.87"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>PHARMABEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Pharma TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹27.50
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹27.34
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        2D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    3,969,475
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹10.87 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="10.33"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GOLDBETA</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹128.60
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹129.45
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    794,325
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹10.33 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="10.33"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BSLGOLDETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹132.57
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹135.26
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    752,590
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹10.33 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="9.57"
+                data-entry="0"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>SILVERADD</strong></td>
+
+                <td class="company" data-label="ETF Name">DSP Silver ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹22.60
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹22.45
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        1D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    4,267,507
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹9.57 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="9.34"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIFTY1</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹259.12
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹266.10
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    353,018
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹9.34 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="9.19"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>INFRAIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">ICICI Prudential Nifty Infrastructure ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹92.96
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹95.01
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        17D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    972,360
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹9.19 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="9.07"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SMALLCAP</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹48.18
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹48.78
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        3D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,866,164
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹9.07 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="9.03"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MOREALTY</strong></td>
+
+                <td class="company" data-label="ETF Name">Motilal Oswal Nifty Realty ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹83.85
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹89.05
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,019,830
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹9.03 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="8.61"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>FMCGIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty FMCG Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹49.28
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹50.35
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        28D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,733,226
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹8.61 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="8.6"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>CPSEETF</strong></td>
+
+                <td class="company" data-label="ETF Name">CPSE ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹92.29
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹93.53
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        3D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    918,495
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹8.60 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="7.46"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ICICIB22</strong></td>
+
+                <td class="company" data-label="ETF Name">S&P BSE BHARAT 22 index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹112.00
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹114.35
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        17D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    662,385
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹7.46 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="7.44"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MOCAPITAL</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Capital Market Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹53.10
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹54.05
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        6D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,369,415
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹7.44 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="7.07"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>HDFCBSE500</strong></td>
+
+                <td class="company" data-label="ETF Name">HDFC S&P BSE 500 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹36.67
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹37.58
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,888,262
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹7.07 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="6.99"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MIDCAPETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Mutual Fund - Mirae Asset Nifty Midcap 150 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹23.37
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹23.73
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    2,961,982
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹6.99 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="6.94"
+                data-entry="0"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>SILVERAG</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Silver ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹228.18
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹226.82
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        1D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    306,028
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹6.94 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="6.01"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>PSUBANK</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty PSU Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹82.63
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹85.37
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    703,567
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹6.01 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="5.98"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIFTYETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹253.40
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹260.75
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        17D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    229,754
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹5.98 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="5.51"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>AUTOBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Auto TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹282.40
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹294.12
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    189,561
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹5.51 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="5.45"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>MASPTOP50</strong></td>
+
+                <td class="company" data-label="ETF Name">S&P 500 Top 50 Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹103.83
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹85.40
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        10D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    572,041
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹5.45 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="5.4"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>PVTBANIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Private Bank Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹27.70
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹27.81
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        2D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,939,207
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹5.40 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="5.3"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GROWWCHEM</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Chemicals Index - TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹29.06
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹30.17
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,755,328
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹5.30 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="5.12"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NEXT50IETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Next 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹76.39
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹77.49
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    664,733
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹5.12 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="5.0"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ALPHA</strong></td>
+
+                <td class="company" data-label="ETF Name">NIFTY Alpha 50 Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹52.86
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹54.09
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    925,935
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹5.00 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="4.98"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>LTGILTBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">NIFTY 8-13 yr G-Sec Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹29.78
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹29.91
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,669,554
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹4.98 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="4.74"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIFTYBETA</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹259.77
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹265.92
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    181,458
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹4.74 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="4.25"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIFTYBETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Bajaj Finserv Nifty 50 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹240.35
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹246.75
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    173,061
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹4.25 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="4.11"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ESILVER</strong></td>
+
+                <td class="company" data-label="ETF Name">Edelweiss Silver ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹226.68
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹232.38
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    176,448
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹4.11 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.94"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>GROWWLIQID</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 1D Rate Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹110.77
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹110.54
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        348D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    356,279
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.94 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.92"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GROWWSLVR</strong></td>
+
+                <td class="company" data-label="ETF Name">Commodity-Silver</td>
+
+                <td class="num" data-label="CMP">
+                    ₹22.17
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹22.78
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,714,786
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.92 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.89"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GROWWGOLD</strong></td>
+
+                <td class="company" data-label="ETF Name">Commodity</td>
+
+                <td class="num" data-label="CMP">
+                    ₹14.69
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹15.00
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    2,580,131
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.89 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.89"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANKIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹57.80
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹58.77
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    664,952
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.89 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.88"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SETFNIFBK</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹576.31
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹587.85
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        10D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    66,598
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.88 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.85"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>EGOLD</strong></td>
+
+                <td class="company" data-label="ETF Name">Edelweiss Gold ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹150.45
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹153.55
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    249,730
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.85 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.82"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>LOWVOLIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 100 Low Volatility 30 Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹21.41
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹22.06
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        23D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,752,042
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.82 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.81"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>HNGSNGBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Hang Seng Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹462.97
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹472.94
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        28D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    80,972
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.81 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.74"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GROWWPOWER</strong></td>
+
+                <td class="company" data-label="ETF Name">BSE Power Index - TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹11.07
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹11.32
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        6D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    3,312,525
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.74 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.38"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BSLNIFTY</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹27.38
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹28.15
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,208,367
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.38 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.35"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MOMENTUM50</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 500 Momentum 50 Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹53.14
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹54.36
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        3D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    617,376
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.35 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.13"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>QGOLDHALF</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹124.65
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹127.47
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    245,589
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.13 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.12"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NEXT50</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Next 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹745.60
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹757.49
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    41,574
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.12 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="3.09"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>ELIQUID</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 1D Rate Index (Debt Index)</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,047.99
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,045.66
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        206D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    29,518
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹3.09 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.75"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MOSMALL250</strong></td>
+
+                <td class="company" data-label="ETF Name">Motilal Oswal Nifty Smallcap 250 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹18.17
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹18.42
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,495,964
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.75 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.7"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GROWWDEFNC</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty India Defence Index- Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹92.31
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹97.08
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    281,166
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.70 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.68"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>METAL</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Metal Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹13.00
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹13.27
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    2,012,198
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.68 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.57"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>HDFCLIQUID</strong></td>
+
+                <td class="company" data-label="ETF Name">HDFC Nifty 1D Rate Liquid ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,078.18
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,075.78
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        168D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    23,905
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.57 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.56"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ITIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty IT Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹32.00
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹33.70
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        11D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    762,605
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.56 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.54"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SENSEXIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">SENSEX</td>
+
+                <td class="num" data-label="CMP">
+                    ₹858.70
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹881.69
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    29,307
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.54 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.5"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>OILIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Oil & Gas Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹11.02
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹11.27
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    2,230,210
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.50 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.48"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SETFNN50</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Next 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹765.01
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹786.83
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    31,773
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.48 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.46"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GROWWRAIL</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty India Railways PSU Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹26.99
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹28.26
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        24D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    884,375
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.46 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.39"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MIDCAPIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Midcap 150</td>
+
+                <td class="num" data-label="CMP">
+                    ₹23.70
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹24.04
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,000,963
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.39 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.31"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIFTYAXIS</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹258.41
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹265.45
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    88,130
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.31 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.21"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>TOP10ADD</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Top 10 Equal Weight Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹85.42
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹87.30
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        23D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    256,567
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.21 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.19"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>EBBETF0430</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty BHARAT Bond</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,607.25
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,609.62
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    13,627
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.19 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.08"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANKBETA</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹58.37
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹59.17
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    352,091
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.08 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.01"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANKETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Nifty Bank ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹572.55
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹583.18
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    34,367
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.01 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="2.0"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BBETF0432</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty BHARAT Bond Index - April 2032</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,340.89
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,347.25
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        3D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    14,949
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹2.00 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.99"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANK10ADD</strong></td>
+
+                <td class="company" data-label="ETF Name">BSE Top 10 Banks Index (TRI)</td>
+
+                <td class="num" data-label="CMP">
+                    ₹16.52
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹16.83
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        15D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,175,770
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.99 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.92"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MOM30IETF</strong></td>
+
+                <td class="company" data-label="ETF Name">ICICI Prudential Nifty 200 Momentum 30 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹31.08
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹31.42
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    615,039
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.92 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.91"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MOMMIDCAP</strong></td>
+
+                <td class="company" data-label="ETF Name">BSE Midcap 150 Momentum 30 TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹12.74
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹13.03
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        6D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,467,218
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.91 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.82"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SML100CASE</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Smallcap 100 Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹11.13
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹11.30
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,614,726
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.82 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.81"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>LICMFGOLD</strong></td>
+
+                <td class="company" data-label="ETF Name">Gold</td>
+
+                <td class="num" data-label="CMP">
+                    ₹135.30
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹138.28
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    130,183
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.81 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.8"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MOM100</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Midcap 100</td>
+
+                <td class="num" data-label="CMP">
+                    ₹66.41
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹68.21
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    264,917
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.80 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.8"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SBIBPB</strong></td>
+
+                <td class="company" data-label="ETF Name">BSE PSU Bank Index TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹47.77
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹49.47
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        8D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    367,488
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.80 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.71"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>AONELIQUID</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 1D Rate Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,077.17
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,074.70
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        339D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    15,867
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.71 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.71"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>AUTOIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Auto Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹28.30
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹29.51
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    587,903
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.71 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.67"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>HEALTHIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Healthcare Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹170.91
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹169.87
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        2D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    98,308
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.67 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.64"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ENERGY</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Energy</td>
+
+                <td class="num" data-label="CMP">
+                    ₹37.60
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹38.36
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        6D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    429,547
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.64 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.63"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NEXT50BETA</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Next 50</td>
+
+                <td class="num" data-label="CMP">
+                    ₹77.88
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹79.19
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    208,013
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.63 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.59"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MONIFTY500</strong></td>
+
+                <td class="company" data-label="ETF Name">Motilal Oswal Nifty 500 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹23.32
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹23.87
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    671,585
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.59 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.53"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BNKETFAXIS</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Bank</td>
+
+                <td class="num" data-label="CMP">
+                    ₹580.22
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹590.22
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    26,076
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.53 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.52"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDBETA</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 1D Rate Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,008.29
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,006.07
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        17D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    15,120
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.52 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.5"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ALPL30IETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Alpha Low-Volatility 30 Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹27.04
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹27.79
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        20D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    548,505
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.50 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.49"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MAHKTECH</strong></td>
+
+                <td class="company" data-label="ETF Name">Hang Seng TECH Total Return Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹21.84
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹22.73
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        24D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    666,743
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.49 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.49"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>INSUREIETF</strong></td>
+
+                <td class="company" data-label="ETF Name">BSE Insurance Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹15.09
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹15.22
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        7D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    976,881
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.49 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.48"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>ALPHAETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Nifty 200 Alpha 30 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹26.02
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹26.67
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        6D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    553,451
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.48 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.48"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MID150CASE</strong></td>
+
+                <td class="company" data-label="ETF Name">Zerodha Nifty Midcap 150 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹11.37
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹11.68
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    1,274,458
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.48 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.42"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>MIDSMALL</strong></td>
+
+                <td class="company" data-label="ETF Name">Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹50.85
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹51.94
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        10D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    273,457
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.42 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.39"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>NIF100BEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 100 TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹260.72
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹263.41
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        8D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    52,813
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.39 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.37"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANKBETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Bajaj Finserv Nifty Bank ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹57.10
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹58.16
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    233,947
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.37 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.28"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>BANK10BETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Bajaj Finserv BSE Top 10 Banks ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹20.27
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹20.69
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        16D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    631,537
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.28 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.24"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>CHEMICAL</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty Chemicals Index (TRI)</td>
+
+                <td class="num" data-label="CMP">
+                    ₹29.13
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹30.19
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        8D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    414,818
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.24 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.19"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>CONSUMBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty India Consumption TRI</td>
+
+                <td class="num" data-label="CMP">
+                    ₹128.32
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹131.60
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        17D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    91,428
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.19 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.18"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>IT</strong></td>
+
+                <td class="company" data-label="ETF Name">NIFTY IT Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹32.49
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹33.67
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        11D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    355,633
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.18 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.15"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>SENSEXBETA</strong></td>
+
+                <td class="company" data-label="ETF Name">SENSEX</td>
+
+                <td class="num" data-label="CMP">
+                    ₹832.87
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹850.26
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    13,961
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.15 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.14"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>LOWVOL1</strong></td>
+
+                <td class="company" data-label="ETF Name">Kotak Nifty 100 Low Vol 30 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹20.34
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹21.06
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        23D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    546,991
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.14 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.11"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>TNIDETF</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty India Digital Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹88.37
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹90.21
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        9D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    122,577
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.11 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.09"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GILT5YBEES</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty 5 yr Benchmark G-Sec Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹65.81
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹66.19
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        5D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    164,954
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.09 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.09"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>GROWWEV</strong></td>
+
+                <td class="company" data-label="ETF Name">Nifty EV and New Age Automotive Index</td>
+
+                <td class="num" data-label="CMP">
+                    ₹31.69
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹32.97
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        13D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    333,106
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.09 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.09"
+                data-entry="0"
+                data-exit="1"
+            >
+
+                <td data-label="Symbol"><strong>HDFCNEXT50</strong></td>
+
+                <td class="company" data-label="ETF Name">HDFC NIFTY NEXT 50 ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹73.05
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹74.90
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip negative">
+                        EXIT ▼
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip negative">
+                        14D ▼ Below
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    145,530
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.09 Cr
+                </td>
+
+            </tr>
+            
+            <tr
+                data-adv="1.04"
+                data-entry="1"
+                data-exit="0"
+            >
+
+                <td data-label="Symbol"><strong>LIQUIDSHRI</strong></td>
+
+                <td class="company" data-label="ETF Name">SHRIRAM NIFTY 1D RATE LIQUID ETF</td>
+
+                <td class="num" data-label="CMP">
+                    ₹1,121.72
+                </td>
+
+                <td class="num" data-label="28 SMA">
+                    ₹1,119.36
+                </td>
+
+                <td class="num" data-label="Entry Signal">
+                    <span class="chip positive">
+                        ENTRY ▲
+                    </span>
+                </td>
+
+                <td class="num" data-label="Exit Signal">
+                    <span class="chip neutral">
+                        —
+                    </span>
+                </td>
+
+                <td class="num" data-label="Streak (Days)">
+                    <span class="chip positive">
+                        348D ▲ Above
+                    </span>
+                </td>
+
+                <td class="num" data-label="Avg Daily Volume">
+                    9,266
+                </td>
+
+                <td class="num" data-label="Avg Daily Value">
+                    ₹1.04 Cr
+                </td>
+
+            </tr>
+            
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
 <!-- FOOTER -->
 <!-- ===================================================== -->
 
@@ -5712,6 +12192,89 @@ function filterBLSH() {
 
 
 // ==========================================================
+// ETF 28 SMA FILTER
+// ==========================================================
+
+function filterETF() {
+
+    const minAdv =
+        parseFloat(
+            document
+                .getElementById(
+                    'etfAdv'
+                )
+                .value
+        );
+
+
+    const signal =
+        document
+            .getElementById(
+                'etfSignal'
+            )
+            .value;
+
+
+    document
+        .querySelectorAll(
+            '#etfTable tbody tr'
+        )
+        .forEach(
+            function(row) {
+
+                const adv =
+                    parseFloat(
+                        row.dataset.adv
+                    );
+
+
+                if (isNaN(adv)) {
+
+                    return;
+
+                }
+
+
+                let show =
+                    adv >= minAdv;
+
+
+                if (signal === 'entry') {
+
+                    show =
+                        show
+                        && row.dataset.entry === '1';
+
+                }
+
+
+                if (signal === 'exit') {
+
+                    show =
+                        show
+                        && row.dataset.exit === '1';
+
+                }
+
+
+                row.style.display =
+                    show
+                    ? ''
+                    : 'none';
+
+            }
+        );
+
+
+    updateBadgeCount(
+        'etfTable',
+        'etfCount'
+    );
+
+}
+
+
+// ==========================================================
 // BADGE COUNT HELPER
 //
 // Keeps the header badge in sync with the number of rows
@@ -5789,6 +12352,16 @@ document
     );
 
 
+document
+    .getElementById(
+        'etfAdv'
+    )
+    .addEventListener(
+        'input',
+        filterETF
+    );
+
+
 // ==========================================================
 // INITIAL FILTER
 // ==========================================================
@@ -5796,6 +12369,7 @@ document
 filterMWD();
 filterSST();
 filterBLSH();
+filterETF();
 
 </script>
 
