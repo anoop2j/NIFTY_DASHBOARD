@@ -2234,48 +2234,73 @@ def build_html(
         return "".join(
 
             f"""
-            <tr
+            <div
+                class="car-card"
                 data-days="{x['days_since_high']}"
                 data-carvshigh="{x['car_vs_high']}"
             >
 
-                <td data-label="Symbol"><strong>{x['symbol']}</strong></td>
+                <div class="car-card-top">
 
-                <td class="company" data-label="Company">{x['company']}</td>
+                    <div>
+                        <div class="car-symbol">{x['symbol']}</div>
+                        <div class="car-company">{x['company']}</div>
+                    </div>
 
-                <td class="num" data-label="52W High Date">
-                    {x['high52_date']}
-                </td>
-
-                <td class="num" data-label="52W High Close">
-                    ₹{x['high52_close']:,.2f}
-                </td>
-
-                <td class="num" data-label="Days Since High">
-                    {x['days_since_high']}
-                </td>
-
-                <td class="num" data-label="CMP">
-                    ₹{x['price']:,.2f}
-                </td>
-
-                <td class="num" data-label="CAR Value">
-                    ₹{x['car_value']:,.2f}
-                </td>
-
-                <td class="num" data-label="CAR vs 52W High">
                     <span class="chip {'negative' if x['car_vs_high'] < 0 else 'positive'}">
                         {x['car_vs_high']:.2f}%
                     </span>
-                </td>
 
-                <td class="num" data-label="CAR Trend">
+                </div>
+
+
+                <div class="car-value-block">
+
+                    <div class="car-value-label">
+                        CAR Value
+                    </div>
+
+                    <div class="car-value-num">
+                        ₹{x['car_value']:,.2f}
+                    </div>
+
+                </div>
+
+
+                <div class="car-stats">
+
+                    <div>
+                        <div class="car-stat-label">CMP</div>
+                        <div class="car-stat-value">₹{x['price']:,.2f}</div>
+                    </div>
+
+                    <div>
+                        <div class="car-stat-label">52W High</div>
+                        <div class="car-stat-value">₹{x['high52_close']:,.2f}</div>
+                    </div>
+
+                    <div>
+                        <div class="car-stat-label">High Date</div>
+                        <div class="car-stat-value">{x['high52_date']}</div>
+                    </div>
+
+                    <div>
+                        <div class="car-stat-label">Days Since High</div>
+                        <div class="car-stat-value">{x['days_since_high']}</div>
+                    </div>
+
+                </div>
+
+
+                <div class="car-chip-row">
+
                     <span class="chip positive">
-                        +{x['car_change']:.2f}%
+                        Trend +{x['car_change']:.2f}%
                     </span>
-                </td>
 
-            </tr>
+                </div>
+
+            </div>
             """
 
             for x in car
@@ -3242,6 +3267,237 @@ tr:last-child td {{
 
 
 /* ============================================================ */
+/* CAR CARDS                                                     */
+/*                                                                */
+/* The CAR tab renders as a grid of wrapping cards instead of a  */
+/* wide table, so it reflows onto more/fewer columns and never   */
+/* needs a horizontal scrollbar, at any screen width.            */
+/* ============================================================ */
+
+.car-grid {{
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(250px, 1fr));
+
+    gap:
+        14px;
+
+    padding:
+        18px;
+}}
+
+
+.car-card {{
+
+    background:
+        var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius-sm);
+
+    padding:
+        16px 18px;
+
+    box-shadow:
+        var(--shadow);
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        12px;
+}}
+
+
+.car-card-top {{
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    gap:
+        8px;
+}}
+
+
+.car-symbol {{
+
+    font-family:
+        'Space Grotesk',
+        sans-serif;
+
+    font-weight:
+        700;
+
+    font-size:
+        16px;
+
+    color:
+        var(--ink);
+}}
+
+
+.car-company {{
+
+    margin-top:
+        2px;
+
+    font-size:
+        12.5px;
+
+    color:
+        var(--ink-soft);
+}}
+
+
+.car-value-block {{
+
+    background:
+        var(--cyan-soft);
+
+    border-radius:
+        8px;
+
+    padding:
+        10px 12px;
+
+    text-align:
+        center;
+}}
+
+
+.car-value-label {{
+
+    font-size:
+        11px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.04em;
+
+    text-transform:
+        uppercase;
+
+    color:
+        var(--cyan);
+}}
+
+
+.car-value-num {{
+
+    margin-top:
+        2px;
+
+    font-family:
+        'IBM Plex Mono',
+        monospace;
+
+    font-size:
+        21px;
+
+    font-weight:
+        600;
+
+    color:
+        var(--ink);
+}}
+
+
+.car-stats {{
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        10px 12px;
+}}
+
+
+.car-stat-label {{
+
+    font-size:
+        11px;
+
+    letter-spacing:
+        0.03em;
+
+    text-transform:
+        uppercase;
+
+    color:
+        var(--ink-faint);
+}}
+
+
+.car-stat-value {{
+
+    margin-top:
+        2px;
+
+    font-family:
+        'IBM Plex Mono',
+        monospace;
+
+    font-size:
+        13.5px;
+
+    color:
+        var(--ink);
+}}
+
+
+.car-chip-row {{
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+}}
+
+
+.car-empty {{
+
+    grid-column:
+        1 / -1;
+
+    padding:
+        40px 20px;
+
+    text-align:
+        center;
+
+    color:
+        var(--ink-faint);
+
+    font-size:
+        14px;
+}}
+
+
+/* ============================================================ */
 /* FOOTER                                                          */
 /* ============================================================ */
 
@@ -3342,6 +3598,15 @@ tr:last-child td {{
 
         padding:
             12px;
+    }}
+
+
+    .car-grid {{
+        padding:
+            12px;
+
+        gap:
+            10px;
     }}
 
     table {{
@@ -4095,50 +4360,16 @@ tr:last-child td {{
     </div>
 
 
-    <div class="table-wrap">
+    <div
+        id="carGrid"
+        class="car-grid"
+    >
 
-        <table id="carTable">
-
-            <thead>
-
-                <tr>
-
-                    <th>Symbol</th>
-
-                    <th>Company</th>
-
-                    <th>52W High Date</th>
-
-                    <th>52W High Close</th>
-
-                    <th>Days Since High</th>
-
-                    <th>CMP</th>
-
-                    <th>CAR Value</th>
-
-                    <th>CAR vs 52W High</th>
-
-                    <th>CAR Trend ({CAR_TREND_DAYS}D)</th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                {
-                    rows_car()
-                    or
-                    '''<tr><td colspan="9">
-                    No matching stocks
-                    </td></tr>'''
-                }
-
-            </tbody>
-
-        </table>
+        {
+            rows_car()
+            or
+            '<div class="car-empty">No matching stocks</div>'
+        }
 
     </div>
 
@@ -5042,24 +5273,28 @@ function filterCAR() {{
         );
 
 
+    let visible = 0;
+
     document
         .querySelectorAll(
-            '#carTable tbody tr'
+            '#carGrid .car-card'
         )
         .forEach(
-            function(row) {{
+            function(card) {{
 
                 const d =
                     parseFloat(
-                        row.dataset.days
+                        card.dataset.days
                     );
 
 
                 const v =
                     parseFloat(
-                        row.dataset.carvshigh
+                        card.dataset.carvshigh
                     );
 
+
+                let show = true;
 
                 if (
                     !isNaN(d)
@@ -5067,14 +5302,21 @@ function filterCAR() {{
                     !isNaN(v)
                 ) {{
 
-                    row.style.display =
-                        (
-                            d >= minDays
-                            &&
-                            v >= minVsHigh
-                        )
-                        ? ''
-                        : 'none';
+                    show =
+                        d >= minDays
+                        &&
+                        v >= minVsHigh;
+
+                }}
+
+                card.style.display =
+                    show
+                    ? ''
+                    : 'none';
+
+                if (show) {{
+
+                    visible += 1;
 
                 }}
 
@@ -5082,10 +5324,16 @@ function filterCAR() {{
         );
 
 
-    updateBadgeCount(
-        'carTable',
-        'carCount'
-    );
+    const badge =
+        document.getElementById(
+            'carCount'
+        );
+
+    if (badge) {{
+
+        badge.textContent = visible;
+
+    }}
 
 }}
 
