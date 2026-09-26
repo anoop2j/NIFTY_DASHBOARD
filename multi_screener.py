@@ -77,6 +77,39 @@ ANALYSIS_DAYS = 252
 
 
 # ============================================================
+# CAR SETTINGS
+#
+# CAR = "Cumulative Average (Return) from 52-Week High".
+#
+# For every stock:
+#   1. Find the 52-week high CLOSING price and the date it was
+#      made (the highest Close in the trailing 252 trading days).
+#   2. N (days_since_high) = number of trading days that have
+#      elapsed SINCE that 52-week-high day (the high day itself
+#      is not counted).
+#   3. Build the running/cumulative average of the daily CLOSING
+#      prices for every one of those N days, i.e.
+#          avg_series[k] = mean(Close of the k days right after
+#                               the 52-week high)
+#      for k = 1 .. N. The CAR VALUE shown is avg_series[N] --
+#      the cumulative average of ALL N days since the 52-week
+#      high.
+#   4. A stock only qualifies if that cumulative-average series
+#      has been RISING over the last CAR_TREND_DAYS trading days
+#      (today's cumulative average is higher than it was
+#      CAR_TREND_DAYS days ago) -- i.e. the average price since
+#      the top is climbing back up instead of drifting lower.
+#
+# CAR_MIN_DAYS is also the minimum number of trading days that
+# must have passed since the 52-week high before a stock is
+# evaluated at all (not enough data otherwise).
+# ============================================================
+
+CAR_TREND_DAYS = 10
+CAR_MIN_DAYS = 10
+
+
+# ============================================================
 # DATE FORMAT
 # ============================================================
 
@@ -1809,6 +1842,163 @@ def etf_screen(
 
 
 # ============================================================
+# CAR SCREEN
+#
+# See the "CAR SETTINGS" block near the top of this file for
+# the full definition of what is computed here.
+# ============================================================
+
+def car_screen(
+    symbol,
+    company,
+    df
+):
+
+    daily = df.copy()
+
+    daily = daily.dropna(
+        subset=["Close"]
+    )
+
+    if len(daily) < 252 + CAR_MIN_DAYS:
+
+        return None
+
+
+    closes = daily["Close"]
+
+
+    # --------------------------------------------------------
+    # 52-week high CLOSE, and the date it happened
+    # --------------------------------------------------------
+
+    window = closes.tail(252)
+
+    high_52_close = float(
+        window.max()
+    )
+
+    high_52_date = window.idxmax()
+
+    high_pos = daily.index.get_loc(
+        high_52_date
+    )
+
+
+    # --------------------------------------------------------
+    # Trading days elapsed since the 52-week high (the high
+    # day itself is NOT counted)
+    # --------------------------------------------------------
+
+    days_since_high = (
+        (len(daily) - 1)
+        - high_pos
+    )
+
+    if days_since_high < CAR_MIN_DAYS:
+
+        return None
+
+
+    # --------------------------------------------------------
+    # Cumulative (expanding) average of daily closes for every
+    # day since the high:
+    #     avg_series[k] = mean(close[high+1 : high+1+k])
+    # --------------------------------------------------------
+
+    post_high_closes = (
+        closes
+        .iloc[high_pos + 1:]
+        .reset_index(drop=True)
+    )
+
+    cum_avg_series = (
+        post_high_closes
+        .expanding()
+        .mean()
+    )
+
+    car_value = float(
+        cum_avg_series.iloc[-1]
+    )
+
+
+    # --------------------------------------------------------
+    # Trend check: the cumulative average must be HIGHER now
+    # than it was CAR_TREND_DAYS trading days ago
+    # --------------------------------------------------------
+
+    lookback = min(
+        CAR_TREND_DAYS,
+        len(cum_avg_series) - 1
+    )
+
+    if lookback < 1:
+
+        return None
+
+    car_value_prior = float(
+        cum_avg_series.iloc[-1 - lookback]
+    )
+
+    increasing = car_value > car_value_prior
+
+    if not increasing:
+
+        return None
+
+
+    last_price = float(
+        closes.iloc[-1]
+    )
+
+    car_vs_high = (
+        (
+            car_value - high_52_close
+        )
+        / high_52_close
+    ) * 100
+
+    car_change = (
+        (
+            car_value - car_value_prior
+        )
+        / car_value_prior
+    ) * 100
+
+
+    return {
+
+        "symbol": symbol,
+
+        "company": company,
+
+        "high52_date":
+            fmt_date(
+                high_52_date
+            ),
+
+        "high52_close":
+            round(high_52_close, 2),
+
+        "days_since_high":
+            int(days_since_high),
+
+        "price":
+            round(last_price, 2),
+
+        "car_value":
+            round(car_value, 2),
+
+        "car_vs_high":
+            round(car_vs_high, 2),
+
+        "car_change":
+            round(car_change, 2),
+    }
+
+
+# ============================================================
 # HTML
 # ============================================================
 
@@ -1817,6 +2007,7 @@ def build_html(
     sst,
     blsh,
     etf,
+    car,
     updated,
     total_stocks
 ):
@@ -2035,6 +2226,63 @@ def build_html(
 
 
     # ========================================================
+    # CAR ROWS
+    # ========================================================
+
+    def rows_car():
+
+        return "".join(
+
+            f"""
+            <tr
+                data-days="{x['days_since_high']}"
+                data-carvshigh="{x['car_vs_high']}"
+            >
+
+                <td data-label="Symbol"><strong>{x['symbol']}</strong></td>
+
+                <td class="company" data-label="Company">{x['company']}</td>
+
+                <td class="num" data-label="52W High Date">
+                    {x['high52_date']}
+                </td>
+
+                <td class="num" data-label="52W High Close">
+                    ₹{x['high52_close']:,.2f}
+                </td>
+
+                <td class="num" data-label="Days Since High">
+                    {x['days_since_high']}
+                </td>
+
+                <td class="num" data-label="CMP">
+                    ₹{x['price']:,.2f}
+                </td>
+
+                <td class="num" data-label="CAR Value">
+                    ₹{x['car_value']:,.2f}
+                </td>
+
+                <td class="num" data-label="CAR vs 52W High">
+                    <span class="chip {'negative' if x['car_vs_high'] < 0 else 'positive'}">
+                        {x['car_vs_high']:.2f}%
+                    </span>
+                </td>
+
+                <td class="num" data-label="CAR Trend">
+                    <span class="chip positive">
+                        +{x['car_change']:.2f}%
+                    </span>
+                </td>
+
+            </tr>
+            """
+
+            for x in car
+        )
+
+
+    # ========================================================
     # HTML
     # ========================================================
 
@@ -2097,6 +2345,9 @@ Nifty 100 Daily Multi-Screener
     --amber-soft:    #fbe9dc;
     --rose:          #a13d63;
     --rose-soft:     #f7e3ec;
+
+    --cyan:          #1b6e8c;
+    --cyan-soft:     #dcf0f6;
 
     --radius-lg:     16px;
     --radius-sm:     10px;
@@ -2282,6 +2533,7 @@ body {{
 .badge.sst .dot {{ background: var(--plum); }}
 .badge.blsh .dot {{ background: var(--teal); }}
 .badge.etf .dot {{ background: var(--amber); }}
+.badge.car .dot {{ background: var(--cyan); }}
 .badge.upload .dot {{ background: var(--rose); }}
 
 
@@ -2359,6 +2611,7 @@ body {{
 .tab.active.sst {{ background: var(--plum);   color: #fff; }}
 .tab.active.blsh {{ background: var(--teal);   color: #fff; }}
 .tab.active.etf {{ background: var(--amber);   color: #fff; }}
+.tab.active.car {{ background: var(--cyan);    color: #fff; }}
 .tab.active.upload {{ background: var(--rose);  color: #fff; }}
 
 
@@ -2447,6 +2700,11 @@ body {{
 
 .etf-head {{
     background: var(--amber);
+}}
+
+
+.car-head {{
+    background: var(--cyan);
 }}
 
 
@@ -3271,6 +3529,11 @@ tr:last-child td {{
             ETF 28 SMA: <strong id="etfCount">{len(etf)}</strong>
         </div>
 
+        <div class="badge car">
+            <span class="dot"></span>
+            CAR: <strong id="carCount">{len(car)}</strong>
+        </div>
+
         <div class="badge upload">
             <span class="dot"></span>
             Symbol Files: <strong id="uploadStatus">—</strong>
@@ -3320,10 +3583,18 @@ tr:last-child td {{
 
 
     <button
+        class="tab car"
+        onclick="showTab('car', this)"
+    >
+        5. CAR (52W High)
+    </button>
+
+
+    <button
         class="tab upload"
         onclick="showTab('upload', this)"
     >
-        5. Upload Symbols
+        6. Upload Symbols
     </button>
 
 </div>
@@ -3758,6 +4029,110 @@ tr:last-child td {{
                     or
                     '''<tr><td colspan="9">
                     No matching ETFs
+                    </td></tr>'''
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- CAR (CUMULATIVE AVERAGE FROM 52-WEEK HIGH) -->
+<!-- ===================================================== -->
+
+<div
+    id="car"
+    class="tab-content"
+>
+
+    <div class="panel-head car-head">
+
+        <span>
+            CAR — 52W High
+        </span>
+
+        <span class="panel-sub">
+            Cumulative Average of Closes Since the 52-Week High | Rising over last {CAR_TREND_DAYS} Days
+        </span>
+
+    </div>
+
+
+    <div class="filters">
+
+        <label>
+
+            Days Since High ≥
+
+            <input
+                id="carDays"
+                type="number"
+                value="{CAR_MIN_DAYS}"
+                step="1"
+            >
+
+        </label>
+
+
+        <label>
+
+            CAR vs 52W High (%) ≥
+
+            <input
+                id="carVsHigh"
+                type="number"
+                value="-20"
+                step="0.1"
+            >
+
+        </label>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table id="carTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Symbol</th>
+
+                    <th>Company</th>
+
+                    <th>52W High Date</th>
+
+                    <th>52W High Close</th>
+
+                    <th>Days Since High</th>
+
+                    <th>CMP</th>
+
+                    <th>CAR Value</th>
+
+                    <th>CAR vs 52W High</th>
+
+                    <th>CAR Trend ({CAR_TREND_DAYS}D)</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {
+                    rows_car()
+                    or
+                    '''<tr><td colspan="9">
+                    No matching stocks
                     </td></tr>'''
                 }
 
@@ -4642,6 +5017,80 @@ function filterETF() {{
 
 
 // ==========================================================
+// CAR FILTER
+// ==========================================================
+
+function filterCAR() {{
+
+    const minDays =
+        parseFloat(
+            document
+                .getElementById(
+                    'carDays'
+                )
+                .value
+        );
+
+
+    const minVsHigh =
+        parseFloat(
+            document
+                .getElementById(
+                    'carVsHigh'
+                )
+                .value
+        );
+
+
+    document
+        .querySelectorAll(
+            '#carTable tbody tr'
+        )
+        .forEach(
+            function(row) {{
+
+                const d =
+                    parseFloat(
+                        row.dataset.days
+                    );
+
+
+                const v =
+                    parseFloat(
+                        row.dataset.carvshigh
+                    );
+
+
+                if (
+                    !isNaN(d)
+                    &&
+                    !isNaN(v)
+                ) {{
+
+                    row.style.display =
+                        (
+                            d >= minDays
+                            &&
+                            v >= minVsHigh
+                        )
+                        ? ''
+                        : 'none';
+
+                }}
+
+            }}
+        );
+
+
+    updateBadgeCount(
+        'carTable',
+        'carCount'
+    );
+
+}}
+
+
+// ==========================================================
 // BADGE COUNT HELPER
 //
 // Keeps the header badge in sync with the number of rows
@@ -4729,6 +5178,26 @@ document
     );
 
 
+document
+    .getElementById(
+        'carDays'
+    )
+    .addEventListener(
+        'input',
+        filterCAR
+    );
+
+
+document
+    .getElementById(
+        'carVsHigh'
+    )
+    .addEventListener(
+        'input',
+        filterCAR
+    );
+
+
 // ==========================================================
 // INITIAL FILTER
 // ==========================================================
@@ -4737,6 +5206,7 @@ filterMWD();
 filterSST();
 filterBLSH();
 filterETF();
+filterCAR();
 
 </script>
 
@@ -4764,6 +5234,7 @@ def main():
     mwd_results = []
     sst_results = []
     blsh_results = []
+    car_results = []
 
 
     print()
@@ -4866,6 +5337,24 @@ def main():
 
                 blsh_results.append(
                     b
+                )
+
+
+            # =================================================
+            # CAR (52W High Cumulative Average)
+            # =================================================
+
+            c = car_screen(
+                symbol,
+                company,
+                df
+            )
+
+
+            if c:
+
+                car_results.append(
+                    c
                 )
 
 
@@ -5023,6 +5512,19 @@ def main():
     )
 
 
+    # --------------------------------------------------------
+    # CAR
+    #
+    # Closest to (or above) the 52-week high first
+    # --------------------------------------------------------
+
+    car_results.sort(
+        key=lambda x:
+            x["car_vs_high"],
+        reverse=True
+    )
+
+
     # ========================================================
     # IST UPDATE TIME
     # ========================================================
@@ -5059,6 +5561,7 @@ def main():
         sst_results,
         blsh_results,
         etf_results,
+        car_results,
         updated,
         len(symbols)
     )
@@ -5121,6 +5624,11 @@ def main():
     print(
         "ETF 28 SMA Matches:",
         len(etf_results)
+    )
+
+    print(
+        "CAR Matches:",
+        len(car_results)
     )
 
     print(
