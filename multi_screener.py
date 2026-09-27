@@ -99,6 +99,9 @@ ANALYSIS_DAYS = 252
 #      (today's cumulative average is higher than it was
 #      CAR_TREND_DAYS days ago) -- i.e. the average price since
 #      the top is climbing back up instead of drifting lower.
+#   5. TRIGGER PRICE shown alongside is simply last week's high
+#      (the highest daily High over the most recent 5 trading
+#      days) -- a breakout level to watch for an entry.
 #
 # CAR_MIN_DAYS is also the minimum number of trading days that
 # must have passed since the 52-week high before a stock is
@@ -1967,6 +1970,19 @@ def car_screen(
     ) * 100
 
 
+    # --------------------------------------------------------
+    # Trigger price = last week's high (highest High over the
+    # most recent 5 trading days) -- the breakout level to
+    # watch for an entry.
+    # --------------------------------------------------------
+
+    trigger_price = float(
+        daily["High"]
+        .tail(5)
+        .max()
+    )
+
+
     return {
 
         "symbol": symbol,
@@ -1986,6 +2002,9 @@ def car_screen(
 
         "price":
             round(last_price, 2),
+
+        "trigger_price":
+            round(trigger_price, 2),
 
         "car_value":
             round(car_value, 2),
@@ -2287,6 +2306,11 @@ def build_html(
                     <div>
                         <div class="car-stat-label">Days Since High</div>
                         <div class="car-stat-value">{x['days_since_high']}</div>
+                    </div>
+
+                    <div class="car-trigger">
+                        <div class="car-stat-label">Trigger Price</div>
+                        <div class="car-stat-value car-trigger-value">₹{x['trigger_price']:,.2f}</div>
                     </div>
 
                 </div>
@@ -3462,6 +3486,32 @@ tr:last-child td {{
 
     color:
         var(--ink);
+}}
+
+
+.car-trigger {{
+
+    grid-column:
+        1 / -1;
+
+    border-top:
+        1px dashed var(--border);
+
+    padding-top:
+        8px;
+}}
+
+
+.car-trigger-value {{
+
+    font-size:
+        15px;
+
+    font-weight:
+        600;
+
+    color:
+        var(--cyan);
 }}
 
 
