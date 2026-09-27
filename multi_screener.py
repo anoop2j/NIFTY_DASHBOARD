@@ -95,13 +95,18 @@ ANALYSIS_DAYS = 252
 #      the cumulative average of ALL N days since the 52-week
 #      high.
 #   4. A stock only qualifies if that cumulative-average series
-#      has been RISING over the last CAR_TREND_DAYS trading days
-#      (today's cumulative average is higher than it was
-#      CAR_TREND_DAYS days ago) -- i.e. the average price since
-#      the top is climbing back up instead of drifting lower.
+#      has risen CONTINUOUSLY -- every single trading day
+#      strictly higher than the day before it -- for the last
+#      CAR_TREND_DAYS trading days in a row (not merely higher
+#      than it was CAR_TREND_DAYS days ago; a dip anywhere in
+#      that stretch disqualifies the stock).
 #   5. TRIGGER PRICE shown alongside is simply last week's high
 #      (the highest daily High over the most recent 5 trading
 #      days) -- a breakout level to watch for an entry.
+#
+# "Days" everywhere above means TRADING days -- days on which
+# the stock actually traded and has a closing price -- never
+# calendar days. Weekends/holidays are not counted.
 #
 # CAR_MIN_DAYS is also the minimum number of trading days that
 # must have passed since the 52-week high before a stock is
@@ -1927,28 +1932,40 @@ def car_screen(
 
 
     # --------------------------------------------------------
-    # Trend check: the cumulative average must be HIGHER now
-    # than it was CAR_TREND_DAYS trading days ago
+    # Trend check: the cumulative average must have risen
+    # CONTINUOUSLY -- every single trading day strictly higher
+    # than the trading day before it -- for the last
+    # CAR_TREND_DAYS trading days in a row. A single flat or
+    # down day anywhere in that stretch disqualifies the stock;
+    # this is stricter than just comparing today's value against
+    # the value CAR_TREND_DAYS days ago.
     # --------------------------------------------------------
 
-    lookback = min(
-        CAR_TREND_DAYS,
-        len(cum_avg_series) - 1
-    )
-
-    if lookback < 1:
+    if len(cum_avg_series) < CAR_TREND_DAYS + 1:
 
         return None
 
-    car_value_prior = float(
-        cum_avg_series.iloc[-1 - lookback]
+    recent_window = cum_avg_series.iloc[
+        -(CAR_TREND_DAYS + 1):
+    ]
+
+    day_over_day_change = (
+        recent_window
+        .diff()
+        .dropna()
     )
 
-    increasing = car_value > car_value_prior
+    increasing = bool(
+        (day_over_day_change > 0).all()
+    )
 
     if not increasing:
 
         return None
+
+    car_value_prior = float(
+        recent_window.iloc[0]
+    )
 
 
     last_price = float(
@@ -6072,3 +6089,4 @@ if __name__ == "__main__":
     else:
 
         main()
+
