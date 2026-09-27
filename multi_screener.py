@@ -84,16 +84,19 @@ ANALYSIS_DAYS = 252
 # For every stock:
 #   1. Find the 52-week high CLOSING price and the date it was
 #      made (the highest Close in the trailing 252 trading days).
-#   2. N (days_since_high) = number of trading days that have
-#      elapsed SINCE that 52-week-high day (the high day itself
-#      is not counted).
+#   2. DAY 1 of the CAR window is the 52-week-high day ITSELF
+#      (the high day IS counted, not skipped).
+#      N (days_since_high) = total number of trading days in the
+#      window, counting the high day as day 1 through to the
+#      most recent trading day.
 #   3. Build the running/cumulative average of the daily CLOSING
 #      prices for every one of those N days, i.e.
-#          avg_series[k] = mean(Close of the k days right after
-#                               the 52-week high)
-#      for k = 1 .. N. The CAR VALUE shown is avg_series[N] --
-#      the cumulative average of ALL N days since the 52-week
-#      high.
+#          avg_series[k] = mean(Close of the first k days of the
+#                               window, starting from the high
+#                               day itself)
+#      for k = 1 .. N (so avg_series[1] = the high day's own
+#      close). The CAR VALUE shown is avg_series[N] -- the
+#      cumulative average of ALL N days, including the high day.
 #   4. A stock only qualifies if that cumulative-average series
 #      has risen CONTINUOUSLY -- every single trading day
 #      strictly higher than the day before it -- for the last
@@ -108,9 +111,9 @@ ANALYSIS_DAYS = 252
 # the stock actually traded and has a closing price -- never
 # calendar days. Weekends/holidays are not counted.
 #
-# CAR_MIN_DAYS is also the minimum number of trading days that
-# must have passed since the 52-week high before a stock is
-# evaluated at all (not enough data otherwise).
+# CAR_MIN_DAYS is also the minimum number of trading days
+# (counting the high day as day 1) that must have passed before
+# a stock is evaluated at all (not enough data otherwise).
 # ============================================================
 
 CAR_TREND_DAYS = 10
@@ -1894,12 +1897,13 @@ def car_screen(
 
 
     # --------------------------------------------------------
-    # Trading days elapsed since the 52-week high (the high
-    # day itself is NOT counted)
+    # Days in the CAR window, counting the 52-week-high day
+    # itself as DAY 1 (per the revised definition -- the running
+    # average below also starts from this same day).
     # --------------------------------------------------------
 
     days_since_high = (
-        (len(daily) - 1)
+        len(daily)
         - high_pos
     )
 
@@ -1909,14 +1913,15 @@ def car_screen(
 
 
     # --------------------------------------------------------
-    # Cumulative (expanding) average of daily closes for every
-    # day since the high:
-    #     avg_series[k] = mean(close[high+1 : high+1+k])
+    # Cumulative (expanding) average of daily closes starting
+    # FROM the 52-week-high day itself (Day 1 = the high day,
+    # so avg_series[1] = the high day's own close):
+    #     avg_series[k] = mean(close[high : high+k])
     # --------------------------------------------------------
 
     post_high_closes = (
         closes
-        .iloc[high_pos + 1:]
+        .iloc[high_pos:]
         .reset_index(drop=True)
     )
 
@@ -6089,4 +6094,3 @@ if __name__ == "__main__":
     else:
 
         main()
-
