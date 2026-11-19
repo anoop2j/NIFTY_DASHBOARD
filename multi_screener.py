@@ -893,7 +893,8 @@ def is_new_high(
 def get_sst_transactions(
     df,
     lookback,
-    target_pct
+    target_pct,
+    return_state=False
 ):
 
     data = (
@@ -911,6 +912,10 @@ def get_sst_transactions(
     )
 
     if len(data) <= lookback:
+
+        if return_state:
+
+            return [], False
 
         return []
 
@@ -1054,6 +1059,11 @@ def get_sst_transactions(
     )
 
 
+    if return_state:
+
+        return transactions, armed
+
+
     return transactions
 
 
@@ -1126,6 +1136,25 @@ def sst_screen(
 ):
 
     if len(df) < SST_LOOKBACK + 1:
+
+        return None
+
+
+    # --------------------------------------------------------
+    # Only show stocks still WAITING for a 20-day-high
+    # breakout (i.e. SST is ARMED). If a stock already crossed
+    # its 20-day high (buy fired -> disarmed) and has not made
+    # a new 20-day low since, it is hidden until it re-arms.
+    # --------------------------------------------------------
+
+    _, sst_armed = get_sst_transactions(
+        df,
+        SST_LOOKBACK,
+        SST_TARGET,
+        return_state=True
+    )
+
+    if not sst_armed:
 
         return None
 
